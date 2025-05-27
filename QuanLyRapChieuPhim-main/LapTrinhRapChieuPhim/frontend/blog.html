@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quản Lí Rạp Phim</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link href="css/global.css" rel="stylesheet" />
+    <link href="css/blog.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Platypi:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <div class="main_o main">
+      <div class="main_o1 bg_back">
+        <section id="header">
+          <nav
+            class="navbar navbar-expand-md navbar-light px_4"
+            id="navbar_sticky"
+          >
+            <div class="container-fluid">
+              <a class="navbar-brand p-0 fw-bold text-white" href="index.php"
+                ><i class="fa fa-modx col_oran"></i> Quản Lí Rạp Phim
+              </a>
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-0 ms-auto">
+                  <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="index.php"
+                      >Trang chủ
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="about.html">Thông tin rạp </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      class="nav-link " href="movies.html">Phim</a>
+                  </li>
+
+
+                  <!-- <li class="nav-item dropdown">
+                    <a
+                      class="nav-link dropdown-toggle"
+                      href="#"
+                      id="navbarDropdown"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Phim
+                    </a>
+                    <ul
+                      class="dropdown-menu drop_1"
+                      aria-labelledby="navbarDropdown"
+                    >
+                      <li>
+                        <a class="dropdown-item" href="movies.html"
+                          ><i class="fa fa-chevron-right font_12 me-1"></i> Các bộ phim
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item border-0" href="details.php"
+                          ><i class="fa fa-chevron-right font_12 me-1"></i> Chi tiết phim
+                        </a>
+                      </li>
+                    </ul>
+                  </li> -->
+
+                  <li>
+                    <a class="nav-link active" aria-current="page" href="blog.html">Blogs</a>
+                  </li>
+
+                  <li class="nav-item dropdown">
+                    <a
+                      class="nav-link dropdown-toggle"
+                      href="#"
+                      id="navbarDropdown"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Trang
+                    </a>
+                    <ul
+                      class="dropdown-menu drop_1"
+                      aria-labelledby="navbarDropdown"
+                    >
+                      <li>
+                        <a class="dropdown-item" href="faq.html"
+                          ><i class="fa fa-chevron-right font_12 me-1"></i> Câu
+                          hỏi thường gặp
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="login.php"
+                          ><i class="fa fa-chevron-right font_12 me-1"></i> Đăng
+                          nhập
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="register.php"
+                          ><i class="fa fa-chevron-right font_12 me-1"></i> Đăng
+                          ký
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item border-0" href="ticket.php"
+                          ><i class="fa fa-chevron-right font_12 me-1"></i> Vé
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="contact.html"
+                      >Thông tin liên lạc
+                    </a>
+                  </li>
+                </ul>
+                <ul class="navbar-nav mb-0 ms-auto">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link fs-5 drop_icon"
+                      data-bs-target="#exampleModal2"
+                      data-bs-toggle="modal"
+                      href="#"
+                      ><i class="fa fa-search"></i
+                    ></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link fs-5 drop_icon" href="login.php"
+                      ><i class="fa fa-user"></i
+                    ></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </section>
+        <section id="center" class="centre_o pt-5 pb-5">
+          <div class="container-xl">
+            <div class="row centre_o1 text-center">
+              <div class="col-md-12">
+                <h1 class="text-white font_60">Blogs</h1>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="border_dashed"></div>
+
+    <section id="blog" class="p_3">
+      <div class="container-xl">
+        <div class="blog_1 row">
+          <div class="col-md-8">
+            <div class="blog_1l">
+              <div class="blog_1l1">
+                <div class="grid clearfix">
+                  <figure class="effect-jazz mb-0">
+                    <a
+                      ><img
+                        src="img/55.jpg"
+                        height="450"
+                        class="w-100"
+                        alt="img25"
+                    /></a>
+                  </figure>
+                </div>
+                <h3 class="mt-3">
+                  <a href=""
+                    >Oscar 2025 đã thuộc về bộ phim mang đầy tính chính trị ?
+                  </a>
+                </h3>
+                <h6 class="text-muted mt-3">
+                  <i class="fa fa-user col_oran me-1"></i> Trịnh Văn Chinh
+                  <i class="fa fa-comments col_oran me-1 ms-3"></i> 36 bình luận
+                  <i class="fa fa-calendar col_oran me-1 ms-3"></i> 05/03/2025
+                  <i class="fa fa-folder-o col_oran me-1 ms-3"></i> Giải thưởng
+                </h6>
+                <p class="mt-3">
+                  Liệu đây có phải là 1 tác phẩm "trình" ngang Mai của Trấn
+                  Thành nhưng may mắn hơn ?
+                </p>
+                <h6 class="mb-0 mt-4 center_sm">
+                  <a
+                    class="button_2"
+                    href="https://vnexpress.net/oscar-2025-mua-giai-kho-doan-4856506.html"
+                    >Tìm hiểu thêm
+                  </a>
+                </h6>
+              </div>
+              <div class="blog_1l1 mt-4">
+                <div class="grid clearfix">
+                  <figure class="effect-jazz mb-0">
+                    <a
+                      ><img
+                        src="img/57.jpg"
+                        height="450"
+                        class="w-100"
+                        alt="img25"
+                    /></a>
+                  </figure>
+                </div>
+                <h3 class="mt-3">
+                  <a href="">Cuộc đua Phim hoạt hình xuất sắc Oscar 2025 </a>
+                </h3>
+                <h6 class="text-muted mt-3">
+                  <i class="fa fa-user col_oran me-1"></i> Hoàng Đức Trung
+                  <i class="fa fa-comments col_oran me-1 ms-3"></i> 666 bình
+                  luận
+                  <i class="fa fa-calendar col_oran me-1 ms-3"></i> 06/03/2025
+                  <i class="fa fa-folder-o col_oran me-1 ms-3"></i> Giải trí
+                </h6>
+                <p class="mt-3">
+                  Vượt qua cả đứa con nhà "chuột", bộ phim hoạt hình này có gì
+                  mà khiến thế giới bị khuấy đảo
+                </p>
+                <h6 class="mb-0 mt-4 center_sm">
+                  <a
+                    class="button_2"
+                    href="https://vnexpress.net/cuoc-dua-phim-hoat-hinh-xuat-sac-oscar-2025-4855542.html"
+                    >Tìm hiểu thêm
+                  </a>
+                </h6>
+              </div>
+              <div class="blog_1l1 mt-4">
+                <div class="grid clearfix">
+                  <figure class="effect-jazz mb-0">
+                    <a
+                      ><img
+                        src="img/16.jpg"
+                        height="450"
+                        class="w-100"
+                        alt="img25"
+                    /></a>
+                  </figure>
+                </div>
+                <h3 class="mt-3">
+                  <a
+                    >30+ Phim chiếu rạp 2025 hay nhất định phải xem mới cập nhật
+                  </a>
+                </h3>
+                <h6 class="text-muted mt-3">
+                  <i class="fa fa-user col_oran me-1"></i> Nguyễn Lê Đại Phi
+                  <i class="fa fa-comments col_oran me-1 ms-3"></i> 18 bình luận
+                  <i class="fa fa-calendar col_oran me-1 ms-3"></i> 06/03/2025
+                  <i class="fa fa-folder-o col_oran me-1 ms-3"></i> Nghiên cứu
+                </h6>
+                <p class="mt-3">
+                  Phim chiếu rạp 2024 trở nên vô cùng 'nhộn nhịp' và hấp dẫn hơn
+                  bao giờ hết với hàng loạt bộ phim siêu phẩm, được hàng triệu
+                  khán giả mong đợi. Vậy phim nào đang chiếu tại rạp và sắp khởi
+                  chiếu trong tháng tới?
+                </p>
+                <h6 class="mb-0 mt-4 center_sm">
+                  <a
+                    class="button_2"
+                    href="https://cellphones.com.vn/sforum/phim-chieu-rap-2024"
+                    >Đọc thêm
+                  </a>
+                </h6>
+              </div>
+              <div class="pages text-center mt-4">
+                <ul class="mb-0">
+                  <li>
+                    <a href="blog.html"><i class="fa fa-chevron-left"></i></a>
+                  </li>
+                  <li><a class="act" href="blog.html">1</a></li>
+                  <li><a href="blog.html">2</a></li>
+                  <li><a href="blog.html">3</a></li>
+                  <li><a href="blog.html">4</a></li>
+                  <li><a href="blog.html">5</a></li>
+                  <li><a href="blog.html">6</a></li>
+                  <li>
+                    <a href="blog.html"><i class="fa fa-chevron-right"></i></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="blog_1r">
+              <div class="blog_1r1">
+                <div class="input-group bg_oran">
+                  <input
+                    type="text"
+                    class="form-control bg-transparent rounded-0 border-0 text-white fs-5"
+                    placeholder="Search..."
+                  />
+                  <span class="input-group-btn">
+                    <button
+                      class="btn btn-primary bg-transparent rounded-0 border-0 text-white p-3 fs-5"
+                      type="button"
+                    >
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div class="blog_1r2 mt-4 bg-light p-4">
+                <h4 class="mb-4">Latest Posts</h4>
+                <div class="row blog_1r2i">
+                  <div class="col-md-4 col-4 pe-0">
+                    <div class="blog_1r2il">
+                      <figure class="effect-jazz mb-0">
+                        <a
+                          href="https://tuoitre.vn/dien-vien-quy-binh-qua-doi-o-tuoi-42-vi-bao-benh-20250306122204351.htm"
+                          ><img src="img/56.jpg" class="w-100" alt="abc"
+                        /></a>
+                      </figure>
+                    </div>
+                  </div>
+                  <div class="col-md-8 col-8">
+                    <div class="blog_1r2ir">
+                      <h6 class="fw-bold">
+                        <a
+                          href="https://tuoitre.vn/dien-vien-quy-binh-qua-doi-o-tuoi-42-vi-bao-benh-20250306122204351.htm"
+                          >Diễn viên Quý Bình qua đời
+                        </a>
+                      </h6>
+                      <h6 class="text-muted mb-0 font_14">
+                        <i class="fa fa-comments col_oran me-1"></i> 22 Bình luận
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="row blog_1r2i">
+                  <div class="col-md-4 col-4 pe-0">
+                    <div class="blog_1r2il">
+                      <figure class="effect-jazz mb-0">
+                        <a
+                          href="https://kenh14.vn/tiet-lo-chan-dong-ve-top-bigbang-khien-ca-mxh-phan-no-215241231114333083.chn"
+                          ><img src="img/13.jpg" class="w-100" alt="abc"
+                        /></a>
+                      </figure>
+                    </div>
+                  </div>
+                  <div class="col-md-8 col-8">
+                    <div class="blog_1r2ir">
+                      <h6 class="fw-bold">
+                        <a
+                          href="https://kenh14.vn/tiet-lo-chan-dong-ve-top-bigbang-khien-ca-mxh-phan-no-215241231114333083.chn"
+                          >Top trong squid game đẳng cấp như nào ?
+                        </a>
+                      </h6>
+                      <h6 class="text-muted mb-0 font_14">
+                        <i class="fa fa-comments col_oran me-1"></i> 2 Comments
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="row blog_1r2i">
+                  <div class="col-md-4 col-4 pe-0">
+                    <div class="blog_1r2il">
+                      <figure class="effect-jazz mb-0">
+                        <a href="https://vtv.vn/van-hoa-giai-tri/vu-tru-phim-sieu-anh-hung-cua-marvel-dao-lon-vi-be-boi-cua-dien-vien-20250202163057016.htm"
+                          ><img src="img/58.jpg" class="w-100" alt="abc"
+                        /></a>
+                      </figure>
+                    </div>
+                  </div>
+                  <div class="col-md-8 col-8">
+                    <div class="blog_1r2ir">
+                      <h6 class="fw-bold">
+                        <a href="https://vtv.vn/van-hoa-giai-tri/vu-tru-phim-sieu-anh-hung-cua-marvel-dao-lon-vi-be-boi-cua-dien-vien-20250202163057016.htm"
+                          >Vị vua của nền điện ảnh siêu anh hùng đã ngã quỵ ?
+                        </a>
+                      </h6>
+                      <h6 class="text-muted mb-0 font_14">
+                        <i class="fa fa-comments col_oran me-1"></i> 98799
+                        Comments
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="blog_1r2 mt-4 bg-light p-4">
+                <h4 class="mb-4">thể loại</h4>
+                <h6 class="mb-0">
+                  <a href="blog_detail.html"
+                    >Kỳ ảo <span class="pull-right">(6)</span></a
+                  >
+                </h6>
+                <hr />
+                <h6 class="mb-0">
+                  <a href="blog_detail.html"
+                    >Phim <span class="pull-right">(4)</span></a
+                  >
+                </h6>
+                <hr />
+                <h6 class="mb-0">
+                  <a href="blog_detail.html"
+                    >Tin tức <span class="pull-right">(5)</span></a
+                  >
+                </h6>
+                <hr />
+                <h6 class="mb-0">
+                  <a href="blog_detail.html"
+                    >TV Dramas <span class="pull-right">(8)</span></a
+                  >
+                </h6>
+                <hr />
+                <h6 class="mb-0">
+                  <a href="blog_detail.html"
+                    >Chưa phân loại <span class="pull-right">(7)</span></a
+                  >
+                </h6>
+              </div>
+              <div class="blog_1r2 mt-4 bg-light p-4">
+                <h4 class="mb-4">Tags</h4>
+                <ul class="mb-0 tags">
+                  <li class="d-inline-block">
+                    <a class="d-block" href="blog_detail.html">Phiêu lưu </a>
+                  </li>
+                  <li class="d-inline-block">
+                    <a class="d-block" href="blog_detail.html">Drama </a>
+                  </li>
+                  <li class="d-inline-block">
+                    <a class="d-block" href="blog_detail.html">Movie</a>
+                  </li>
+                  <li class="d-inline-block">
+                    <a class="d-block" href="blog_detail.html"
+                      >Truyền hình TV
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="blog_1r2 mt-4 bg-light p-4 center_sm">
+                <h4 class="mb-4">Tin mới</h4>
+                <p>Đăng ký để nhận tin mới</p>
+                <input
+                  class="form-control bg-transparent rounded-0"
+                  placeholder="gmail "
+                  type="text"
+                />
+                <h6 class="mt-4 mb-0">
+                  <a class="button_2" href="blog_detail.html"
+                    >Subscribe <i class="fa fa-check-circle ms-1"></i>
+                  </a>
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="footer" class="p_3 bg-black">
+      <div class="container-xl">
+        <div class="footer_1 row pb-4">
+          <div class="col-md-3">
+            <div class="footer_1l">
+              <h4 class="mb-0">
+                <a class="fw-bold text-white" href="index.php"
+                  ><i class="fa fa-modx col_oran">
+                    Chúc bạn có trải nghiệm tốt
+                  </i>
+                </a>
+              </h4>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <div class="footer_1r text-end">
+              <ul class="mb-0">
+                <li class="d-inline-block">
+                  <a class="text-white-50 a_tag" href="#">Giúp đỡ</a>
+                </li>
+                <li class="d-inline-block text-white-50">/</li>
+                <li class="d-inline-block me-2">
+                  <a class="text-white-50 a_tag" href="#">
+                    Chính sách và quyền riêng tư
+                  </a>
+                </li>
+
+                <li class="d-inline-block">
+                  <a
+                    class="social_icon"
+                    href="https://www.facebook.com/hoangductrungg"
+                    target="_blank"
+                  >
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                </li>
+
+                <li class="d-inline-block">
+                  <a
+                    class="social_icon"
+                    href="https://www.instagram.com/meopeongokngek/"
+                    target="_blank"
+                  >
+                    <i class="fa fa-instagram"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer_2 row mt-4">
+          <div class="col-md-3">
+            <div class="footer_2i">
+              <p class="text-white fw-bold fs-5">
+                Mua vé xem phim dễ dàng với Quản lí rạp chiếu phim
+              </p>
+              <h6 class="mb-0 mt-4">
+                <a class="button" href="#">Hãy chọn vé </a>
+              </h6>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="footer_2i">
+              <h5 class="col_oran mb-4">Movies</h5>
+              <div class="row footer_1ism">
+                <h6 class="fw-normal col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Hành động </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Phiêu lưu </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Hoạt hình </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Anime </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Tài liệu </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6 mb-0">
+                  <a class="text-white-50 a_tag" href="#"> Hài kịch</a>
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="footer_2i">
+              <h5 class="col_oran mb-4">Các liên kết</h5>
+              <div class="row footer_1ism">
+                <h6 class="fw-normal col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Về chúng tôi </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#">
+                    Tài khoản của tôi
+                  </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Tin tức </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Sự kiện mới nhất </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Chính sách </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6 mb-0">
+                  <a class="text-white-50 a_tag" href="#">
+                    Thông tin liên lạc
+                  </a>
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="footer_2i">
+              <h5 class="col_oran mb-4">Thông báo mới</h5>
+              <p class="text-white-50">
+                Đăng ký gmail để nhận thông báo mới nhất từ chúng tôi
+              </p>
+              <div class="input-group bg-white">
+                <input
+                  type="text"
+                  class="form-control bg-transparent rounded-0 border-0"
+                  placeholder="Điền email của bạn"
+                />
+                <span class="input-group-btn">
+                  <button
+                    class="btn btn-primary bg-transparent rounded-0 border-0 col_oran p-3"
+                    type="button"
+                  >
+                    <i class="fa fa-location-arrow"></i>
+                  </button>
+                </span>
+              </div>
+              <div class="form-check mt-3 text-white-50">
+                <input class="form-check-input" type="checkbox" value="" />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Tôi đồng ý với các điều khoản của công ty
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="footer_b" class="pt-3 pb-3 bg-dark">
+      <div class="container-xl">
+        <div class="footer_b1 row text-center">
+          <div class="col-md-12">
+            <p class="mb-0 text-white-50">
+              © 2025 Quản Lí Rạp Phim
+              <a class="col_oran fw-bold" href="index.php"
+                >Quản Lí Rạp Phim
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="js/common.js"></script>
+  </body>
+</html>

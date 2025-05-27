@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quản Lí Rạp Phim</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link href="css/global.css" rel="stylesheet" />
+    <link href="css/faq.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Platypi:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <div class="main_o main">
+      <div class="main_o1 bg_back">
+        <section id="header">
+          <nav
+            class="navbar navbar-expand-md navbar-light px_4"
+            id="navbar_sticky"
+          >
+            <div class="container-fluid">
+              <a class="navbar-brand p-0 fw-bold text-white" href="index.html"
+                ><i class="fa fa-modx col_oran"></i> Quản Lí Rạp Phim
+              </a>
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-0 ms-auto">
+                  <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="index.html"
+                      >Trang chủ
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="about.html">Thông tin rạp </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="movies.html">Phim </a>
+                  </li>
+
+                
+                  <!-- <li class="nav-item dropdown">
+                    <a
+                      class="nav-link dropdown-toggle"
+                      href="#"
+                      id="navbarDropdown"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Phim
+                    </a>
+                    <ul
+                      class="dropdown-menu drop_1"
+                      aria-labelledby="navbarDropdown"
+                    >
+                      <li>
+                        <a class="dropdown-item" href="movies.html"
+                          ><i class="fa fa-chevron-right font_12 me-1"></i> Phim
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item border-0" href="detail.html"
+                          ><i class="fa fa-chevron-right font_12 me-1"></i> Chi
+                          tiết phim
+                        </a>
+                      </li>
+                    </ul>
+                  </li> -->
+
+                  <li class="nav-item dropdown"></li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="blog.html">Blogs </a>
+                  </li>
+
+                  <li class="nav-item dropdown">
+                    <a
+                      class="nav-link dropdown-toggle active"
+                      href="#"
+                      id="navbarDropdown"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Pages
+                    </a>
+                    <ul
+                      class="dropdown-menu drop_1"
+                      aria-labelledby="navbarDropdown"
+                    >
+                      <li>
+                        <a class="dropdown-item" href="faq.html"
+                          ><i class="fa fa-chevron-right font_12 me-1"></i> Các câu hỏi thường gặp
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="login.html"
+                          ><i class="fa fa-chevron-right font_12 me-1"></i> Đăng nhập
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="register.html"
+                          ><i class="fa fa-chevron-right font_12 me-1"></i> Đăng kí
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item border-0" href="ticket.html"
+                          ><i class="fa fa-chevron-right font_12 me-1"></i> Vé
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="contact.html"
+                      >Thông tin liên lạc
+                    </a>
+                  </li>
+                </ul>
+                <ul class="navbar-nav mb-0 ms-auto">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link fs-5 drop_icon"
+                      data-bs-target="#exampleModal2"
+                      data-bs-toggle="modal"
+                      href="#"
+                      ><i class="fa fa-search"></i
+                    ></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link fs-5 drop_icon" href="login.html"
+                      ><i class="fa fa-user"></i
+                    ></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </section>
+        <section id="center" class="centre_o pt-5 pb-5">
+          <div class="container-xl">
+            <div class="row centre_o1 text-center">
+              <div class="col-md-12">
+                <h1 class="text-white font_60">Các câu hỏi thường gặp</h1>
+                <h5 class="mb-0 mt-3 fw-normal col_oran">
+                  <a class="text-light" href="index.html">Trang chủ </a>
+                  <span class="mx-2 text-muted">/</span> Các câu hỏi thường gặp
+                </h5>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="border_dashed"></div>
+
+    <section id="faq" class="p_3 bg_light">
+      <div class="container-xl">
+        <div class="faq_1 row">
+          <div class="col-md-3">
+            <div class="faq_1l">
+              <div class="faq_1l1 p-3 bg-white shadow_box">
+                <ul class="nav nav-tabs mb-0 border-0">
+                  <li class="nav-item">
+                    <a
+                      href="#home"
+                      data-bs-toggle="tab"
+                      aria-expanded="false"
+                      class="nav-link active"
+                    >
+                      <span class="d-md-block">Thông tin chung </span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      href="#profile"
+                      data-bs-toggle="tab"
+                      aria-expanded="true"
+                      class="nav-link"
+                    >
+                      <span class="d-md-block">Thông tin rạp</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      href="#profile1"
+                      data-bs-toggle="tab"
+                      aria-expanded="true"
+                      class="nav-link"
+                    >
+                      <span class="d-md-block">Giá cả </span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      href="#profile2"
+                      data-bs-toggle="tab"
+                      aria-expanded="true"
+                      class="nav-link"
+                    >
+                      <span class="d-md-block">Đặt vé </span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      href="#profile3"
+                      data-bs-toggle="tab"
+                      aria-expanded="true"
+                      class="nav-link"
+                    >
+                      <span class="d-md-block">Thanh toán </span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      href="#profile4"
+                      data-bs-toggle="tab"
+                      aria-expanded="true"
+                      class="nav-link"
+                    >
+                      <span class="d-md-block">Hủy bỏ &amp; Hoàn trả </span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      href="#profile5"
+                      data-bs-toggle="tab"
+                      aria-expanded="true"
+                      class="nav-link"
+                    >
+                      <span class="d-md-block">Visa &amp; Bảo hiểm </span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      href="#profile6"
+                      data-bs-toggle="tab"
+                      aria-expanded="true"
+                      class="nav-link"
+                    >
+                      <span class="d-md-block">Chuyển Tiền Xuyên Gia </span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      href="#profile8"
+                      data-bs-toggle="tab"
+                      aria-expanded="true"
+                      class="nav-link"
+                    >
+                      <span class="d-md-block">Tài khoản </span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      href="#profile9"
+                      data-bs-toggle="tab"
+                      aria-expanded="true"
+                      class="nav-link"
+                    >
+                      <span class="d-md-block">Hỗ trợ </span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      href="#profile10"
+                      data-bs-toggle="tab"
+                      aria-expanded="true"
+                      class="nav-link"
+                    >
+                      <span class="d-md-block">Thông tin rạp </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="faq_1l2 p-3 bg-white shadow_box mt-4">
+                <h5>Hãy là người đầu tiên</h5>
+                <p>
+                  Bạn sẽ được giảm giá thêm 15% mọi sản phẩm mua lần đầu nếu may
+                  mắn !
+                </p>
+                <input
+                  class="form-control rounded-3"
+                  placeholder="Enter Your Email"
+                  type="text"
+                />
+                <h6 class="mb-0 mt-3 text-center">
+                  <a class="button_2 p-3 px-5" href="#">Be The First</a>
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <div class="faq_1r">
+              <div class="tab-content">
+                <div class="tab-pane active" id="home">
+                  <div class="faq_1ri p-4 bg-white shadow_box">
+                    <h5 class="col_oran">
+                      <span class="d-md-block">Thông tin chung </span>
+                    </h5>
+                    <h6 class="fw-bold mt-3">
+                      Một rạp chiếu phim không chỉ là nơi trình chiếu tác phẩm,
+                      mà còn là không gian văn hóa, cần được quản lý chặt chẽ để
+                      đảm bảo trải nghiệm tốt nhất cho khán giả ?
+                    </h6>
+                    <p>
+                      Một rạp chiếu phim không chỉ là nơi trình chiếu tác phẩm,
+                      mà còn là một không gian văn hóa, nơi khán giả có thể tiếp
+                      cận, thưởng thức và cảm nhận giá trị nghệ thuật của điện
+                      ảnh. Chính vì vậy, việc quản lý rạp phim cần được thực
+                      hiện một cách chặt chẽ, từ kiểm soát nội dung chiếu, chất
+                      lượng dịch vụ, cho đến trải nghiệm tổng thể của khách
+                      hàng. Một môi trường được tổ chức tốt sẽ giúp khán giả
+                      không chỉ được xem phim mà còn cảm nhận được sự tôn trọng
+                      đối với nghệ thuật và sự tiện nghi trong từng chi tiết nhỏ
+                      nhất
+                    </p>
+                    <h6 class="fw-bold">
+                      Chính sách quản lý rạp phim cần cân bằng giữa quyền lợi
+                      của nhà phát hành, rạp chiếu và khán giả, nhằm thúc đẩy sự
+                      phát triển bền vững của ngành điện ảnh ?
+                    </h6>
+                    <p>
+                      Chính sách quản lý rạp phim không chỉ tập trung vào việc
+                      tối đa hóa lợi nhuận, mà cần phải đảm bảo sự cân bằng giữa
+                      lợi ích của nhiều bên liên quan, bao gồm nhà phát hành
+                      phim, hệ thống rạp chiếu và đặc biệt là khán giả. Nếu ưu
+                      tiên quá mức cho một nhóm lợi ích nào đó, ngành công
+                      nghiệp điện ảnh có thể mất đi tính công bằng và sức hấp
+                      dẫn của nó. Một chính sách hợp lý sẽ giúp ngành phim ảnh
+                      phát triển bền vững, thúc đẩy sự cạnh tranh lành mạnh và
+                      mang đến những trải nghiệm điện ảnh đa dạng, phong phú hơn
+                      cho công chúng.
+                    </p>
+                    <h6 class="fw-bold">
+                      Việc kiểm soát nội dung phim, thời lượng chiếu và giá vé
+                      cần minh bạch để đảm bảo sự công bằng và cạnh tranh lành
+                      mạnh ?
+                    </h6>
+                    <p>
+                      Việc kiểm soát nội dung phim, thời lượng chiếu và giá vé
+                      không chỉ đơn thuần là một quy trình hành chính, mà còn là
+                      một trong những yếu tố quan trọng quyết định sự phát triển
+                      của ngành công nghiệp điện ảnh. Minh bạch trong những khía
+                      cạnh này sẽ giúp đảm bảo rằng mọi bộ phim đều có cơ hội
+                      công bằng để tiếp cận khán giả, tránh tình trạng độc quyền
+                      hoặc thiên vị trong phát hành. Đồng thời, giá vé hợp lý và
+                      công khai rõ ràng sẽ giúp duy trì niềm tin của khách hàng,
+                      đảm bảo rằng mọi người đều có cơ hội tiếp cận với những
+                      tác phẩm điện ảnh chất lượng mà không bị rào cản tài chính
+                      làm mất đi trải nghiệm.
+                    </p>
+                    <h6 class="fw-bold">
+                      Chính sách quản lý phải khuyến khích sự đa dạng và sáng
+                      tạo, giúp điện ảnh phát triển phong phú hơn ?
+                    </h6>
+                    <p>
+                      Rạp chiếu phim không chỉ là nơi để giải trí mà còn đóng
+                      vai trò quan trọng trong việc bảo tồn và phát huy giá trị
+                      văn hóa của mỗi quốc gia. Điện ảnh phản ánh những câu
+                      chuyện, tư tưởng, phong tục và sự sáng tạo của một nền văn
+                      hóa, do đó, các chính sách quản lý rạp phim cần phải hỗ
+                      trợ và khuyến khích sự đa dạng trong nội dung chiếu. Điều
+                      này có nghĩa là không chỉ tập trung vào các bộ phim bom
+                      tấn thương mại, mà còn phải tạo điều kiện cho những tác
+                      phẩm nghệ thuật, phim độc lập, và phim của các nhà làm
+                      phim trẻ được tiếp cận với công chúng, từ đó góp phần làm
+                      phong phú đời sống văn hóa điện ảnh.
+                    </p>
+                    <h6 class="fw-bold">
+                      Quản lý rạp chuyên nghiệp không chỉ giúp tăng doanh thu mà
+                      còn nâng cao chất lượng phục vụ, mang lại trải nghiệm tốt
+                      nhất cho khán giả ?
+                    </h6>
+                    <p>
+                      Một hệ thống quản lý rạp chiếu chuyên nghiệp không chỉ
+                      dừng lại ở việc đảm bảo nguồn doanh thu ổn định, mà quan
+                      trọng hơn, nó phải đặt chất lượng dịch vụ và trải nghiệm
+                      của khán giả lên hàng đầu. Điều này bao gồm từ việc kiểm
+                      soát chất lượng âm thanh, hình ảnh, ghế ngồi, không gian
+                      rạp, cho đến cách phục vụ của nhân viên, thời gian chiếu
+                      phim linh hoạt và các chương trình ưu đãi. Khi một rạp
+                      phim được vận hành tốt, khán giả sẽ cảm thấy được trân
+                      trọng, sẵn sàng quay lại nhiều lần, và thậm chí trở thành
+                      những người ủng hộ trung thành, góp phần giúp ngành điện
+                      ảnh phát triển một cách bền vững.
+                    </p>
+                    <h6 class="fw-bold">Cần nâng cao kĩ thuật.</h6>
+                    <p class="mb-0">
+                      Trong thời đại công nghệ số và sự phát triển mạnh mẽ của
+                      các nền tảng chiếu phim trực tuyến, rạp chiếu phim cần có
+                      những chính sách quản lý linh hoạt và đổi mới để thích ứng
+                      với xu hướng mới. Điều này không chỉ dừng lại ở việc nâng
+                      cấp cơ sở hạ tầng, cải thiện chất lượng dịch vụ, mà còn
+                      bao gồm việc tích hợp công nghệ hiện đại như đặt vé trực
+                      tuyến, chương trình thành viên, và các trải nghiệm điện
+                      ảnh cao cấp như IMAX, 4DX, hoặc rạp chiếu riêng tư. Nếu
+                      không có sự đổi mới kịp thời, rạp phim có nguy cơ mất đi
+                      lượng lớn khán giả vào tay các nền tảng phát trực tuyến,
+                      làm giảm sức hút của điện ảnh truyền thống và ảnh hưởng
+                      đến toàn bộ ngành công nghiệp phim ảnh ?
+                    </p>
+                  </div>
+                </div>
+                <div class="tab-pane" id="profile">
+                  <div class="faq_1ri p-4 bg-white shadow_box">
+                    <h5 class="col_oran">Thông tin rạp</h5>
+                    <h6 class="fw-bold mt-3">Rạp có to không ?</h6>
+                    <p>Sức chứa lên tới hàng trăm người 1 phòng phim .</p>
+                    <h6 class="fw-bold mt-3">Web này có uy tín không ?</h6>
+                    <p>
+                      Website này được phát triển hơn 5 năm và đã có hàng nghìn
+                      khách hàng sử dụng dịch vụ liên tục trong 1 tuần nên về
+                      chất lượng luôn đảm bảo.
+                    </p>
+
+                    <h6 class="fw-bold">
+                      Trẻ con được xem phim trên 16+ không ?
+                    </h6>
+                    <p>
+                      Trẻ em dưới 16 tuổi cần có sự đồng ý của phụ huynh hoặc
+                      người giám hộ mới được xem phim.
+                    </p>
+                    <h6 class="fw-bold">Nhân viên tốt không ?</h6>
+                    <p>
+                      Nhân viên của chúng tôi được đào tạo chuyên nghiệp, luôn
+                      sẵn sàng hỗ trợ và giải đáp mọi thắc mắc của khách hàng
+                      một cách tận tình và chu đáo.
+                    </p>
+                    <h6 class="fw-bold">Có thể đặt vé trước không ?</h6>
+                    <p>
+                      Có thể đặt vé trước qua website hoặc trực tiếp tại rạp.
+                    </p>
+                    <h6 class="fw-bold"></h6>
+                    <p class="mb-0"></p>
+                  </div>
+                </div>
+
+                <div class="tab-pane" id="profile1">
+                  <div class="faq_1ri p-4 bg-white shadow_box">
+                    <h5 class="col_oran">Giá cả</h5>
+                    <h6 class="fw-bold mt-3">
+                      <h6 class="fw-bold mt-3">Giá vé có thay đổi không?</h6>
+                    </h6>
+                    <p>
+                      Giá vé có thể thay đổi tùy thuộc vào thời gian và loại
+                      phim.
+                    </p>
+                    <h6 class="fw-bold"></h6>
+                    <p>
+                      Có,học sinh sinh viên sẽ được giảm giá tới 40% khi mua vé.
+                    </p>
+                    <h6 class="fw-bold">
+                      Sao vé rạp rẻ hơn rạp CG* và Gala** thế ?
+                    </h6>
+                    <p>
+                      Vì rạp chúng tôi không cần phải trả tiền cho các diễn viên
+                      nổi tiếng và không cần phải trả tiền cho các chương trình
+                      giải trí ngoài phim.
+                    </p>
+                    <h6 class="fw-bold">Giá vé trung bình khoảng ?</h6>
+                    <p>
+                      Giá vé trung bình khoảng 100k đến 200k tùy thuộc vào thời
+                      gian và loại phim.
+                    </p>
+                    <h6 class="fw-bold">Giá combo có đắt không ?</h6>
+                    <p>Giá combo rẻ hơn so với việc mua từng món riêng lẻ.</p>
+                    <h6 class="fw-bold"></h6>
+                    <p class="mb-0"></p>
+                  </div>
+                </div>
+
+                <div class="tab-pane" id="profile2">
+                  <div class="faq_1ri p-4 bg-white shadow_box">
+                    <h5 class="col_oran">Đặt vé</h5>
+                    <h6 class="fw-bold mt-3"></h6>
+                    <p></p>
+                    <h6 class="fw-bold mt-3"></h6>
+                    <p></p>
+
+                    <h6 class="fw-bold"></h6>
+                    <p>Tôi có thể chọn chỗ ngồi khi đặt vé online không?</p>
+                    <h6 class="fw-bold"></h6>
+                    <p>
+                      Có, bạn có thể chọn chỗ ngồi khi đặt vé online hoặc trực
+                      tiếp tại rạp.
+                    </p>
+                    <h6 class="fw-bold">
+                      Sau khi đặt vé, tôi có thể hủy hoặc đổi vé không?
+                    </h6>
+                    <p>
+                      Có, bạn có thể hủy hoặc đổi vé trước 24 giờ so với thời
+                      gian chiếu phim.
+                    </p>
+                    <h6 class="fw-bold">
+                      Có giới hạn số lượng vé tôi có thể mua trong một lần đặt
+                      không?
+                    </h6>
+                    <p class="mb-0">
+                      Có, mỗi lần đặt vé bạn chỉ có thể mua tối đa 100 vé.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="tab-pane" id="profile3">
+                  <div class="faq_1ri p-4 bg-white shadow_box">
+                    <h5 class="col_oran">Thanh toán</h5>
+                    <h6 class="fw-bold mt-3">
+                      Những phương thức thanh toán nào được chấp nhận khi đặt vé
+                      trực tuyến?
+                    </h6>
+                    <p>
+                      Chúng tôi chấp nhận thanh toán bằng thẻ tín dụng, thẻ ghi
+                      nợ, chuyển khoản ngân hàng và thanh toán trực tiếp tại
+                      rạp.
+                    </p>
+                    <h6 class="fw-bold">
+                      Tôi có thể thanh toán bằng tiền mặt khi đặt vé online
+                      không?
+                    </h6>
+                    <p>
+                      Không, chúng tôi không chấp nhận thanh toán bằng tiền mặt
+                      khi đặt vé online.
+                    </p>
+                    <h6 class="fw-bold">
+                      Tôi có thể thanh toán bằng điểm tích lũy của thành viên
+                      không?
+                    </h6>
+                    <p>
+                      Có, bạn có thể sử dụng điểm tích lũy của thành viên để
+                      thanh toán khi đặt vé.
+                    </p>
+                    <h6 class="fw-bold">
+                      Section 1.10.33 Of "De Finibus Bonorum Et Malorum",
+                      Written By Cicero In 45 BCCó thể thanh toán bằng nhiều
+                      phương thức cùng lúc không? Ví dụ: một phần bằng tiền mặt,
+                      một phần bằng ví điện tử?
+                    </h6>
+                    <p>
+                      Có, bạn có thể thanh toán bằng nhiều phương thức cùng lúc
+                      như tiền mặt, thẻ tín dụng, chuyển khoản ngân hàng, ví
+                      điện tử, điểm tích lũy của thành viên, ...
+                    </p>
+
+                    <h6 class="fw-bold">
+                      Có mã giảm giá hoặc chương trình khuyến mãi nào khi thanh
+                      toán bằng thẻ ngân hàng không?
+                    </h6>
+                    <p>
+                      Có, bạn có thể sử dụng mã giảm giá hoặc chương trình
+                      khuyến mãi khi thanh toán bằng thẻ ngân hàng.
+                    </p>
+                    <h6 class="fw-bold">
+                      Tôi đã thanh toán nhưng chưa nhận được vé, tôi phải làm
+                      gì?
+                    </h6>
+                    <p class="mb-0">
+                      Nếu bạn đã thanh toán nhưng chưa nhận được vé, vui lòng
+                      liên hệ với chúng tôi qua số điện thoại hoặc email để được
+                      hỗ trợ.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="tab-pane" id="profile4">
+                  <div class="faq_1ri p-4 bg-white shadow_box">
+                    <h5 class="col_oran">Hủy bỏ và hoàn trả</h5>
+                    <h6 class="fw-bold mt-3">
+                      Nếu tôi mua vé theo nhóm hoặc combo, tôi có thể hủy từng
+                      vé riêng lẻ không?
+                    </h6>
+                    <p>
+                      Có, bạn có thể hủy từng vé riêng lẻ trong nhóm hoặc combo
+                      mà bạn đã mua.
+                    </p>
+                    <h6 class="fw-bold mt-3">
+                      Hoàn tiền sẽ được trả về phương thức thanh toán ban đầu
+                      hay có thể nhận bằng tiền mặt?
+                    </h6>
+                    <p>
+                      Hoàn tiền sẽ được trả về phương thức thanh toán ban đầu
+                      khi bạn mua vé.
+                    </p>
+                    <h6 class="fw-bold">
+                      Nếu tôi sử dụng voucher hoặc mã giảm giá, tôi có được hoàn
+                      lại giá trị của mã đó không?
+                    </h6>
+                    <p>
+                      Không, giá trị của voucher hoặc mã giảm giá sẽ không được
+                      hoàn lại.
+                    </p>
+                    <h6 class="fw-bold">
+                      Tôi đã yêu cầu hoàn tiền nhưng chưa nhận được, tôi cần
+                      liên hệ ai?
+                    </h6>
+                    <p>
+                      Nếu bạn đã yêu cầu hoàn tiền nhưng chưa nhận được, vui
+                      lòng liên hệ với chúng tôi qua số điện thoại hoặc email để
+                      được hỗ trợ.
+                    </p>
+                    <h6 class="fw-bold">
+                      Nếu tôi bị trừ tiền hai lần khi mua vé, làm sao để yêu cầu
+                      hoàn tiền?
+                    </h6>
+                    <p>
+                      Nếu bạn bị trừ tiền hai lần khi mua vé, vui lòng liên hệ
+                      với chúng tôi qua số điện thoại hoặc email để được hỗ trợ.
+                    </p>
+                    <h6 class="fw-bold">
+                      Nếu tôi không thể đi xem vì lý do cá nhân, tôi có thể
+                      nhượng lại vé cho người khác không?
+                    </h6>
+                    <p class="mb-0">
+                      Có, bạn có thể nhượng lại vé cho người khác nếu không thể
+                      đi xem vì lý do cá nhân.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="tab-pane" id="profile5">
+                  <div class="faq_1ri p-4 bg-white shadow_box">
+                    <h5 class="col_oran">Visa</h5>
+                    <h6 class="fw-bold mt-3">
+                      Thanh toán bằng thẻ Visa trên website của rạp có an toàn
+                      không?
+                    </h6>
+                    <p>
+                      Thanh toán bằng thẻ Visa trên website của rạp là hoàn toàn
+                      an toàn và bảo mật, thông tin của bạn sẽ được mã hóa và
+                      bảo vệ tuyệt đối.
+                    </p>
+                    <h6 class="fw-bold">
+                      Tôi có cần nhập mã OTP hoặc mã CVV khi thanh toán bằng thẻ
+                      Visa không?
+                    </h6>
+                    <p>
+                      Có, bạn cần nhập mã OTP hoặc mã CVV khi thanh toán bằng
+                      thẻ Visa để xác thực giao dịch.
+                    </p>
+                    <h6 class="fw-bold">
+                      Tôi có thể lưu thông tin thẻ Visa trên hệ thống để thanh
+                      toán nhanh hơn không?
+                    </h6>
+                    <p>
+                      Có, bạn có thể lưu thông tin thẻ Visa trên hệ thống để
+                      thanh toán nhanh hơn trong lần thanh toán tiếp theo.
+                    </p>
+
+                    <h6 class="fw-bold">
+                      Tôi có thể mua thêm bảo hiểm để hoàn tiền nếu không thể đi
+                      xem phim không?
+                    </h6>
+                    <p>
+                      Có, bạn có thể mua thêm bảo hiểm để hoàn tiền nếu không
+                      thể đi xem phim với mức phí nhỏ.
+                    </p>
+                    <h6 class="fw-bold">
+                      Khi thanh toán online, thông tin thanh toán của tôi có
+                      được bảo mật không?
+                    </h6>
+                    <p>
+                      Khi thanh toán online, thông tin thanh toán của bạn sẽ
+                      được mã hóa và bảo mật tuyệt đối, không bị lưu trữ trên hệ
+                      thống của chúng tôi.
+                    </p>
+                    <h6 class="fw-bold">
+                      Tại sao tôi không thể thanh toán bằng thẻ Visa dù số dư
+                      tài khoản vẫn đủ?
+                    </h6>
+                    <p class="mb-0">
+                      Có thể do lý do bảo mật hoặc hệ thống của ngân hàng, bạn
+                      nên liên hệ với ngân hàng để biết thêm thông tin chi tiết.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="tab-pane" id="profile6">
+                  <div class="faq_1ri p-4 bg-white shadow_box">
+                    <h5 class="col_oran">Forex</h5>
+                    <h6 class="fw-bold mt-3">
+                      Tôi có thể chọn loại tiền tệ thanh toán khi đặt vé không?
+                    </h6>
+                    <p>
+                      Có, bạn có thể chọn loại tiền tệ thanh toán khi đặt vé
+                      online hoặc trực tiếp tại rạp.
+                    </p>
+                    <h6 class="fw-bold mt-3">
+                      Tỷ giá ngoại hối ảnh hưởng thế nào đến giá vé khi tôi đặt
+                      vé quốc tế?
+                    </h6>
+                    <p>
+                      Tỷ giá ngoại hối có thể ảnh hưởng đến giá vé khi bạn đặt
+                      vé quốc tế, giá vé sẽ được tính theo tỷ giá hối đoái tại
+                      thời điểm thanh toán.
+                    </p>
+                    <h6 class="fw-bold">
+                      Nếu tôi hủy vé, số tiền hoàn lại có bị ảnh hưởng bởi tỷ
+                      giá ngoại hối không?
+                    </h6>
+                    <p>
+                      Có, số tiền hoàn lại có thể bị ảnh hưởng bởi tỷ giá ngoại
+                      hối tại thời điểm hoàn tiền.
+                    </p>
+                    <h6 class="fw-bold">
+                      Khi thanh toán bằng ngoại tệ, tôi có bị mất phí chuyển đổi
+                      không?
+                    </h6>
+                    <p>
+                      Có, bạn có thể bị mất phí chuyển đổi khi thanh toán bằng
+                      ngoại tệ, phí này sẽ được tính vào tổng số tiền thanh
+                      toán.
+                    </p>
+                    <h6 class="fw-bold">
+                      Có chính sách bảo vệ khách hàng khi đặt vé bằng ngoại tệ
+                      không?
+                    </h6>
+                    <p>
+                      Có, chúng tôi có chính sách bảo vệ khách hàng khi đặt vé
+                      bằng ngoại tệ, bao gồm việc hoàn tiền hoặc đổi vé nếu có
+                      thay đổi về tỷ giá ngoại hối.
+                    </p>
+                    <h6 class="fw-bold"></h6>
+                    <p class="mb-0"></p>
+                  </div>
+                </div>
+
+                <div class="tab-pane" id="profile8">
+                  <div class="faq_1ri p-4 bg-white shadow_box">
+                    <h5 class="col_oran">Tài khoản</h5>
+                    <h6 class="fw-bold mt-3">
+                      Tôi có thể đăng nhập bằng Facebook, Google hoặc Apple ID
+                      không?
+                    </h6>
+                    <p>
+                      Có, bạn có thể đăng nhập bằng Facebook, Google hoặc Apple
+                      ID để sử dụng dịch vụ của chúng tôi.
+                    </p>
+                    <h6 class="fw-bold mt-3">
+                      Tôi có thể bật xác thực hai yếu tố (2FA) cho tài khoản đặt
+                      vé không?
+                    </h6>
+                    <p>
+                      Có, bạn có thể bật xác thực hai yếu tố (2FA) cho tài khoản
+                      đặt vé để bảo vệ thông tin cá nhân.
+                    </p>
+                    <h6 class="fw-bold">
+                      Nếu tôi thay đổi phương thức thanh toán, tài khoản có bị
+                      ảnh hưởng không?
+                    </h6>
+                    <p>
+                      Không, nếu bạn thay đổi phương thức thanh toán, tài khoản
+                      của bạn sẽ không bị ảnh hưởng.
+                    </p>
+                    <h6 class="fw-bold">
+                      Nếu đặt vé nhưng không nhận được email xác nhận, tôi cần
+                      làm gì?
+                    </h6>
+                    <p>
+                      Nếu bạn đặt vé nhưng không nhận được email xác nhận, vui
+                      lòng kiểm tra hộp thư spam hoặc liên hệ với chúng tôi để
+                      được hỗ trợ.
+                    </p>
+                    <h6 class="fw-bold">
+                      Tôi có thể chuyển vé đã đặt từ tài khoản này sang tài
+                      khoản khác không?
+                    </h6>
+                    <p>
+                      Không , bạn không thể chuyển vé đã đặt từ tài khoản này
+                      sang tài khoản khác vì 1 số người sẽ lợi dụng việc giảm
+                      giá .
+                    </p>
+                    <h6 class="fw-bold">
+                      Tôi nhận được email thông báo đăng nhập lạ, tôi nên làm
+                      gì?
+                    </h6>
+                    <p class="mb-0">
+                      Nếu bạn nhận được email thông báo đăng nhập lạ, vui lòng
+                      thay đổi mật khẩu ngay lập tức và liên hệ với chúng tôi để
+                      được hỗ trợ.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="tab-pane" id="profile9">
+                  <div class="faq_1ri p-4 bg-white shadow_box">
+                    <h5 class="col_oran">Hỗ trợ</h5>
+                    <h6 class="fw-bold mt-3">
+                      Làm thế nào để liên hệ với tổng đài hỗ trợ khách hàng của
+                      rạp phim?
+                    </h6>
+                    <p>
+                      Để liên hệ với tổng đài hỗ trợ khách hàng của rạp phim,
+                      bạn có thể gọi đến số điện thoại hoặc gửi email cho chúng
+                      tôi.
+                    </p>
+                    <h6 class="fw-bold">
+                      Tôi có thể đổi vé hoặc chuyển sang suất chiếu khác không?
+                    </h6>
+                    <p>
+                      Có, bạn có thể đổi vé hoặc chuyển sang suất chiếu khác
+                      trước 24 giờ so với thời gian chiếu phim.
+                    </p>
+                    <h6 class="fw-bold">
+                      Tôi quên mật khẩu tài khoản, làm sao để đặt lại?
+                    </h6>
+                    <p>
+                      Nếu bạn quên mật khẩu tài khoản, bạn có thể đặt lại mật
+                      khẩu bằng cách nhấn vào nút "Quên mật khẩu" trên trang
+                      đăng nhập.
+                    </p>
+                    <h6 class="fw-bold">
+                      Tôi có thể liên kết tài khoản đặt vé với nhiều phương thức
+                      thanh toán không?
+                    </h6>
+                    <p>
+                      Có, bạn có thể liên kết tài khoản đặt vé với nhiều phương
+                      thức thanh toán khác nhau để thuận tiện cho việc thanh
+                      toán.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="tab-pane" id="profile10">
+                  <div class="faq_1ri p-4 bg-white shadow_box">
+                    <h5 class="col_oran">Thông tin liên lạc</h5>
+                    <h6 class="fw-bold mt-3">Tổng đài : 1900 1234</h6>
+                    <p></p>
+                    <h6 class="fw-bold mt-3">
+                      <a href="mailto:quanghuy59bmt@gmail.com"
+                        >quanghuy59bmt@gmail.com</a
+                      >
+                    </h6>
+                    <a
+                      href="https://www.facebook.com/hoangductrungg"
+                      target="_blank"
+                    >
+                      <i class="fa fa-facebook fa-5x"></i>
+                    </a>
+                    <p></p>
+                    <hr />
+                    <p></p>
+
+                    <!-- Tạo đường ngang -->
+
+                    <!-- Instagram -->
+                    <a
+                      href="https://www.instagram.com/meopeongokngek/"
+                      target="_blank"
+                    >
+                      <i class="fa fa-instagram fa-5x"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="footer" class="p_3 bg-black">
+      <div class="container-xl">
+        <div class="footer_1 row pb-4">
+          <div class="col-md-3">
+            <div class="footer_1l">
+              <h4 class="mb-0">
+                <a class="fw-bold text-white" href="index.html"
+                  ><i class="fa fa-modx col_oran">
+                    Chúc bạn có trải nghiệm tốt
+                  </i>
+                </a>
+              </h4>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <div class="footer_1r text-end">
+              <ul class="mb-0">
+                <li class="d-inline-block">
+                  <a class="text-white-50 a_tag" href="#">Giúp đỡ</a>
+                </li>
+                <li class="d-inline-block text-white-50">/</li>
+                <li class="d-inline-block me-2">
+                  <a class="text-white-50 a_tag" href="#">
+                    Chính sách và quyền riêng tư
+                  </a>
+                </li>
+
+                <li class="d-inline-block">
+                  <a
+                    class="social_icon"
+                    href="https://www.facebook.com/hoangductrungg"
+                    target="_blank"
+                  >
+                    <i class="fa fa-facebook"></i>
+                  </a>
+                </li>
+
+                <li class="d-inline-block">
+                  <a
+                    class="social_icon"
+                    href="https://www.instagram.com/meopeongokngek/"
+                    target="_blank"
+                  >
+                    <i class="fa fa-instagram"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="footer_2 row mt-4">
+          <div class="col-md-3">
+            <div class="footer_2i">
+              <p class="text-white fw-bold fs-5">
+                Mua vé xem phim dễ dàng với Quản lí rạp chiếu phim
+              </p>
+              <h6 class="mb-0 mt-4">
+                <a class="button" href="#">Hãy chọn vé </a>
+              </h6>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="footer_2i">
+              <h5 class="col_oran mb-4">Movies</h5>
+              <div class="row footer_1ism">
+                <h6 class="fw-normal col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Hành động </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Phiêu lưu </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Hoạt hình </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Anime </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Tài liệu </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6 mb-0">
+                  <a class="text-white-50 a_tag" href="#"> Hài kịch</a>
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="footer_2i">
+              <h5 class="col_oran mb-4">Các liên kết</h5>
+              <div class="row footer_1ism">
+                <h6 class="fw-normal col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Về chúng tôi </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#">
+                    Tài khoản của tôi
+                  </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Tin tức </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Sự kiện mới nhất </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6">
+                  <a class="text-white-50 a_tag" href="#"> Chính sách </a>
+                </h6>
+                <h6 class="fw-normal mt-2 col-md-12 col-6 mb-0">
+                  <a class="text-white-50 a_tag" href="#">
+                    Thông tin liên lạc
+                  </a>
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="footer_2i">
+              <h5 class="col_oran mb-4">Thông báo mới</h5>
+              <p class="text-white-50">
+                Đăng ký gmail để nhận thông báo mới nhất từ chúng tôi
+              </p>
+              <div class="input-group bg-white">
+                <input
+                  type="text"
+                  class="form-control bg-transparent rounded-0 border-0"
+                  placeholder="Điền email của bạn"
+                />
+                <span class="input-group-btn">
+                  <button
+                    class="btn btn-primary bg-transparent rounded-0 border-0 col_oran p-3"
+                    type="button"
+                  >
+                    <i class="fa fa-location-arrow"></i>
+                  </button>
+                </span>
+              </div>
+              <div class="form-check mt-3 text-white-50">
+                <input class="form-check-input" type="checkbox" value="" />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Tôi đồng ý với các điều khoản của công ty
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="footer_b" class="pt-3 pb-3 bg-dark">
+      <div class="container-xl">
+        <div class="footer_b1 row text-center">
+          <div class="col-md-12">
+            <p class="mb-0 text-white-50">
+              © 2025 Quản Lí Rạp Phim
+              <a class="col_oran fw-bold" href="index.html"
+                >Quản Lí Rạp Phim
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="js/common.js"></script>
+  </body>
+</html>
