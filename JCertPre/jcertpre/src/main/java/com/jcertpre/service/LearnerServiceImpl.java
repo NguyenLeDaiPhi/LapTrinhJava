@@ -31,5 +31,11 @@ public class LearnerServiceImpl implements LearnerService {
         return learnerRepository.save(learner);
     }
 
+    @Override
+    public boolean emailExists(String email) {
+    return learnerRepository.findByEmail(email) != null;
+}
+
+
 }
 

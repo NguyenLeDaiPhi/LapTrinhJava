@@ -1,0 +1,7 @@
+com\jcertpre\controller\RegisterController.class
+com\jcertpre\service\LearnerServiceImpl.class
+com\jcertpre\controller\LearnerController.class
+com\jcertpre\JCertPreApplication.class
+com\jcertpre\model\Learner.class
+com\jcertpre\repository\LearnerRepository.class
+com\jcertpre\service\LearnerService.class
