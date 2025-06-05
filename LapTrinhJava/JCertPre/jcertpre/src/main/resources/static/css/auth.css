@@ -1,0 +1,9 @@
+.form-control { 
+      padding-left: 2.5rem; }
+
+    .form-outline i {
+        position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+        color: #495057; pointer-events: none;}
+        
+    .form-outline { 
+      position: relative; width: 100%; }
