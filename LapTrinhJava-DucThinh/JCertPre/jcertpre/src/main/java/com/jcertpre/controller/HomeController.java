@@ -30,5 +30,8 @@ public class HomeController {
     public String showContactPage() {
         return "contact"; // Loads contact.html from templates/
     }
-
+    @GetMapping("/enroll_courses")
+    public String showEnrollCoursesPage() {
+        return "enroll_courses";
+    }
 }

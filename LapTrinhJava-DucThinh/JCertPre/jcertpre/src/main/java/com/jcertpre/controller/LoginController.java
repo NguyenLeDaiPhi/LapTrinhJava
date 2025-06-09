@@ -3,6 +3,7 @@ package com.jcertpre.controller;
 import com.jcertpre.model.Learner;
 import com.jcertpre.repository.LearnerRepository;
 import com.jcertpre.dto.LoginRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +23,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("loginRequest") LoginRequest loginRequest, Model model) {
+    public String login(@ModelAttribute("loginRequest") LoginRequest loginRequest, Model model, HttpSession session) {
         Learner learner = learnerRepository.findByEmail(loginRequest.getEmail());
         if (learner == null) {
             model.addAttribute("error", "Email not found");
@@ -32,6 +33,7 @@ public class LoginController {
             model.addAttribute("error", "Invalid password");
             return "login";
         }
+        session.setAttribute("learnerId", learner.getId()); // Store learnerId in session
         return "redirect:/index"; // Should redirect to index.html
     }
 

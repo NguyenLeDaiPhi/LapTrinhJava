@@ -1,19 +1,19 @@
 package com.jcertpre.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.jcertpre.dto.RegisterRequest;
 import com.jcertpre.model.Learner;
 import com.jcertpre.repository.LearnerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class LearnerService {
     @Autowired
     private LearnerRepository learnerRepository;
-
-    // Temporarily remove PasswordEncoder
-    // @Autowired
-    // private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder; // Enable PasswordEncoder
 
     public String registerLearner(RegisterRequest request) {
         if (!request.getPassword().equals(request.getConfirmPassword())) {
@@ -28,10 +28,9 @@ public class LearnerService {
         Learner learner = new Learner();
         learner.setName(request.getName());
         learner.setEmail(request.getEmail());
-        learner.setPassword(request.getPassword()); // Temporarily store plain password
+        learner.setPassword(passwordEncoder.encode(request.getPassword())); // Encode password
         learner.setRole("LEARNER");
         learnerRepository.save(learner);
         return null;
     }
 }
-
