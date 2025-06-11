@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Component</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            transition: all 0.3s;
+            padding: 12px 20px;
+            margin: 4px 0;
+            border-radius: 8px;
+        }
+        .sidebar .nav-link:hover {
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+        .sidebar .nav-link.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        .sidebar-logo {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <h4><i class="fas fa-graduation-cap"></i> JCertPre</h4>
+        </div>
+        <nav class="nav flex-column px-3">
+            <a class="nav-link active" href="#instructor-section" data-section="instructor">
+                <i class="fas fa-chalkboard-teacher me-2"></i>
+                Quản lý Giảng viên
+            </a>
+            <a class="nav-link" href="#course-section" data-section="course">
+                <i class="fas fa-book me-2"></i>
+                Quản lý Khóa học
+            </a>
+            <a class="nav-link" href="#schedule-section" data-section="schedule">
+                <i class="fas fa-calendar-alt me-2"></i>
+                Lịch Giảng dạy
+            </a>
+            <a class="nav-link" href="#question-section" data-section="question">
+                <i class="fas fa-question-circle me-2"></i>
+                Ngân hàng Câu hỏi
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        // Sidebar navigation functionality
+        class Sidebar {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => this.handleNavClick(e));
+                });
+            }
+
+            handleNavClick(e) {
+                e.preventDefault();
+                
+                // Remove active class from all nav links
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => 
+                    l.classList.remove('active')
+                );
+                
+                // Add active class to clicked link
+                e.target.closest('.nav-link').classList.add('active');
+                
+                // Dispatch custom event for main app
+                const sectionName = e.target.closest('.nav-link').dataset.section;
+                window.dispatchEvent(new CustomEvent('sectionChange', { 
+                    detail: { section: sectionName } 
+                }));
+            }
+
+            setActiveSection(sectionName) {
+                document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.dataset.section === sectionName) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        // Initialize sidebar
+        const sidebar = new Sidebar();
+        
+        // Export for use in main app
+        window.SidebarComponent = sidebar;
+    </script>
+</body>
+</html>

@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JCertPre - Hệ thống Quản lý Giảng viên</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            transition: all 0.3s;
+            padding: 12px 20px;
+            margin: 5px 0;
+            border-radius: 10px;
+        }
+        
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+        
+        .content-wrapper {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .card {
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .btn-custom {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            transition: all 0.3s;
+            border-radius: 25px;
+            padding: 10px 25px;
+        }
+        
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-card i {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }
+        
+        .status-badge {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+        }
+        
+        .status-inactive {
+            background: linear-gradient(45deg, #dc3545, #fd7e14);
+            color: white;
+        }
+        
+        .question-card {
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .question-card:hover {
+            border-left-color: #764ba2;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .difficulty-easy { color: #28a745; }
+        .difficulty-medium { color: #ffc107; }
+        .difficulty-hard { color: #dc3545; }
+        
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+        
+        .modal-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar p-0">
+                <div class="p-4">
+                    <h4 class="text-center mb-4">
+                        <i class="fas fa-graduation-cap"></i> JCertPre
+                    </h4>
+                    <nav class="nav flex-column">
+                        <a class="nav-link active" href="#dashboard-section">
+                            <i class="fas fa-tachometer-alt me-2"></i>
+                            Dashboard
+                        </a>
+                        <a class="nav-link" href="#instructor-section">
+                            <i class="fas fa-chalkboard-teacher me-2"></i>
+                            Quản lý Giảng viên
+                        </a>
+                        <a class="nav-link" href="#course-section">
+                            <i class="fas fa-book me-2"></i>
+                            Quản lý Khóa học
+                        </a>
+                        <a class="nav-link" href="#schedule-section">
+                            <i class="fas fa-calendar-alt me-2"></i>
+                            Lịch Giảng dạy
+                        </a>
+                        <a class="nav-link" href="#question-section">
+                            <i class="fas fa-question-circle me-2"></i>
+                            Ngân hàng Câu hỏi
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 content-wrapper">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center p-4 bg-white shadow-sm">
+                    <h2 class="mb-0">JCertPre Management System</h2>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i> Admin
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Cài đặt</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="p-4">
+                    <!-- Dashboard Section -->
+                    <div id="dashboard-section" class="fade-in-up">
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="stats-card text-center">
+                                    <i class="fas fa-chalkboard-teacher"></i>
+                                    <h3 class="mt-2">24</h3>
+                                    <p class="mb-0">Giảng viên</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stats-card text-center">
+                                    <i class="fas fa-book"></i>
+                                    <h3 class="mt-2">12</h3>
+                                    <p class="mb-0">Khóa học</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stats-card text-center">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <h3 class="mt-2">156</h3>
+                                    <p class="mb-0">Buổi học</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stats-card text-center">
+                                    <i class="fas fa-question-circle"></i>
+                                    <h3 class="mt-2">1,247</h3>
+                                    <p class="mb-0">Câu hỏi</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="chart-container">
+                                    <h5 class="mb-3">Thống kê hoạt động</h5>
+                                    <canvas id="activityChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h6 class="mb-0">Hoạt động gần đây</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-plus-circle text-success me-2"></i>
+                                            <small>Thêm giảng viên mới: Lê Văn C</small>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-edit text-warning me-2"></i>
+                                            <small>Cập nhật khóa học Java Spring</small>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <i class="fas fa-calendar-plus text-info me-2"></i>
+                                            <small>Tạo lịch học tuần tới</small>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-question-circle text-primary me-2"></i>
+                                            <small>Thêm 15 câu hỏi mới</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instructor Management Section -->
+                    <div id="instructor-section" class="d-none">
+                        <div class="card mb-4 fade-in-up">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0"><i class="fas fa-chalkboard-teacher me-2"></i>Quản lý Giảng viên</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#addInstructorModal">
+                                            <i class="fas fa-plus me-2"></i>Thêm Giảng viên
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Tìm kiếm giảng viên..." id="searchInstructor">
+                                            <button class="btn btn-outline-secondary" type="button">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Họ tên</th>
+                                                <th>Email</th>
+                                                <th>Chuyên môn</th>
+                                                <th>Số khóa học</th>
+                                                <th>Trạng thái</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="instructorTableBody">
+                                            <tr>
+                                                <td>001</td>
+                                                <td>Nguyễn Văn An</td>
+                                                <td>an.nguyen@example.com</td>
+                                                <td>Java Spring Boot</td>
+                                                <td>3</td>
+                                                <td><span class="status-badge status-active">Hoạt động</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger" title="Xóa">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>002</td>
+                                                <td>Trần Thị Bình</td>
+                                                <td>binh.tran@example.com</td>
+                                                <td>React JS</td>
+                                                <td>2</td>
+                                                <td><span class="status-badge status-active">Hoạt động</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger" title="Xóa">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>003</td>
+                                                <td>Lê Văn Cường</td>
+                                                <td>cuong.le@example.com</td>
+                                                <td>Python</td>
+                                                <td>1</td>
+                                                <td><span class="status-badge status-inactive">Tạm ngưng</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger" title="Xóa">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Management Section -->
+                    <div id="course-section" class="d-none">
+                        <div class="card mb-4 fade-in-up">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0"><i class="fas fa-book me-2"></i>Danh sách Khóa học</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+                                            <i class="fas fa-plus me-2"></i>Thêm Khóa học
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title">Java Spring Boot</h6>
+                                                <p class="card-text">Khóa học phát triển web với Spring Boot</p>
+                                                <div class="mb-2">
+                                                    <small class="text-muted">Giảng viên: Nguyễn Văn An</small>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <small class="text-muted">Thời lượng: 40 giờ</small>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <small class="text-muted">Học viên: 25 người</small>
+                                                </div>
+                                                <span class="status-badge status-active">Đang diễn ra</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title">React JS</h6>
+                                                <p class="card-text">Xây dựng giao diện với React</p>
+                                                <div class="mb-2">
+                                                    <small class="text-muted">Giảng viên: Trần Thị Bình</small>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <small class="text-muted">Thời lượng: 35 giờ</small>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <small class="text-muted">Học viên: 20 người</small>
+                                                </div>
+                                                <span class="status-badge status-active">Đang diễn ra</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card h-100">
+                                            <div class="card-body">
+                                                <h6 class="card-title">Python Data Science</h6>
+                                                <p class="card-text">Khóa học phân tích dữ liệu với Python</p>
+                                                <div class="mb-2">
+                                                    <small class="text-muted">Giảng viên: Lê Văn Cường</small>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <small class="text-muted">Thời lượng: 45 giờ</small>
+                                                </div>
+                                                <div class="mb-2">
+                                                    <small class="text-muted">Học viên: 15 người</small>
+                                                </div>
+                                                <span class="status-badge status-inactive">Sắp bắt đầu</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Schedule Management Section -->
+                    <div id="schedule-section" class="d-none">
+                        <div class="card mb-4 fade-in-up">
+                            <div class="card-header bg-info text-white">
+                                <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Quản lý Lịch giảng</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-custom">
+                                            <i class="fas fa-plus me-2"></i>Thêm Lịch học
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group">
+                                            <input type="week" class="form-control" value="2024-06-10">
+                                            <button class="btn btn-outline-secondary" type="button">
+                                                <i class="fas fa-calendar"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Thời gian</th>
+                                                <th>Thứ 2</th>
+                                                <th>Thứ 3</th>
+                                                <th>Thứ 4</th>
+                                                <th>Thứ 5</th>
+                                                <th>Thứ 6</th>
+                                                <th>Thứ 7</th>
+                                                <th>Chủ nhật</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>08:00 - 10:00</td>
+                                                <td class="bg-light">
+                                                    <strong>Java Spring Boot</strong><br>
+                                                    <small>GV: N.V.An</small><br>
+                                                    <small>Phòng: A101</small>
+                                                </td>
+                                                <td></td>
+                                                <td class="bg-light">
+                                                    <strong>React JS</strong><br>
+                                                    <small>GV: T.T.Bình</small><br>
+                                                    <small>Phòng: B201</small>
+                                                </td>
+                                                <td></td>
+                                                <td class="bg-light">
+                                                    <strong>Java Spring Boot</strong><br>
+                                                    <small>GV: N.V.An</small><br>
+                                                    <small>Phòng: A101</small>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>10:00 - 12:00</td>
+                                                <td></td>
+                                                <td class="bg-light">
+                                                    <strong>React JS</strong><br>
+                                                    <small>GV: T.T.Bình</small><br>
+                                                    <small>Phòng: B201</small>
+                                                </td>
+                                                <td></td>
+                                                <td class="bg-light">
+                                                    <strong>Python Data Science</strong><br>
+                                                    <small>GV: L.V.Cường</small><br>
+                                                    <small>Phòng: C301</small>
+                                                </td>
+                                                <td></td>
+                                                <td class="bg-light">
+                                                    <strong>React JS</strong><br>
+                                                    <small>GV: T.T.Bình</small><br>
+                                                    <small>Phòng: B201</small>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Questions Management Section -->
+                    <div id="question-section" class="d-none">
+                        <div class="card mb-4 fade-in-up">
+                            <div class="card-header bg-warning text-dark">
+                                <h5 class="mb-0"><i class="fas fa-question-circle me-2"></i>Ngân hàng Câu hỏi</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <button class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#addQuestionModal">
+                                            <i class="fas fa-plus me-2"></i>Thêm Câu hỏi
+                                        </button>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-select" id="subjectFilter">
+                                            <option value="">Tất cả môn học</option>
+                                            <option value="java">Java Spring Boot</option>
+                                            <option value="react">React JS</option>
+                                            <option value="python">Python</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select class="form-select" id="difficultyFilter">
+                                            <option value="">Tất cả độ khó</option>
+                                            <option value="easy">Dễ</option>
+                                            <option value="medium">Trung bình</option>
+                                            <option value="hard">Khó</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="question-card card mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-start">
+                                                    <div>
+                                                        <h6 class="card-title">Spring Boot là gì?</h6>
+                                                        <p class="card-text">
+                                                            <strong>A.</strong> Một framework Java<br>
+                                                            <strong>B.</strong> Một IDE<br>
+                                                            <strong>C.</strong> Một database<br>
+                                                            <strong>D.</strong> Một framework để phát triển ứng dụng Spring nhanh chóng ✓
+                                                        </p>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <span class="badge bg-success">Python</span>
+                                                        <span class="badge difficulty-hard">Khó</span>
+                                                        <div class="mt-2">
+                                                            <button class="btn btn-sm btn-outline-primary">
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-danger">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Pagination -->
+                                <nav aria-label="Phân trang câu hỏi">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">Trước</a>
+                                        </li>
+                                        <li class="page-item active">
+                                            <a class="page-link" href="#">1</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">2</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">3</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Sau</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Instructor Modal -->
+    <div class="modal fade" id="addInstructorModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm Giảng viên mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addInstructorForm">
+                        <div class="mb-3">
+                            <label class="form-label">Họ tên <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="fullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Số điện thoại</label>
+                            <input type="tel" class="form-control" name="phone">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Chuyên môn <span class="text-danger">*</span></label>
+                            <select class="form-select" name="expertise" required>
+                                <option value="">Chọn chuyên môn</option>
+                                <option value="java">Java Spring Boot</option>
+                                <option value="react">React JS</option>
+                                <option value="python">Python</option>
+                                <option value="nodejs">Node.js</option>
+                                <option value="angular">Angular</option>
+                                <option value="vue">Vue.js</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kinh nghiệm (năm)</label>
+                            <input type="number" class="form-control" name="experience" min="0" max="50">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ghi chú</label>
+                            <textarea class="form-control" name="notes" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-custom" onclick="addInstructor()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Course Modal -->
+    <div class="modal fade" id="addCourseModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm Khóa học mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCourseForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Tên khóa học <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="courseName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Giảng viên <span class="text-danger">*</span></label>
+                                    <select class="form-select" name="instructor" required>
+                                        <option value="">Chọn giảng viên</option>
+                                        <option value="001">Nguyễn Văn An</option>
+                                        <option value="002">Trần Thị Bình</option>
+                                        <option value="003">Lê Văn Cường</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Thời lượng (giờ)</label>
+                                    <input type="number" class="form-control" name="duration" min="1">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Ngày bắt đầu</label>
+                                    <input type="date" class="form-control" name="startDate">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Ngày kết thúc</label>
+                                    <input type="date" class="form-control" name="endDate">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mô tả khóa học</label>
+                            <textarea class="form-control" name="description" rows="4"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-custom" onclick="addCourse()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Question Modal -->
+    <div class="modal fade" id="addQuestionModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm Câu hỏi mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addQuestionForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Môn học <span class="text-danger">*</span></label>
+                                    <select class="form-select" name="subject" required>
+                                        <option value="">Chọn môn học</option>
+                                        <option value="java">Java Spring Boot</option>
+                                        <option value="react">React JS</option>
+                                        <option value="python">Python</option>
+                                        <option value="nodejs">Node.js</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Độ khó <span class="text-danger">*</span></label>
+                                    <select class="form-select" name="difficulty" required>
+                                        <option value="">Chọn độ khó</option>
+                                        <option value="easy">Dễ</option>
+                                        <option value="medium">Trung bình</option>
+                                        <option value="hard">Khó</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Câu hỏi <span class="text-danger">*</span></label>
+                            <textarea class="form-control" name="question" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Đáp án A <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="answerA" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Đáp án B <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="answerB" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Đáp án C <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="answerC" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Đáp án D <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="answerD" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Đáp án đúng <span class="text-danger">*</span></label>
+                            <select class="form-select" name="correctAnswer" required>
+                                <option value="">Chọn đáp án đúng</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Giải thích</label>
+                            <textarea class="form-control" name="explanation" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-custom" onclick="addQuestion()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        // Sample data storage
+        let instructors = [
+            {id: '001', name: 'Nguyễn Văn An', email: 'an.nguyen@example.com', expertise: 'Java Spring Boot', courses: 3, status: 'active'},
+            {id: '002', name: 'Trần Thị Bình', email: 'binh.tran@example.com', expertise: 'React JS', courses: 2, status: 'active'},
+            {id: '003', name: 'Lê Văn Cường', email: 'cuong.le@example.com', expertise: 'Python', courses: 1, status: 'inactive'}
+        ];
+
+        let courses = [
+            {id: '001', name: 'Java Spring Boot', instructor: 'Nguyễn Văn An', duration: 40, students: 25, status: 'active'},
+            {id: '002', name: 'React JS', instructor: 'Trần Thị Bình', duration: 35, students: 20, status: 'active'},
+            {id: '003', name: 'Python Data Science', instructor: 'Lê Văn Cường', duration: 45, students: 15, status: 'pending'}
+        ];
+
+        let questions = [
+            {id: '001', subject: 'java', difficulty: 'easy', question: 'Spring Boot là gì?', answers: ['Một framework Java', 'Một IDE', 'Một database', 'Một framework để phát triển ứng dụng Spring nhanh chóng'], correct: 'D'},
+            {id: '002', subject: 'react', difficulty: 'medium', question: 'React Hook nào được sử dụng để quản lý state?', answers: ['useState', 'useEffect', 'useContext', 'useMemo'], correct: 'A'},
+            {id: '003', subject: 'python', difficulty: 'hard', question: 'Thư viện nào được sử dụng để xử lý dữ liệu trong Python?', answers: ['NumPy', 'Pandas', 'Matplotlib', 'Tất cả đều đúng'], correct: 'D'}
+        ];
+
+        // Navigation functionality
+        document.querySelectorAll('.sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all nav links
+                document.querySelectorAll('.sidebar .nav-link').forEach(l => l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Hide all sections
+                document.querySelectorAll('[id$="-section"]').forEach(section => {
+                    section.classList.add('d-none');
+                });
+                
+                // Show target section
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.remove('d-none');
+                    targetSection.classList.add('fade-in-up');
+                }
+            });
+        });
+
+        // Search functionality for instructors
+        document.getElementById('searchInstructor').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#instructorTableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Filter functionality for questions
+        document.getElementById('subjectFilter').addEventListener('change', filterQuestions);
+        document.getElementById('difficultyFilter').addEventListener('change', filterQuestions);
+
+        function filterQuestions() {
+            const subjectFilter = document.getElementById('subjectFilter').value;
+            const difficultyFilter = document.getElementById('difficultyFilter').value;
+            
+            // This would typically filter the question display
+            console.log('Filtering questions by:', subjectFilter, difficultyFilter);
+        }
+
+        // Add Instructor function
+        function addInstructor() {
+            const form = document.getElementById('addInstructorForm');
+            const formData = new FormData(form);
+            
+            const newInstructor = {
+                id: String(instructors.length + 1).padStart(3, '0'),
+                name: formData.get('fullName'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                expertise: formData.get('expertise'),
+                experience: formData.get('experience'),
+                notes: formData.get('notes'),
+                courses: 0,
+                status: 'active'
+            };
+            
+            instructors.push(newInstructor);
+            
+            // Add to table
+            const tbody = document.getElementById('instructorTableBody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${newInstructor.id}</td>
+                <td>${newInstructor.name}</td>
+                <td>${newInstructor.email}</td>
+                <td>${newInstructor.expertise}</td>
+                <td>${newInstructor.courses}</td>
+                <td><span class="status-badge status-active">Hoạt động</span></td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" title="Xóa">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(newRow);
+            
+            // Close modal and reset form
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addInstructorModal'));
+            modal.hide();
+            form.reset();
+            
+            // Show success message
+            showNotification('Thêm giảng viên thành công!', 'success');
+        }
+
+        // Add Course function
+        function addCourse() {
+            const form = document.getElementById('addCourseForm');
+            const formData = new FormData(form);
+            
+            const newCourse = {
+                id: String(courses.length + 1).padStart(3, '0'),
+                name: formData.get('courseName'),
+                instructor: formData.get('instructor'),
+                duration: formData.get('duration'),
+                startDate: formData.get('startDate'),
+                endDate: formData.get('endDate'),
+                description: formData.get('description'),
+                students: 0,
+                status: 'pending'
+            };
+            
+            courses.push(newCourse);
+            
+            // Close modal and reset form
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addCourseModal'));
+            modal.hide();
+            form.reset();
+            
+            showNotification('Thêm khóa học thành công!', 'success');
+        }
+
+        // Add Question function
+        function addQuestion() {
+            const form = document.getElementById('addQuestionForm');
+            const formData = new FormData(form);
+            
+            const newQuestion = {
+                id: String(questions.length + 1).padStart(3, '0'),
+                subject: formData.get('subject'),
+                difficulty: formData.get('difficulty'),
+                question: formData.get('question'),
+                answers: [
+                    formData.get('answerA'),
+                    formData.get('answerB'),
+                    formData.get('answerC'),
+                    formData.get('answerD')
+                ],
+                correct: formData.get('correctAnswer'),
+                explanation: formData.get('explanation')
+            };
+            
+            questions.push(newQuestion);
+            
+            // Close modal and reset form
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addQuestionModal'));
+            modal.hide();
+            form.reset();
+            
+            showNotification('Thêm câu hỏi thành công!', 'success');
+        }
+
+        // Notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'success' ? 'success' : 'info'} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Confirmation for delete actions
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.btn-outline-danger')) {
+                if (!confirm('Bạn có chắc chắn muốn xóa?')) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        // Form validation
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                if (!form.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            });
+        });
+
+        // Chart initialization
+        const ctx = document.getElementById('activityChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
+                    datasets: [{
+                        label: 'Số buổi học',
+                        data: [5, 8, 6, 7, 9, 4, 2],
+                        borderColor: 'rgb(102, 126, 234)',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4
+                    }, {
+                        label: 'Số giảng viên hoạt động',
+                        data: [3, 4, 3, 4, 5, 3, 1],
+                        borderColor: 'rgb(118, 75, 162)',
+                        backgroundColor: 'rgba(118, 75, 162, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Hoạt động giảng dạy trong tuần'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Auto-refresh dashboard stats
+        function updateDashboardStats() {
+            // Update stats cards with real-time data
+            const statsData = {
+                instructors: instructors.length,
+                courses: courses.length,
+                sessions: 156,
+                questions: questions.length
+            };
+            
+            // This would typically fetch from an API
+            console.log('Dashboard stats updated:', statsData);
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show dashboard by default
+            document.getElementById('dashboard-section').classList.remove('d-none');
+            
+            // Update stats
+            updateDashboardStats();
+            
+            // Set up periodic updates
+            setInterval(updateDashboardStats, 30000); // Update every 30 seconds
+        });
+    </script>
+</body>
+</html>                        <span class="badge bg-primary">Java</span>
+                                                        <span class="badge difficulty-easy">Dễ</span>
+                                                        <div class="mt-2">
+                                                            <button class="btn btn-sm btn-outline-primary">
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-danger">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="question-card card mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-start">
+                                                    <div>
+                                                        <h6 class="card-title">React Hook nào được sử dụng để quản lý state?</h6>
+                                                        <p class="card-text">
+                                                            <strong>A.</strong> useState ✓<br>
+                                                            <strong>B.</strong> useEffect<br>
+                                                            <strong>C.</strong> useContext<br>
+                                                            <strong>D.</strong> useMemo
+                                                        </p>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <span class="badge bg-info">React</span>
+                                                        <span class="badge difficulty-medium">Trung bình</span>
+                                                        <div class="mt-2">
+                                                            <button class="btn btn-sm btn-outline-primary">
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-outline-danger">
+                                                                <i class="fas fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="question-card card mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-start">
+                                                    <div>
+                                                        <h6 class="card-title">Thư viện nào được sử dụng để xử lý dữ liệu trong Python?</h6>
+                                                        <p class="card-text">
+                                                            <strong>A.</strong> NumPy<br>
+                                                            <strong>B.</strong> Pandas ✓<br>
+                                                            <strong>C.</strong> Matplotlib<br>
+                                                            <strong>D.</strong> Tất cả đều đúng ✓
+                                                        </p>
+                                                    </div>
+                                                    <div class="text-end">

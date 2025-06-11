@@ -1,0 +1,107 @@
+package com.example.jcert.security;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
+public class WebSecurityConfig {
+    @Autowired
+    private UserDetailsService userDetailsService;
+    
+    @Autowired
+    private JwtFilter jwtFilter;
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+    
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.cors().and().csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeHttpRequests()
+                // Public endpoints
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/public/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                
+                // Static resources
+                .requestMatchers("/css/**", "/js/**", "/img/**", "/webjars/**").permitAll()
+                
+                // Login and registration pages
+                .requestMatchers("/login", "/register", "/").permitAll()
+                
+                // Admin endpoints
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestchers("/admin/**").hasRole("ADMIN")
+                
+                // Instructor endpoints
+                .requestMatchers("/api/instructor/**").hasAnyRole("INSTRUCTOR", "ADMIN")
+                .requestMatchers("/instructor/**").hasAnyRole("INSTRUCTOR", "ADMIN")
+                
+                // Student endpoints
+                .requestMatchers("/api/student/**").hasAnyRole("STUDENT", "INSTRUCTOR", "ADMIN")
+                .requestMatchers("/student/**").hasAnyRole("STUDENT", "INSTRUCTOR", "ADMIN")
+                
+                // All other requests need authentication
+                .anyRequest().authenticated()
+            
+            .and()
+            .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/dashboard", true)
+                .failureUrl("/login?error=true")
+                .permitAll()
+            
+            .and()
+            .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout=true")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll()
+            
+            .and()
+            .exceptionHandling()
+                .accessDeniedPage("/access-denied");
+        
+        // Disable frame options for H2 console
+        http.headers().frameOptions().disable();
+        
+        // Add JWT filter
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        
+        return http.build();
+    }
+}

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JCertPre - Giảng viên</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .login-body {
+            padding: 2rem;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-login {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        /* Dashboard Styles */
+        .dashboard-hidden {
+            display: none;
+        }
+        
+        .instructor-sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+        }
+        
+        .instructor-sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            transition: all 0.3s;
+            border-radius: 8px;
+            margin: 2px 0;
+        }
+        
+        .instructor-sidebar .nav-link:hover,
+        .instructor-sidebar .nav-link.active {
+            color: white;
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .instructor-content {
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: none;
+            transition: transform 0.3s;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-primary { background: linear-gradient(45deg, #667eea, #764ba2); }
+        .stats-success { background: linear-gradient(45deg, #56ab2f, #a8e6cf); }
+        .stats-warning { background: linear-gradient(45deg, #f093fb, #f5576c); }
+        .stats-info { background: linear-gradient(45deg, #4facfe, #00f2fe); }
+        
+        .schedule-card {
+            background: white;
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .schedule-time {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+        }
+        
+        .recent-activity {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .activity-item {
+            padding: 1rem;
+            border-bottom: 1px solid #e9ecef;
+            transition: background 0.3s;
+        }
+        
+        .activity-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .profile-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            margin: 0 auto 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h3><i class="fas fa-graduation-cap mb-3"></i><br>JCertPre</h3>
+                <p class="mb-0">Đăng nhập Giảng viên</p>
+            </div>
+            <div class="login-body">
+                <form id="loginForm">
+                    <div class="mb-3">
+                        <label class="form-label">Tên đăng nhập</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="username" placeholder="Nhập tên đăng nhập" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mật khẩu</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+                    </div>
+                    <button type="submit" class="btn btn-login text-white w-100">
+                        <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập
+                    </button>
+                </form>
+                <div class="text-center mt-3">
+                    <small class="text-muted">
+                        Demo: Tên đăng nhập: <strong>instructor</strong>, Mật khẩu: <strong>123456</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboardPage" class="dashboard-hidden">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3 col-lg-2 instructor-sidebar p-0">
+                    <div class="p-4">
+                        <h4 class="text-center mb-4">
+                            <i class="fas fa-graduation-cap"></i> JCertPre
+                        </h4>
+                        <div class="text-center mb-4">
+                            <div class="profile-avatar" style="width: 80px; height: 80px; font-size: 2rem;">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <h6 class="mt-2">Nguyễn Văn An</h6>
+                            <small class="text-muted">Giảng viên Java</small>
+                        </div>
+                        <nav class="nav flex-column">
+                            <a class="nav-link active" href="#" data-section="overview">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Tổng quan
+                            </a>
+                            <a class="nav-link" href="#" data-section="schedule">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                Lịch giảng dạy
+                            </a>
+                            <a class="nav-link" href="#" data-section="courses">
+                                <i class="fas fa-book me-2"></i>
+                                Khóa học của tôi
+                            </a>
+                            <a class="nav-link" href="#" data-section="students">
+                                <i class="fas fa-users me-2"></i>
+                                Học viên
+                            </a>
+                            <a class="nav-link" href="#" data-section="profile">
+                                <i class="fas fa-user-cog me-2"></i>
+                                Thông tin cá nhân
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-md-9 col-lg-10 instructor-content">
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center p-4 bg-white shadow-sm">
+                        <h2 class="mb-0">Dashboard Giảng viên</h2>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle"></i> Nguyễn Văn An
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Cài đặt</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="p-4">
+                        <!-- Overview Section -->
+                        <div id="overviewSection" class="content-section">
+                            <!-- Stats Cards -->
+                            <div class="row mb-4">
+                                <div class="col-md-3 mb-3">
+                                    <div class="stats-card">
+                                        <div class="stats-icon stats-primary text-white">
+                                            <i class="fas fa-book"></i>
+                                        </div>
+                                        <h3 class="mb-1">5</h3>
+                                        <p class="text-muted mb-0">Khóa học đang dạy</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="stats-card">
+                                        <div class="stats-icon stats-success text-white">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                        <h3 class="mb-1">128</h3>
+                                        <p class="text-muted mb-0">Tổng học viên</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="stats-card">
+                                        <div class="stats-icon stats-warning text-white">
+                                            <i class="fas fa-calendar-check"></i>
+                                        </div>
+                                        <h3 class="mb-1">12</h3>
+                                        <p class="text-muted mb-0">Lớp học tuần này</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 mb-3">
+                                    <div class="stats-card">
+                                        <div class="stats-icon stats-info text-white">
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <h3 class="mb-1">4.8</h3>
+                                        <p class="text-muted mb-0">Đánh giá trung bình</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!-- Recent Activity -->
+                                <div class="col-md-8">
+                                    <div class="card">
+                                        <div class="card-header bg-primary text-white">
+                                            <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Hoạt động gần đây</h5>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <div class="recent-activity">
+                                                <div class="activity-item">
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0">
+                                                            <div class="bg-success rounded-circle p-2">
+                                                                <i class="fas fa-check text-white"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-3">
+                                                            <h6 class="mb-1">Hoàn thành bài giảng Spring Boot</h6>
+                                                            <p class="text-muted small mb-0">2 giờ trước</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="activity-item">
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0">
+                                                            <div class="bg-info rounded-circle p-2">
+                                                                <i class="fas fa-user-plus text-white"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-3">
+                                                            <h6 class="mb-1">5 học viên mới đăng ký khóa React JS</h6>
+                                                            <p class="text-muted small mb-0">4 giờ trước</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="activity-item">
+                                                    <div class="d-flex">
+                                                        <div class="flex-shrink-0">
+                                                            <div class="bg-warning rounded-circle p-2">
+                                                                <i class="fas fa-star text-white"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-3">
+                                                            <h6 class="mb-1">Nhận đánh giá 5 sao từ học viên</h6>
+                                                            <p class="text-muted small mb-0">1 ngày trước</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Today's Schedule -->
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-header bg-info text-white">
+                                            <h5 class="mb-0"><i class="fas fa-calendar-day me-2"></i>Lịch hôm nay</h5>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <div class="schedule-card">
+                                                <div class="schedule-time">08:00 - 10:00</div>
+                                                <div class="p-3">
+                                                    <h6 class="mb-1">Java Spring Boot</h6>
+                                                    <small class="text-muted">Phòng 101 - 25 học viên</small>
+                                                </div>
+                                            </div>
+                                            <div class="schedule-card">
+                                                <div class="schedule-time">14:00 - 16:00</div>
+                                                <div class="p-3">
+                                                    <h6 class="mb-1">React JS Advanced</h6>
+                                                    <small class="text-muted">Online - 18 học viên</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Schedule Section -->
+                        <div id="scheduleSection" class="content-section d-none">
+                            <div class="card">
+                                <div class="card-header bg-info text-white">
+                                    <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Lịch giảng dạy</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Thời gian</th>
+                                                    <th>Thứ 2</th>
+                                                    <th>Thứ 3</th>
+                                                    <th>Thứ 4</th>
+                                                    <th>Thứ 5</th>
+                                                    <th>Thứ 6</th>
+                                                    <th>Thứ 7</th>
+                                                    <th>Chủ nhật</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>08:00 - 10:00</td>
+                                                    <td class="bg-light">Java Spring Boot<br><small>Phòng 101</small></td>
+                                                    <td></td>
+                                                    <td class="bg-light">React JS<br><small>Online</small></td>
+                                                    <td></td>
+                                                    <td class="bg-light">Java Spring Boot<br><small>Phòng 101</small></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>14:00 - 16:00</td>
+                                                    <td></td>
+                                                    <td class="bg-light">React Advanced<br><small>Online</small></td>
+                                                    <td></td>
+                                                    <td class="bg-light">Java Spring Boot<br><small>Phòng 102</small></td>
+                                                    <td></td>
+                                                    <td class="bg-light">React JS<br><small>Phòng 201</small></td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Courses Section -->
+                        <div id="coursesSection" class="content-section d-none">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Java Spring Boot Cơ bản</h5>
+                                            <p class="card-text">Khóa học phát triển web với Spring Boot framework</p>
+                                            <div class="row text-center mb-3">
+                                                <div class="col-4">
+                                                    <strong>45</strong><br>
+                                                    <small class="text-muted">Học viên</small>
+                                                </div>
+                                                <div class="col-4">
+                                                    <strong>32h</strong><br>
+                                                    <small class="text-muted">Thời lượng</small>
+                                                </div>
+                                                <div class="col-4">
+                                                    <strong>4.9</strong><br>
+                                                    <small class="text-muted">Đánh giá</small>
+                                                </div>
+                                            </div>
+                                            <div class="progress mb-2">
+                                                <div class="progress-bar" style="width: 75%"></div>
+                                            </div>
+                                            <small class="text-muted">Hoàn thành 75%</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title">React JS Advanced</h5>
+                                            <p class="card-text">Khóa học nâng cao về React và ecosystem</p>
+                                            <div class="row text-center mb-3">
+                                                <div class="col-4">
+                                                    <strong>28</strong><br>
+                                                    <small class="text-muted">Học viên</small>
+                                                </div>
+                                                <div class="col-4">
+                                                    <strong>24h</strong><br>
+                                                    <small class="text-muted">Thời lượng</small>
+                                                </div>
+                                                <div class="col-4">
+                                                    <strong>4.8</strong><br>
+                                                    <small class="text-muted">Đánh giá</small>
+                                                </div>
+                                            </div>
+                                            <div class="progress mb-2">
+                                                <div class="progress-bar bg-success" style="width: 60%"></div>
+                                            </div>
+                                            <small class="text-muted">Hoàn thành 60%</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Students Section -->
+                        <div id="studentsSection" class="content-section d-none">
+                            <div class="card">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0"><i class="fas fa-users me-2"></i>Danh sách học viên</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Họ tên</th>
+                                                    <th>Email</th>
+                                                    <th>Khóa học</th>
+                                                    <th>Tiến độ</th>
+                                                    <th>Điểm</th>
+                                                    <th>Thao tác</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Lê Văn Cường</td>
+                                                    <td>cuong.le@email.com</td>
+                                                    <td>Java Spring Boot</td>
+                                                    <td>
+                                                        <div class="progress" style="height: 20px;">
+                                                            <div class="progress-bar" style="width: 80%">80%</div>
+                                                        </div>
+                                                    </td>
+                                                    <td><span class="badge bg-success">8.5</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary">Xem chi tiết</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Phạm Thị Dung</td>
+                                                    <td>dung.pham@email.com</td>
+                                                    <td>React JS</td>
+                                                    <td>
+                                                        <div class="progress" style="height: 20px;">
+                                                            <div class="progress-bar bg-warning" style="width: 45%">45%</div>
+                                                        </div>
+                                                    </td>
+                                                    <td><span class="badge bg-warning">7.2</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary">Xem chi tiết</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Section -->
+                        <div id="profileSection" class="content-section d-none">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="profile-section text-center">
+                                        <div class="profile-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <h4>Nguyễn Văn An</h4>
+                                        <p class="text-muted">Giảng viên Java & React</p>
+                                        <div class="row text-center">
+                                            <div class="col-4">
+                                                <strong>5</strong><br>
+                                                <small class="text-muted">Khóa học</small>
+                                            </div>
+                                            <div class="col-4">
+                                                <strong>128</strong><br>
+                                                <small class="text-muted">Học viên</small>
+                                            </div>
+                                            <div class="col-4">
+                                                <strong>4.8</strong><br>
+                                                <small class="text-muted">Đánh giá</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="profile-section">
+                                        <h5>Thông tin cá nhân</h5>
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Họ tên</label>
+                                                    <input type="text" class="form-control" value="Nguyễn Văn An">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Email</label>
+                                                    <input type="email" class="form-control" value="an.nguyen@example.com">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Số điện thoại</label>
+                                                    <input type="tel" class="form-control" value="0123456789">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Chuyên môn</label>
+                                                    <input type="text" class="form-control" value="Java Spring Boot, React JS">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Kinh nghiệm</label>
+                                                <textarea class="form-control" rows="3">5 năm kinh nghiệm phát triển web với Java và React. Đã tham gia nhiều dự án lớn và có kỹ năng giảng dạy tốt.</textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-save me-2"></i>Cập nhật thông tin
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Mock user data
+        const users = {
+            'instructor': {
+                password: '123456',
+                name: 'Nguyễn Văn An',
+                role: 'instructor'
+            }
+        };
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (users[username] && users[username].password === password) {
+                // Hide login page and show dashboard
+                document.getElementById('loginPage').classList.add('dashboard-hidden');
+                document.getElementById('dashboardPage').classList.remove('dashboard-hidden');
+                
+                // Store login state
+                sessionStorage.setItem('loggedIn', 'true');
+                sessionStorage.setItem('currentUser', username);
+                
+                showNotification('Đăng nhập thành công!', 'success');
+            } else {
+                showNotification('Tên đăng nhập hoặc mật khẩu không đúng!', 'error');
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                // Clear session and show login page
+                sessionStorage.removeItem('loggedIn');
+                sessionStorage.removeItem('currentUser');
+                
+                document.getElementById('dashboardPage').classList.add('dashboard-hidden');
+                document.getElementById('loginPage').classList.remove('dashboard-hidden');
+                
+                // Reset form
+                document.getElementById('loginForm').reset();
+                
+                showNotification('Đã đăng xuất thành công!', 'info');
+            }
+        });
+
+        // Navigation functionality
+        document.querySelectorAll('.instructor-sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all nav links
+                document.querySelectorAll('.instructor-sidebar .nav-link').forEach(l => 
+                    l.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Hide all sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.add('d-none');
+                });
+                
+                // Show target section
+                const sectionName = this.getAttribute('data-section');
+                const targetSection = document.getElementById(sectionName + 'Section');
+                if (targetSection) {
+                    targetSection.classList.remove('d-none');
+                }
+            });
+        });
+
+        // Check login state on page load
+        window.addEventListener('load', function() {
+            const isLoggedIn = sessionStorage.getItem('loggedIn');
+            if (isLoggedIn === 'true') {
+                document.getElementById('loginPage').classList.add('dashboard-hidden');
+                document.getElementById('dashboardPage').classList.remove('dashboard-hidden');
+            }
+        });
+
+        // Notification system
+        function showNotification(message, type) {
+            // Remove existing notifications
+            const existingNotification = document.querySelector('.custom-notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `custom-notification alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            `;
+            
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Form submissions
+        document.querySelectorAll('form').forEach(form => {
+            if (form.id !== 'loginForm') {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    showNotification('Thông tin đã được cập nhật thành công!', 'success');
+                });
+            }
+        });
+
+        // Interactive elements
+        document.querySelectorAll('.stats-card').forEach(card => {
+            card.addEventListener('click', function() {
+                // Add ripple effect
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-5px)';
+                }, 100);
+            });
+        });
+
+        // Schedule interactions
+        document.querySelectorAll('.schedule-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const courseName = this.querySelector('h6').textContent;
+                showNotification(`Đã chọn lớp học: ${courseName}`, 'info');
+            });
+        });
+
+        // Student detail buttons
+        document.querySelectorAll('.btn-outline-primary').forEach(btn => {
+            if (btn.textContent.includes('Xem chi tiết')) {
+                btn.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const studentName = row.querySelector('td').textContent;
+                    showNotification(`Xem chi tiết học viên: ${studentName}`, 'info');
+                });
+            }
+        });
+
+        // Add some dynamic data updates
+        function updateStats() {
+            const statsElements = document.querySelectorAll('.stats-card h3');
+            statsElements.forEach(stat => {
+                const currentValue = parseInt(stat.textContent);
+                // Simulate small random changes
+                const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+                if (currentValue + change > 0) {
+                    stat.textContent = currentValue + change;
+                }
+            });
+        }
+
+        // Update stats every 30 seconds (for demo purposes)
+        setInterval(updateStats, 30000);
+
+        // Add current time display
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('vi-VN', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            // Update page title or add time display
+            const existingTime = document.querySelector('.current-time');
+            if (existingTime) {
+                existingTime.textContent = timeString;
+            } else {
+                const header = document.querySelector('.instructor-content .p-4.bg-white');
+                if (header) {
+                    const timeDiv = document.createElement('small');
+                    timeDiv.className = 'current-time text-muted';
+                    timeDiv.textContent = timeString;
+                    header.querySelector('h2').appendChild(document.createElement('br'));
+                    header.querySelector('h2').appendChild(timeDiv);
+                }
+            }
+        }
+
+        // Update time every minute
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 60000);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Alt + L for logout
+            if (e.altKey && e.key === 'l') {
+                e.preventDefault();
+                document.getElementById('logoutBtn').click();
+            }
+            
+            // Alt + 1-5 for navigation
+            if (e.altKey && e.key >= '1' && e.key <= '5') {
+                e.preventDefault();
+                const navLinks = document.querySelectorAll('.instructor-sidebar .nav-link');
+                const index = parseInt(e.key) - 1;
+                if (navLinks[index]) {
+                    navLinks[index].click();
+                }
+            }
+        });
+
+        // Add tooltips for better UX
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+        tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        // Progress bar animations
+        function animateProgressBars() {
+            document.querySelectorAll('.progress-bar').forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.transition = 'width 1s ease-in-out';
+                    bar.style.width = width;
+                }, 100);
+            });
+        }
+
+        // Animate progress bars when sections are shown
+        document.querySelectorAll('.instructor-sidebar .nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                setTimeout(animateProgressBars, 300);
+            });
+        });
+
+        // Initial animation
+        setTimeout(animateProgressBars, 1000);
+    </script>
+</body>
+</html>

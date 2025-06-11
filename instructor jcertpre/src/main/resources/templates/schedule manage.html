@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JCertPre - Quản lý Lịch Giảng dạy</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            transition: all 0.3s;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            color: white;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+        .content-wrapper {
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 12px;
+        }
+        .btn-custom {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            transition: transform 0.2s;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: white;
+        }
+        .schedule-grid {
+            min-width: 800px;
+        }
+        .schedule-cell {
+            height: 80px;
+            border: 1px solid #dee2e6;
+            position: relative;
+            padding: 5px;
+            vertical-align: top;
+        }
+        .schedule-item {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 0.85em;
+            margin-bottom: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .schedule-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        .time-slot {
+            background: #f8f9fa;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .day-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            padding: 15px;
+        }
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .filter-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .schedule-legend {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        .modal-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 12px 12px 0 0;
+        }
+        .form-floating > label {
+            color: #6c757d;
+        }
+        .alert-custom {
+            border: none;
+            border-radius: 10px;
+            padding: 15px 20px;
+        }
+        .room-indicator {
+            position: absolute;
+            top: 2px;
+            right: 5px;
+            background: rgba(255,255,255,0.3);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7em;
+        }
+        .student-count {
+            position: absolute;
+            bottom: 2px;
+            right: 5px;
+            background: rgba(255,255,255,0.3);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.7em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar p-0">
+                <div class="p-4">
+                    <h4 class="text-center mb-4">
+                        <i class="fas fa-graduation-cap"></i> JCertPre
+                    </h4>
+                    <nav class="nav flex-column">
+                        <a class="nav-link" href="#instructor-section">
+                            <i class="fas fa-chalkboard-teacher me-2"></i>
+                            Quản lý Giảng viên
+                        </a>
+                        <a class="nav-link" href="#course-section">
+                            <i class="fas fa-book me-2"></i>
+                            Quản lý Khóa học
+                        </a>
+                        <a class="nav-link active" href="#schedule-section">
+                            <i class="fas fa-calendar-alt me-2"></i>
+                            Lịch Giảng dạy
+                        </a>
+                        <a class="nav-link" href="#question-section">
+                            <i class="fas fa-question-circle me-2"></i>
+                            Ngân hàng Câu hỏi
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 content-wrapper">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center p-4 bg-white shadow-sm">
+                    <h2 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Quản lý Lịch Giảng dạy</h2>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i> Admin
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Cài đặt</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="p-4">
+                    <!-- Statistics Cards -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="stats-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-0">15</h5>
+                                        <small>Lớp học trong tuần</small>
+                                    </div>
+                                    <i class="fas fa-calendar-week fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stats-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-0">5</h5>
+                                        <small>Giảng viên hoạt động</small>
+                                    </div>
+                                    <i class="fas fa-users fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stats-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-0">8</h5>
+                                        <small>Phòng học sử dụng</small>
+                                    </div>
+                                    <i class="fas fa-door-open fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stats-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-0">250</h5>
+                                        <small>Tổng học viên</small>
+                                    </div>
+                                    <i class="fas fa-user-graduate fa-2x opacity-75"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter and Control Section -->
+                    <div class="filter-section">
+                        <div class="row align-items-end">
+                            <div class="col-md-3">
+                                <label class="form-label">Tuần học</label>
+                                <select class="form-select" id="weekSelect">
+                                    <option value="current">Tuần hiện tại</option>
+                                    <option value="next">Tuần tiếp theo</option>
+                                    <option value="previous">Tuần trước</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Giảng viên</label>
+                                <select class="form-select" id="instructorFilter">
+                                    <option value="">Tất cả giảng viên</option>
+                                    <option value="1">Nguyễn Văn An</option>
+                                    <option value="2">Trần Thị Bình</option>
+                                    <option value="3">Lê Văn Cường</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Khóa học</label>
+                                <select class="form-select" id="courseFilter">
+                                    <option value="">Tất cả khóa học</option>
+                                    <option value="1">Java Spring Boot</option>
+                                    <option value="2">React JS</option>
+                                    <option value="3">Python Django</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-custom w-100" data-bs-toggle="modal" data-bs-target="#addScheduleModal">
+                                    <i class="fas fa-plus me-2"></i>Thêm lịch học
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Schedule Legend -->
+                    <div class="schedule-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: linear-gradient(45deg, #667eea, #764ba2);"></div>
+                            <span>Java Spring Boot</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: linear-gradient(45deg, #28a745, #20c997);"></div>
+                            <span>React JS</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: linear-gradient(45deg, #ffc107, #fd7e14);"></div>
+                            <span>Python Django</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: linear-gradient(45deg, #dc3545, #e83e8c);"></div>
+                            <span>Node.js</span>
+                        </div>
+                    </div>
+
+                    <!-- Schedule Grid -->
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Lịch giảng dạy tuần</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table schedule-grid mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="time-slot" style="width: 120px;">Thời gian</th>
+                                            <th class="day-header">Thứ 2</th>
+                                            <th class="day-header">Thứ 3</th>
+                                            <th class="day-header">Thứ 4</th>
+                                            <th class="day-header">Thứ 5</th>
+                                            <th class="day-header">Thứ 6</th>
+                                            <th class="day-header">Thứ 7</th>
+                                            <th class="day-header">Chủ nhật</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="scheduleBody">
+                                        <tr>
+                                            <td class="time-slot schedule-cell">08:00 - 10:00</td>
+                                            <td class="schedule-cell">
+                                                <div class="schedule-item" data-bs-toggle="modal" data-bs-target="#scheduleDetailModal" onclick="showScheduleDetail(1)">
+                                                    Java Spring Boot<br>
+                                                    <small>GV: N.V.An</small>
+                                                    <div class="room-indicator">P101</div>
+                                                    <div class="student-count">25 SV</div>
+                                                </div>
+                                            </td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell">
+                                                <div class="schedule-item" style="background: linear-gradient(45deg, #28a745, #20c997);" data-bs-toggle="modal" data-bs-target="#scheduleDetailModal" onclick="showScheduleDetail(3)">
+                                                    React JS<br>
+                                                    <small>GV: T.T.Bình</small>
+                                                    <div class="room-indicator">P102</div>
+                                                    <div class="student-count">20 SV</div>
+                                                </div>
+                                            </td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell">
+                                                <div class="schedule-item" data-bs-toggle="modal" data-bs-target="#scheduleDetailModal" onclick="showScheduleDetail(5)">
+                                                    Java Spring Boot<br>
+                                                    <small>GV: N.V.An</small>
+                                                    <div class="room-indicator">P101</div>
+                                                    <div class="student-count">25 SV</div>
+                                                </div>
+                                            </td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="time-slot schedule-cell">10:00 - 12:00</td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell">
+                                                <div class="schedule-item" style="background: linear-gradient(45deg, #28a745, #20c997);" data-bs-toggle="modal" data-bs-target="#scheduleDetailModal" onclick="showScheduleDetail(2)">
+                                                    React JS<br>
+                                                    <small>GV: T.T.Bình</small>
+                                                    <div class="room-indicator">P102</div>
+                                                    <div class="student-count">20 SV</div>
+                                                </div>
+                                            </td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell">
+                                                <div class="schedule-item" style="background: linear-gradient(45deg, #ffc107, #fd7e14);">
+                                                    Python Django<br>
+                                                    <small>GV: L.V.Cường</small>
+                                                    <div class="room-indicator">P103</div>
+                                                    <div class="student-count">18 SV</div>
+                                                </div>
+                                            </td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell">
+                                                <div class="schedule-item" style="background: linear-gradient(45deg, #28a745, #20c997);">
+                                                    React JS<br>
+                                                    <small>GV: T.T.Bình</small>
+                                                    <div class="room-indicator">P102</div>
+                                                    <div class="student-count">22 SV</div>
+                                                </div>
+                                            </td>
+                                            <td class="schedule-cell"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="time-slot schedule-cell">14:00 - 16:00</td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell">
+                                                <div class="schedule-item" style="background: linear-gradient(45deg, #28a745, #20c997);" data-bs-toggle="modal" data-bs-target="#scheduleDetailModal" onclick="showScheduleDetail(4)">
+                                                    React JS<br>
+                                                    <small>GV: T.T.Bình</small>
+                                                    <div class="room-indicator">P103</div>
+                                                    <div class="student-count">22 SV</div>
+                                                </div>
+                                            </td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="time-slot schedule-cell">16:00 - 18:00</td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell">
+                                                <div class="schedule-item" style="background: linear-gradient(45deg, #dc3545, #e83e8c);">
+                                                    Node.js<br>
+                                                    <small>GV: P.T.Dung</small>
+                                                    <div class="room-indicator">P104</div>
+                                                    <div class="student-count">15 SV</div>
+                                                </div>
+                                            </td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell">
+                                                <div class="schedule-item" style="background: linear-gradient(45deg, #ffc107, #fd7e14);">
+                                                    Python Django<br>
+                                                    <small>GV: L.V.Cường</small>
+                                                    <div class="room-indicator">P103</div>
+                                                    <div class="student-count">18 SV</div>
+                                                </div>
+                                            </td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="time-slot schedule-cell">18:00 - 20:00</td>
+                                            <td class="schedule-cell">
+                                                <div class="schedule-item" style="background: linear-gradient(45deg, #dc3545, #e83e8c);">
+                                                    Node.js<br>
+                                                    <small>GV: P.T.Dung</small>
+                                                    <div class="room-indicator">P104</div>
+                                                    <div class="student-count">15 SV</div>
+                                                </div>
+                                            </td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell"></td>
+                                            <td class="schedule-cell"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-calendar-plus fa-3x text-primary mb-3"></i>
+                                    <h6>Tạo lịch nhanh</h6>
+                                    <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#quickScheduleModal">
+                                        Tạo ngay
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-file-export fa-3x text-success mb-3"></i>
+                                    <h6>Xuất lịch giảng</h6>
+                                    <button class="btn btn-outline-success btn-sm" onclick="exportSchedule()">
+                                        Xuất Excel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-copy fa-3x text-warning mb-3"></i>
+                                    <h6>Sao chép lịch</h6>
+                                    <button class="btn btn-outline-warning btn-sm" data-bs-toggle="modal" data-bs-target="#copyScheduleModal">
+                                        Sao chép
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Schedule Modal -->
+    <div class="modal fade" id="addScheduleModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-plus me-2"></i>Thêm lịch giảng dạy</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addScheduleForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="courseSelect" required>
+                                        <option value="">Chọn khóa học</option>
+                                        <option value="1">Java Spring Boot</option>
+                                        <option value="2">React JS</option>
+                                        <option value="3">Python Django</option>
+                                        <option value="4">Node.js</option>
+                                    </select>
+                                    <label for="courseSelect">Khóa học</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="instructorSelect" required>
+                                        <option value="">Chọn giảng viên</option>
+                                        <option value="1">Nguyễn Văn An</option>
+                                        <option value="2">Trần Thị Bình</option>
+                                        <option value="3">Lê Văn Cường</option>
+                                        <option value="4">Phạm Thị Dung</option>
+                                    </select>
+                                    <label for="instructorSelect">Giảng viên</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="daySelect" required>
+                                        <option value="">Chọn thứ</option>
+                                        <option value="1">Thứ 2</option>
+                                        <option value="2">Thứ 3</option>
+                                        <option value="3">Thứ 4</option>
+                                        <option value="4">Thứ 5</option>
+                                        <option value="5">Thứ 6</option>
+                                        <option value="6">Thứ 7</option>
+                                        <option value="0">Chủ nhật</option>
+                                    </select>
+                                    <label for="daySelect">Thứ trong tuần</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="time" class="form-control" id="startTime" required>
+                                    <label for="startTime">Giờ bắt đầu</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3">
+                                    <input type="time" class="form-control" id="endTime" required>
+                                    <label for="endTime">Giờ kết thúc</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" id="roomSelect" required>
+                                        <option value="">Chọn phòng học</option>
+                                        <option value="P101">Phòng 101</option>
+                                        <option value="P102">Phòng 102</option>
+                                        <option value="P103">Phòng 103</option>
+                                        <option value="P104">Phòng 104</option>
+                                        <option value="P105">Phòng 105</option>
+                                    </select>
+                                    <label for="roomSelect">Phòng học</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="maxStudents" min="1" max="50" required>
+                                    <label for="maxStudents">Số lượng học viên tối đa</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="scheduleNotes" style="height: 100px"></textarea>
+                            <label for="scheduleNotes">Ghi chú</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Hủy
+                    </button>
+                    <button type="button" class="btn btn-custom" onclick="addSchedule()">
+                        <i class="fas fa-save me-2"></i>Lưu lịch
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Detail Modal -->
+    <div class="modal fade" id="scheduleDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-info-circle me-2"></i>Chi tiết lịch giảng</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="scheduleDetailContent">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Đóng
+                    </button>
+                    <button type="button" class="btn btn-warning" onclick="editSchedule()">
+                        <i class="fas fa-edit me-2"></i>Chỉnh sửa
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="deleteSchedule()">
+                        <i class="fas fa-trash me-2"></i>Xóa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Alert (Hidden by default) -->
+    <div class="alert alert

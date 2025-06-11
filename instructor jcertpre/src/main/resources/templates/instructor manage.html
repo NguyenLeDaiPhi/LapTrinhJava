@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .card {
+            border: none;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 12px;
+        }
+        .btn-custom {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            transition: transform 0.2s;
+        }
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: white;
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .search-container {
+            position: relative;
+        }
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid p-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-chalkboard-teacher me-2"></i>Thông tin Giảng viên
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Action Bar -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <button class="btn btn-custom" id="add-instructor-btn">
+                            <i class="fas fa-plus me-2"></i>Thêm Giảng viên
+                        </button>
+                        <button class="btn btn-outline-success ms-2" id="export-btn">
+                            <i class="fas fa-download me-2"></i>Xuất Excel
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="search-container">
+                            <input type="text" class="form-control" id="search-input" 
+                                   placeholder="Tìm kiếm giảng viên...">
+                            <i class="fas fa-search search-icon"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h3 id="total-instructors">0</h3>
+                                <p class="mb-0">Tổng số giảng viên</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white">
+                            <div class="card-body text-center">
+                                <h3 id="active-instructors">0</h3>
+                                <p class="mb-0">Đang hoạt động</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body text-center">
+                                <h3 id="inactive-instructors">0</h3>
+                                <p class="mb-0">Ngừng hoạt động</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-info text-white">
+                            <div class="card-body text-center">
+                                <h3 id="new-this-month">0</h3>
+                                <p class="mb-0">Mới tháng này</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructors Table -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="select-all">
+                                </th>
+                                <th>ID</th>
+                                <th>Ảnh</th>
+                                <th>Họ tên</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Chuyên môn</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tham gia</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="instructors-table-body">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <nav>
+                    <ul class="pagination justify-content-center" id="pagination">
+                        <!-- Pagination will be generated by JavaScript -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Add/Edit Instructor Modal -->
+        <div class="modal fade" id="instructorModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-title">Thêm Giảng viên mới</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="instructor-form">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Họ tên *</label>
+                                        <input type="text" class="form-control" id="fullName" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Email *</label>
+                                        <input type="email" class="form-control" id="email" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Số điện thoại</label>
+                                        <input type="tel" class="form-control" id="phone">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Chuyên môn *</label>
+                                        <select class="form-select" id="expertise" required>
+                                            <option value="">Chọn chuyên môn</option>
+                                            <option value="java">Java Spring Boot</option>
+                                            <option value="react">React JS</option>
+                                            <option value="python">Python</option>
+                                            <option value="nodejs">Node.js</option>
+                                            <option value="dotnet">.NET</option>
+                                            <option value="php">PHP</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Trạng thái</label>
+                                        <select class="form-select" id="status">
+                                            <option value="active">Hoạt động</option>
+                                            <option value="inactive">Ngừng hoạt động</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Ảnh đại diện</label>
+                                        <input type="file" class="form-control" id="avatar" accept="image/*">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Ghi chú</label>
+                                <textarea class="form-control" id="notes" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" form="instructor-form" class="btn btn-custom">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        class InstructorManagement {
+            constructor() {
+                this.instructors = [
+                    {
+                        id: '001',
+                        fullName: 'Nguyễn Văn An',
+                        email: 'an.nguyen@example.com',
+                        phone: '0123456789',
+                        expertise: 'Java Spring Boot',
+                        status: 'active',
+                        joinDate: '2024-01-15',
+                        avatar: 'https://via.placeholder.com/40'
+                    },
+                    {
+                        id: '002',
+                        fullName: 'Trần Thị Bình',
+                        email: 'binh.tran@example.com',
+                        phone: '0987654321',
+                        expertise: 'React JS',
+                        status: 'active',
+                        joinDate: '2024-02-10',
+                        avatar: 'https://via.placeholder.com/40'
+                    }
+                ];
+                this.currentPage = 1;
+                this.itemsPerPage = 10;
+                this.editingId = null;
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.renderTable();
+                this.updateStatistics();
+            }
+
+            bindEvents() {
+                document.getElementById('add-instructor-btn').addEventListener('click', () => this.showModal());
+                document.getElementById('search-input').addEventListener('input', (e) => this.handleSearch(e));
+                document.getElementById('instructor-form').addEventListener('submit', (e) => this.handleSubmit(e));
+                document.getElementById('select-all').addEventListener('change', (e) => this.handleSelectAll(e));
+                document.getElementById('export-btn').addEventListener('click', () => this.exportToExcel());
+            }
+
+            showModal(instructor = null) {
+                this.editingId = instructor ? instructor.id : null;
+                const modal = new bootstrap.Modal(document.getElementById('instructorModal'));
+                const title = document.getElementById('modal-title');
+                
+                if (instructor) {
+                    title.textContent = 'Chỉnh sửa Giảng viên';
+                    this.populateForm(instructor);
+                } else {
+                    title.textContent = 'Thêm Giảng viên mới';
+                    document.getElementById('instructor-form').reset();
+                }
+                
+                modal.show();
+            }
+
+            populateForm(instructor) {
+                document.getElementById('fullName').value = instructor.fullName;
+                document.getElementById('email').value = instructor.email;
+                document.getElementById('phone').value = instructor.phone || '';
+                document.getElementById('expertise').value = instructor.expertise.toLowerCase();
+                document.getElementById('status').value = instructor.status;
+            }
+
+            handleSubmit(e) {
+                e.preventDefault();
+                
+                const formData = {
+                    fullName: document.getElementById('fullName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    expertise: document.getElementById('expertise').options[document.getElementById('expertise').selectedIndex].text,
+                    status: document.getElementById('status').value,
+                    joinDate: new Date().toISOString().split('T')[0],
+                    avatar: 'https://via.placeholder.com/40'
+                };
+
+                if (this.editingId) {
+                    this.updateInstructor(this.editingId, formData);
+                } else {
+                    this.addInstructor(formData);
+                }
+
+                bootstrap.Modal.getInstance(document.getElementById('instructorModal')).hide();
+            }
+
+            addInstructor(data) {
+                const newId = String(this.instructors.length + 1).padStart(3, '0');
+                this.instructors.push({ id: newId, ...data });
+                this.renderTable();
+                this.updateStatistics();
+                this.showNotification('Thêm giảng viên thành công!', 'success');
+            }
+
+            updateInstructor(id, data) {
+                const index = this.instructors.findIndex(i => i.id === id);
+                if (index !== -1) {
+                    this.instructors[index] = { ...this.instructors[index], ...data };
+                    this.renderTable();
+                    this.updateStatistics();
+                    this.showNotification('Cập nhật giảng viên thành công!', 'success');
+                }
+            }
+
+            deleteInstructor(id) {
+                if (confirm('Bạn có chắc chắn muốn xóa giảng viên này?')) {
+                    this.instructors = this.instructors.filter(i => i.id !== id);
+                    this.renderTable();
+                    this.updateStatistics();
+                    this.showNotification('Xóa giảng viên thành công!', 'success');
+                }
+            }
+
+            renderTable() {
+                const tbody = document.getElementById('instructors-table-body');
+                tbody.innerHTML = '';
+
+                this.instructors.forEach(instructor => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><input type="checkbox" value="${instructor.id}"></td>
+                        <td>${instructor.id}</td>
+                        <td><img src="${instructor.avatar}" alt="Avatar" class="rounded-circle" width="40" height="40"></td>
+                        <td>${instructor.fullName}</td>
+                        <td>${instructor.email}</td>
+                        <td>${instructor.phone || 'N/A'}</td>
+                        <td>${instructor.expertise}</td>
+                        <td>
+                            <span class="status-badge ${instructor.status === 'active' ? 'status-active' : 'status-inactive'}">
+                                ${instructor.status === 'active' ? 'Hoạt động' : 'Ngừng hoạt động'}
+                            </span>
+                        </td>
+                        <td>${new Date(instructor.joinDate).toLocaleDateString('vi-VN')}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="instructorMgmt.showModal(${JSON.stringify(instructor).replace(/"/g, '&quot;')})" title="Chỉnh sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-info me-1" onclick="instructorMgmt.viewDetails('${instructor.id}')" title="Xem chi tiết">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="instructorMgmt.deleteInstructor('${instructor.id}')" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            updateStatistics() {
+                const total = this.instructors.length;
+                const active = this.instructors.filter(i => i.status === 'active').length;
+                const inactive = total - active;
+                const thisMonth = this.instructors.filter(i => {
+                    const joinDate = new Date(i.joinDate);
+                    const now = new Date();
+                    return joinDate.getMonth() === now.getMonth() && joinDate.getFullYear() === now.getFullYear();
+                }).length;
+
+                document.getElementById('total-instructors').textContent = total;
+                document.getElementById('active-instructors').textContent = active;
+                document.getElementById('inactive-instructors').textContent = inactive;
+                document.getElementById('new-this-month').textContent = thisMonth;
+            }
+
+            handleSearch(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('#instructors-table-body tr');
+                
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            }
+
+            handleSelectAll(e) {
+                const checkboxes = document.querySelectorAll('#instructors-table-body input[type="checkbox"]');
+                checkboxes.forEach(cb => cb.checked = e.target.checked);
+            }
+
+            viewDetails(id) {
+                const instructor = this.instructors.find(i => i.id === id);
+                if (instructor) {
+                    alert(`Chi tiết giảng viên:\n\nTên: ${instructor.fullName}\nEmail: ${instructor.email}\nChuyên môn: ${instructor.expertise}\nTrạng thái: ${instructor.status === 'active' ? 'Hoạt động' : 'Ngừng hoạt động'}`);
+                }
+            }
+
+            exportToExcel() {
+                // Simple CSV export
+                const headers = ['ID', 'Họ tên', 'Email', 'Số điện thoại', 'Chuyên môn', 'Trạng thái', 'Ngày tham gia'];
+                const csvContent = [
+                    headers.join(','),
+                    ...this.instructors.map(i => [
+                        i.id,
+                        i.fullName,
+                        i.email,
+                        i.phone || '',
+                        i.expertise,
+                        i.status === 'active' ? 'Hoạt động' : 'Ngừng hoạt động',
+                        i.joinDate
+                    ].join(','))
+                ].join('\n');
+
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'danh-sach-giang-vien.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            showNotification(message, type = 'info') {
+                // Simple notification
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+                alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+                alertDiv.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                document.body.appendChild(alertDiv);
+                
+                setTimeout(() => {
+                    if (alertDiv.parentNode) {
+                        alertDiv.parentNode.removeChild(alertDiv);
+                    }
+                }, 3000);
+            }
+        }
+
+        // Initialize instructor management
+        const instructorMgmt = new InstructorManagement();
+        
+        // Export for use in main app
+        window.InstructorManagementComponent = instructorMgmt;
+    </script>
+</body>
+</html>

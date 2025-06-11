@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header Component</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .header-wrapper {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 16px 24px;
+        }
+        .header-title {
+            color: #333;
+            font-weight: 600;
+            margin: 0;
+        }
+        .user-dropdown .dropdown-toggle::after {
+            margin-left: 8px;
+        }
+        .dropdown-menu {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: none;
+            border-radius: 8px;
+        }
+        .dropdown-item {
+            padding: 10px 16px;
+            transition: all 0.3s;
+        }
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            transform: translateX(4px);
+        }
+    </style>
+</head>
+<body>
+    <div class="header-wrapper d-flex justify-content-between align-items-center">
+        <h2 class="header-title" id="page-title">Dashboard Giảng viên</h2>
+        
+        <div class="user-dropdown dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" 
+                    data-bs-toggle="dropdown" id="user-menu">
+                <i class="fas fa-user-circle me-2"></i>
+                <span id="user-name">Admin</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                    <a class="dropdown-item" href="#profile">
+                        <i class="fas fa-user me-2"></i>Hồ sơ cá nhân
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href="#settings">
+                        <i class="fas fa-cog me-2"></i>Cài đặt
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <a class="dropdown-item text-danger" href="#logout">
+                        <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        class Header {
+            constructor() {
+                this.titleMap = {
+                    'instructor': 'Dashboard Giảng viên',
+                    'course': 'Quản lý Khóa học',
+                    'schedule': 'Lịch Giảng dạy',
+                    'question': 'Ngân hàng Câu hỏi'
+                };
+                this.init();
+            }
+
+            init() {
+                // Listen for section changes
+                window.addEventListener('sectionChange', (e) => {
+                    this.updateTitle(e.detail.section);
+                });
+
+                // Handle dropdown menu clicks
+                document.querySelectorAll('.dropdown-item').forEach(item => {
+                    item.addEventListener('click', (e) => this.handleMenuClick(e));
+                });
+            }
+
+            updateTitle(section) {
+                const title = this.titleMap[section] || 'Dashboard';
+                document.getElementById('page-title').textContent = title;
+            }
+
+            handleMenuClick(e) {
+                e.preventDefault();
+                const action = e.target.closest('.dropdown-item').getAttribute('href').substring(1);
+                
+                switch(action) {
+                    case 'profile':
+                        this.showProfile();
+                        break;
+                    case 'settings':
+                        this.showSettings();
+                        break;
+                    case 'logout':
+                        this.handleLogout();
+                        break;
+                }
+            }
+
+            showProfile() {
+                alert('Chức năng hồ sơ cá nhân đang được phát triển');
+            }
+
+            showSettings() {
+                alert('Chức năng cài đặt đang được phát triển');
+            }
+
+            handleLogout() {
+                if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                    // Handle logout logic here
+                    window.location.href = '/login';
+                }
+            }
+
+            setUser(userName, userRole = 'Admin') {
+                document.getElementById('user-name').textContent = userRole;
+            }
+        }
+
+        // Initialize header
+        const header = new Header();
+        
+        // Export for use in main app
+        window.HeaderComponent = header;
+    </script>
+</body>
+</html>
