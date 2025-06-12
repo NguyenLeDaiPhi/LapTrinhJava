@@ -4,6 +4,7 @@ import com.jcertpre.model.Learner;
 import com.jcertpre.repository.LearnerRepository;
 import com.jcertpre.dto.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,8 @@ public class LoginController {
         model.addAttribute("loginRequest", new LoginRequest());
         return "login";
     }
+
+    
 
     @PostMapping("/login")
     public String login(@ModelAttribute("loginRequest") LoginRequest loginRequest, Model model) {

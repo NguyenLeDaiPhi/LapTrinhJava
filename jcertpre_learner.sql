@@ -54,3 +54,17 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2025-06-05 23:14:29
+-- Thêm cột Role vào bảng Learner
+ALTER TABLE dbo.Learner
+ADD Role NVARCHAR(20) NOT NULL DEFAULT 'USER';
+GO
+
+-- Them tai khoan voi quyen truy cap admin
+INSERT INTO Learner (Name, Email, Password, Role)
+VALUES (
+    'Admin User',
+    'admin@example.com',
+    '$2a$10$7JfFhFeVNR7ddq4Aa1/il.T/8TqvPxUba9dyHQ1fwZs1F5Io6ZPWS', -- admin123
+    'ADMIN'
+);
+GO
