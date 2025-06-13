@@ -22,6 +22,7 @@ public class Learner {
     private String phone;
     @Column(name = "Address")
     private String address;
+    private String role; // "ADMIN" hoặc "USER"
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -36,5 +37,14 @@ public class Learner {
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
     // Default constructor for JPA
+    // ===== GETTERS & SETTERS =====
+    public String getRole() {
+        return role;
+    }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+  
 }

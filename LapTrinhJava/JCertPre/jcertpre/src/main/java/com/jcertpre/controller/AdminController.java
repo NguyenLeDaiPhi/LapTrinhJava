@@ -6,13 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/admin")
 public class AdminController {
 
-    @GetMapping
+    @GetMapping("/admin-dashboard")
     public String dashboard(Model model) {
-        // Truyền dữ liệu nếu cần, ví dụ:
-        // model.addAttribute("totalUsers", 100);
-        return "admin-dashboard";  // Sẽ tìm admin-dashboard.html trong templates
+        return "admin-dashboard";
     }
 }

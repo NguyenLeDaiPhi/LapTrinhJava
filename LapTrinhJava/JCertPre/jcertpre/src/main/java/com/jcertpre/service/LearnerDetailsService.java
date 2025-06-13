@@ -18,11 +18,19 @@ public class LearnerDetailsService implements UserDetailsService {
     private LearnerRepository learnerRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Learner learner = learnerRepository.findByEmail(email);
-        if (learner == null) {
-            throw new UsernameNotFoundException("Learner not found with email: " + email);
-        }
-        return new User(learner.getEmail(), learner.getPassword(), new ArrayList<>());
-    }
+public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    Learner learner = learnerRepository.findByEmail(email);
+if (learner == null) {
+    throw new UsernameNotFoundException("User not found");
+}
+
+
+    return User.builder()
+        .username(learner.getEmail())
+        .password(learner.getPassword())
+        .roles(learner.getRole()) // lấy từ DB: "USER" hoặc "ADMIN"
+        .build();
+}
+
+
 }

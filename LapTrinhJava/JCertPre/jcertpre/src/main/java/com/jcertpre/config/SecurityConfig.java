@@ -18,6 +18,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    @Autowired
+private CustomLoginSuccessHandler customLoginSuccessHandler;
 
     @Autowired
     private LearnerDetailsService learnerDetailsService;
@@ -35,7 +37,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/index", true)
+                .successHandler(customLoginSuccessHandler)
                 .permitAll()
             )
             .logout(logout -> logout
