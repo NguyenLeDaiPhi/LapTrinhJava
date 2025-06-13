@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Timeline Demo</title>
+
+  <!-- Bootstrap từ CDN -->
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+  />
+
+  <!-- Google Fonts -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Poppins:400,500,600,700"
+  />
+
+  <!-- CSS custom -->
+  <link rel="stylesheet" th:href="@{/css/createPlan.css}" />
+  <link rel="stylesheet" th:href="@{/css/timeline.css}" />
+</head>
+<body>
+
+  <section class="experience pt-100 pb-100" id="experience">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-8 mx-auto text-center">
+          <div class="section-title">
+            <h4>Bootstrap 5 Timeline</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+         <div class="col-xl-12">
+            <ul class="timeline-list">
+               <!-- Single Experience -->
+               <li>
+                  <div class="timeline_content">
+                     <span>2008</span>
+                     <h4>Intern Developer</h4>
+                     <p>
+                       We gather your business and products information. We then determine
+                       the direction of the project and understand your goals and we combine
+                       your ideas with ours for an amazing website.
+                     </p>
+                  </div>
+               </li>
+               <!-- Single Experience -->
+               <li>
+                  <div class="timeline_content">
+                    <span>2007-2012</span>
+                     <h4>Junior Developer</h4>
+                     <p>
+                       We gather your business and products information. We then determine
+                       the direction of the project and understand your goals and we combine
+                       your ideas with ours for an amazing website.
+                     </p>
+                  </div>
+               </li>
+               <!-- Single Experience -->
+               <li>
+                  <div class="timeline_content">
+                    <span>2012-2015</span>
+                     <h4>Senior Developer</h4>
+                     <p>
+                       We gather your business and products information. We then determine
+                       the direction of the project and understand your goals and we combine
+                       your ideas with ours for an amazing website.
+                     </p>
+                  </div>
+               </li>
+               <!-- Single Experience -->
+               <li>
+                  <div class="timeline_content">
+                    <span>2015-2018</span>
+                     <h4>Project Manager</h4>
+                     <p>
+                       We gather your business and products information. We then determine
+                       the direction of the project and understand your goals and we combine
+                       your ideas with ours for an amazing website.
+                     </p>
+                  </div>
+               </li>
+            </ul>
+         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- jQuery trước Bootstrap JS -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+  </script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js">
+  </script>
+
+  <!-- JS custom nếu có -->
+  <script th:src="@{/js/app.js}"></script>
+</body>
+</html>
