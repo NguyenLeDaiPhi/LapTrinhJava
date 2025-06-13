@@ -1,9 +1,22 @@
-.form-control { 
-      padding-left: 2.5rem; }
+.form-outline {
+  position: relative;
+}
 
-    .form-outline i {
-        position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
-        color: #495057; pointer-events: none;}
-        
-    .form-outline { 
-      position: relative; width: 100%; }
+.form-outline i {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #6c757d;
+  pointer-events: none;
+}
+
+.form-outline input {
+  padding-left: 2.5rem;
+}
+
+
+.error {
+  color: red;
+  font-size: 0.9em;
+}

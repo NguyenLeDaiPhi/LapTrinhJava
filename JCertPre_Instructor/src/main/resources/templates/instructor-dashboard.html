@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Instructor Dashboard</title>
+</head>
+<body>
+<h2>Welcome, <span th:text="${instructor.name}">Instructor</span>!</h2>
+<ul>
+    <li><a th:href="@{/courses}">View Courses</a></li>
+    <li><a th:href="@{/schedules}">View Schedules</a></li>
+</ul>
+</body>
+</html>
