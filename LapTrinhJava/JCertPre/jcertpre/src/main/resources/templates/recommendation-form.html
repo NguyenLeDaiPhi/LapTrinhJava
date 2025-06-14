@@ -248,20 +248,20 @@
 <body>
     <div class="container">
         <div class="card">
-            <h2 class="card-title">Tư vấn kế hoạch cá nhân</h2>
+            <h2 class="card-title">Personal planning advice</h2>
             <!-- Progress bar -->
             <div class="progress-bar">
                 <div class="step" data-step="1">
                     <div class="step-number">1</div>
-                    <div class="step-label">Thông tin</div>
+                    <div class="step-label">Information</div>
                 </div>
                 <div class="step" data-step="2">
                     <div class="step-number">2</div>
-                    <div class="step-label">Mức độ</div>
+                    <div class="step-label">Level</div>
                 </div>
                 <div class="step" data-step="3">
                     <div class="step-number">3</div>
-                    <div class="step-label">Xác nhận</div>
+                    <div class="step-label">Confirm</div>
                 </div>
             </div>
 
@@ -278,11 +278,11 @@
                 <!-- Bước 1: Thông tin cá nhân -->
                 <div class="form-step" data-step="1">
                     <div class="form-group">
-                        <label for="fullName">Họ và tên:</label>
+                        <label for="fullName">Full name:</label>
                         <input type="text"
                             id="fullName"
                             th:field="*{fullName}"
-                            placeholder="Nhập họ và tên"
+                            placeholder="Enter first and last name"
                             autocomplete="name"
                             th:classappend="${#fields.hasErrors('fullName')} ? ' input-error' : ''"/>
                         <small class="error-message" data-error-for="fullName"
@@ -296,7 +296,7 @@
                         <input type="email"
                             id="email"
                             th:field="*{email}"
-                            placeholder="Nhập email đã đăng ký"
+                            placeholder="Enter registered email"
                             autocomplete="email"
                             th:classappend="${#fields.hasErrors('email')} ? ' input-error' : ''"/>
                         <small class="error-message" data-error-for="email"
@@ -306,19 +306,19 @@
                             th:unless="${#fields.hasErrors('email')}"></small>
                     </div>
                     <div class="form-buttons">
-                        <button type="button" class="btn btn-next" data-next-step="2">Tiếp theo</button>
+                        <button type="button" class="btn btn-next" data-next-step="2">Continute</button>
                     </div>
                 </div>
 
                 <!-- Bước 2: Chọn mức -->
                 <div class="form-step" data-step="2">
                     <div class="form-group">
-                        <label for="currentLevel">Mức tiếng Nhật hiện tại:</label>
+                        <label for="currentLevel">Current Japanese level:</label>
                         <select id="currentLevel"
                                 th:field="*{currentLevel}"
                                 autocomplete="off"
                                 th:classappend="${#fields.hasErrors('currentLevel')} ? ' input-error' : ''">
-                            <option value="" disabled th:selected="${recommendationForm.currentLevel == null}">-- Chọn --</option>
+                            <option value="" disabled th:selected="${recommendationForm.currentLevel == null}">-- Select --</option>
                             <option th:each="lvl : ${levels}"
                                     th:value="${lvl}"
                                     th:data-ordinal="${lvl.ordinal()}"
@@ -332,12 +332,12 @@
                             th:unless="${#fields.hasErrors('currentLevel')}"></small>
                     </div>
                     <div class="form-group">
-                        <label for="targetLevel">Mức muốn đạt được:</label>
+                        <label for="targetLevel">Japanese level to achieve:</label>
                         <select id="targetLevel"
                                 th:field="*{targetLevel}"
                                 autocomplete="off"
                                 th:classappend="${#fields.hasErrors('targetLevel')} ? ' input-error' : ''">
-                            <option value="" disabled th:selected="${recommendationForm.targetLevel == null}">-- Chọn --</option>
+                            <option value="" disabled th:selected="${recommendationForm.targetLevel == null}">-- Select --</option>
                             <option th:each="lvl : ${levels}"
                                     th:value="${lvl}"
                                     th:data-ordinal="${lvl.ordinal()}"
@@ -351,22 +351,22 @@
                             th:unless="${#fields.hasErrors('targetLevel')}"></small>
                     </div>
                     <div class="form-buttons">
-                        <button type="button" class="btn btn-prev" data-prev-step="1">Quay lại</button>
-                        <button type="button" class="btn btn-next" data-next-step="3">Tiếp theo</button>
+                        <button type="button" class="btn btn-prev" data-prev-step="1">Back</button>
+                        <button type="button" class="btn btn-next" data-next-step="3">Continute</button>
                     </div>
                 </div>
 
                 <!-- Bước 3: Xác nhận & submit -->
                 <div class="form-step" data-step="3">
                     <div class="review-field">
-                        <p><strong>Họ và tên:</strong> <span id="reviewFullName"></span></p>
+                        <p><strong>Full name:</strong> <span id="reviewFullName"></span></p>
                         <p><strong>Email:</strong> <span id="reviewEmail"></span></p>
-                        <p><strong>Mức hiện tại:</strong> <span id="reviewCurrentLevel"></span></p>
-                        <p><strong>Mức mục tiêu:</strong> <span id="reviewTargetLevel"></span></p>
+                        <p><strong>Current Japanese level:</strong> <span id="reviewCurrentLevel"></span></p>
+                        <p><strong>Japanese level to achieve:</strong> <span id="reviewTargetLevel"></span></p>
                     </div>
                     <div class="form-buttons">
-                        <button type="button" class="btn btn-prev" data-prev-step="2">Quay lại</button>
-                        <button type="submit" class="btn btn-submit">Hoàn tất</button>
+                        <button type="button" class="btn btn-prev" data-prev-step="2">Back</button>
+                        <button type="submit" class="btn btn-submit">Completed</button>
                     </div>
                 </div>
             </form>
@@ -438,14 +438,14 @@
                 const email = emailInput.value.trim();
 
                 if (!fullName) {
-                    showError('fullName', 'Họ và tên không được để trống');
+                    showError('fullName', 'Full name cannot be left blank');
                     valid = false;
                 }
                 if (!email) {
-                    showError('email', 'Email không được để trống');
+                    showError('email', 'Email cannot be blank');
                     valid = false;
                 } else if (!validateEmailFormat(email)) {
-                    showError('email', 'Email không đúng định dạng');
+                    showError('email', 'Email is not in correct format');
                     valid = false;
                 }
                 // Không chuyển bước 1→2 trực tiếp ở đây, AJAX sẽ đảm nhiệm
@@ -457,18 +457,18 @@
                 const targetValue = targetSelect.value;
 
                 if (!currentValue) {
-                    showError('currentLevel', 'Vui lòng chọn mức hiện tại');
+                    showError('currentLevel', 'Please select current level');
                     valid = false;
                 }
                 if (!targetValue) {
-                    showError('targetLevel', 'Vui lòng chọn mức mục tiêu');
+                    showError('targetLevel', 'Please select target level');
                     valid = false;
                 }
                 if (currentValue && targetValue) {
                     const currentOrd = parseInt(currentSelect.options[currentSelect.selectedIndex].getAttribute('data-ordinal'), 10);
                     const targetOrd = parseInt(targetSelect.options[targetSelect.selectedIndex].getAttribute('data-ordinal'), 10);
                     if (currentOrd > targetOrd) {
-                        showError('targetLevel', 'Mức mục tiêu phải >= mức hiện tại');
+                        showError('targetLevel', 'Target level must be >= current level');
                         valid = false;
                     }
                 }
@@ -509,19 +509,19 @@
                             headers: {'Accept': 'application/json'}
                         });
                         if (!resp.ok) {
-                            showError('email', 'Lỗi khi kiểm tra email');
+                            showError('email', 'Error checking emai');
                             return;
                         }
                         const data = await resp.json();
                         if (!data.exists) {
-                            showError('email', 'Email chưa đăng ký');
+                            showError('email', 'Email is not registered');
                             return;
                         }
                         // Nếu tồn tại, chuyển bước 2
                         goToStep(2);
                     } catch (e) {
                         console.error('Error checking email:', e);
-                        showError('email', 'Không thể kiểm tra email');
+                        showError('email', 'Cannot check email');
                     }
                 }
                 else if (currentStep === 2) {

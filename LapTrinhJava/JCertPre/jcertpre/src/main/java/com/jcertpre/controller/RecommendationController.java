@@ -79,81 +79,78 @@ public class RecommendationController {
      * Khi có lỗi, set model.addAttribute("step", ...) để template JS khởi đúng bước.
      */
     @PostMapping
-    public String handleForm(
-            @Valid @ModelAttribute("recommendationForm") RecommendationForm form,
-            BindingResult bindingResult,
-            Model model
-    ) {
-        // Luôn thêm levels để hiển lại dropdown khi render form
-        model.addAttribute("levels", JapaneseLevel.values());
+        public String handleForm(
+                @Valid @ModelAttribute("recommendationForm") RecommendationForm form,
+                BindingResult bindingResult,
+                Model model
+        ) {
+            // 1. Thêm levels để render lại dropdown khi có lỗi
+            model.addAttribute("levels", JapaneseLevel.values());
 
-        // 1. Kiểm validation annotation cơ bản (@NotBlank, @Email, @NotNull)
-        if (bindingResult.hasErrors()) {
-            // Nếu lỗi annotation, chúng ta chưa biết lỗi thuộc bước nào:
-            // fullName hoặc email lỗi: bước 1; currentLevel/targetLevel lỗi: bước 2.
-            // Ta kiểm bindingResult để đặt step:
-            if (bindingResult.hasFieldErrors("fullName") || bindingResult.hasFieldErrors("email")) {
-                model.addAttribute("step", 1);
-            } else {
-                // nếu lỗi ở currentLevel hoặc targetLevel:
-                model.addAttribute("step", 2);
-            }
-            return "recommendation-form";
-        }
-
-        // 2. Kiểm email tồn tại
-        String emailTrim = form.getEmail().trim().toLowerCase();
-        Learner learner = learnerRepository.findByEmail(emailTrim);
-        if (learner == null) {
-            bindingResult.rejectValue("email", "notExist", "Email chưa đăng ký hoặc không phải thành viên");
-            model.addAttribute("step", 1);
-            return "recommendation-form";
-        }
-
-        // 3. Kiểm họ tên khớp với Learner in DB
-        String formName = form.getFullName().trim();
-        // Giả sử Learner có getter getName() hoặc getFullName()
-        String learnerName = learner.getName(); // hoặc learner.getFullName()
-        if (learnerName == null || !learnerName.equalsIgnoreCase(formName)) {
-            bindingResult.rejectValue("fullName", "mismatch", "Họ tên không khớp với tài khoản");
-            model.addAttribute("step", 1);
-            return "recommendation-form";
-        }
-
-        // 4. Kiểm mức current <= target
-        JapaneseLevel current = form.getCurrentLevel();
-        JapaneseLevel target = form.getTargetLevel();
-        if (current != null && target != null) {
-            if (current.ordinal() > target.ordinal()) {
-                // Lỗi trên targetLevel
-                bindingResult.rejectValue("targetLevel", "levelMismatch", "Mức mục tiêu phải >= mức hiện tại");
-                model.addAttribute("step", 2);
+            // 2. Kiểm validation annotation cơ bản (@NotBlank, @Email, @NotNull)
+            if (bindingResult.hasErrors()) {
+                // Nếu lỗi annotation: fullName hoặc email => bước 1; lỗi targetLevel hoặc currentLevel annotation => bước 2
+                if (bindingResult.hasFieldErrors("fullName") || bindingResult.hasFieldErrors("email")) {
+                    model.addAttribute("step", 1);
+                } else {
+                    model.addAttribute("step", 2);
+                }
                 return "recommendation-form";
             }
+
+            // 3. Kiểm email tồn tại trong DB
+            String emailTrim = form.getEmail().trim().toLowerCase();
+            Learner learner = learnerRepository.findByEmail(emailTrim);
+            if (learner == null) {
+                bindingResult.rejectValue("email", "notExist", "Email chưa đăng ký hoặc không phải thành viên");
+                model.addAttribute("step", 1);
+                return "recommendation-form";
+            }
+
+            // 4. Kiểm họ tên khớp
+            String formName = form.getFullName().trim();
+            String learnerName = learner.getName(); // hoặc getFullName()
+            if (learnerName == null || !learnerName.equalsIgnoreCase(formName)) {
+                bindingResult.rejectValue("fullName", "mismatch", "Họ tên không khớp với tài khoản");
+                model.addAttribute("step", 1);
+                return "recommendation-form";
+            }
+
+            // 5. (Nếu bạn vẫn muốn) Kiểm mức current <= target
+            JapaneseLevel current = form.getCurrentLevel();
+            JapaneseLevel target = form.getTargetLevel();
+            if (current != null && target != null) {
+                if (current.ordinal() > target.ordinal()) {
+                    bindingResult.rejectValue("targetLevel", "levelMismatch", "Mức mục tiêu phải >= mức hiện tại");
+                    model.addAttribute("step", 2);
+                    return "recommendation-form";
+                }
+            }
+            // Nếu bạn không muốn kiểm dòng này, bạn có thể comment hoặc bỏ đoạn trên
+
+            // 6. Kiểm bindingResult một lần nữa sau rejectValue
+            if (bindingResult.hasErrors()) {
+                return "recommendation-form";
+            }
+
+            // 7. Chuẩn bị model cho view kết quả (nếu template cần hiển thông tin)
+            model.addAttribute("learnerName", learnerName);
+            model.addAttribute("currentLevel", current != null ? current.getDisplayName() : "");
+            model.addAttribute("targetLevel", target.name());
+            List<StudyPlanItem> planItems = recommendationService.generatePlan(learner, form);
+            model.addAttribute("planItems", planItems);
+
+            // 8. Chọn view kết quả chỉ dựa vào targetLevel
+            String levelPart;
+            if (target == JapaneseLevel.NEWBIE) {
+                // Map “Người mới” về N5 nếu cần
+                levelPart = "n5";
+            } else {
+                // Ví dụ target.name() = "N2" → "n2"
+                levelPart = target.name().toLowerCase();
+            }
+            String viewName = "createPlan_" + levelPart; // Ví dụ "createPlan_n2"
+            return viewName;
         }
 
-        // 5. Nếu có lỗi bindingResult do rejectValue thêm ở trên, xử lý return
-        if (bindingResult.hasErrors()) {
-            // step đã được set ở trên
-            return "recommendation-form";
-        }
-
-        // 6. Nếu hợp lệ: chuẩn bị dữ liệu cho view kết quả
-        model.addAttribute("learnerName", learnerName);
-        model.addAttribute("currentLevel", current.getDisplayName());
-        model.addAttribute("targetLevel", target.name());
-
-        // 7. Gọi service để sinh plan
-        List<StudyPlanItem> planItems = recommendationService.generatePlan(learner, form);
-        model.addAttribute("planItems", planItems);
-
-        // 8. Chọn view kết quả dựa trên targetLevel
-        String viewName = "createPlan_" + target.name();
-        // Nếu bạn có enum NEWBIE hoặc NGUOI_MOI, điều chỉnh về template phù hợp
-        if (target == JapaneseLevel.NEWBIE) {
-            // Giả sử bạn muốn map NGUOI_MOI về template N5
-            viewName = "createPlan_N5";
-        }
-        return viewName;
-    }
 }
