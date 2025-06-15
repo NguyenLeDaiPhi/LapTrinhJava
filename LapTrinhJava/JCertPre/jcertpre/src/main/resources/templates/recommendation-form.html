@@ -242,10 +242,29 @@
             border-color: var(--color-error) !important;
             box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2) !important;
         }
-
+        .back-button {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background-color: #4a90e2;   /* màu xanh da trời */
+        color: white;
+        padding: 8px 12px;
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        font-size: 0.9rem;
+        z-index: 1000;
+        transition: background-color var(--transition-speed), transform var(--transition-speed);
+    }
+        .back-button:hover {
+            background-color: #357ABD;  /* màu đậm hơn khi hover */
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 <body>
+    <a th:href="@{/index}" class="back-button">
+        &larr; Home
+    </a>
     <div class="container">
         <div class="card">
             <h2 class="card-title">Personal planning advice</h2>
