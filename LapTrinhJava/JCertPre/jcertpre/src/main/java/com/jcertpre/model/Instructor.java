@@ -1,11 +1,17 @@
 package com.jcertpre.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -13,7 +19,7 @@ import jakarta.persistence.Table;
 public class Instructor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name = "description", length = 300)
     private String description;
@@ -28,7 +34,7 @@ public class Instructor {
     @Column(name = "first_name", length = 50)
     private String firstName;
 
-    @Column(name = "email", length = 150)
+    @Column(name = "email", length = 150, unique = true)
     private String email;
 
     @Column(name = "password", length = 100)
@@ -43,8 +49,20 @@ public class Instructor {
     @Column(name = "login", length = 100)
     private String login;
 
-    public int getId() { return id;}
-    public void setId(int id) { this.id = id; } 
+    @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Course> courses = new ArrayList<>();
+
+    public Instructor() {}
+
+    public Instructor(String firstName, String lastName, String email, String phone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+    }
+    
+    public Long getId() { return id;}
+    public void setId(Long id) { this.id = id; } 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
     public byte[] getImage() { return image; }
@@ -63,4 +81,6 @@ public class Instructor {
     public void setIsActive(Boolean isActive) { this.isActive = isActive; }
     public String getLogin() { return login; }
     public void setLogin(String login) { this.login = login; }
+    public List<Course> getCourses() { return courses; }
+    public void setCourses(List<Course> courses) { this.courses = courses; }
 }

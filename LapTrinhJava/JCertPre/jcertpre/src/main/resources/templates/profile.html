@@ -67,7 +67,7 @@
                                         <h6 class="mb-0">Name</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" id="name" name="name" th:value="${learner.name}">
+                                        <input type="text" name="name" th:value="${learner.name}" class="form-control" readonly />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -75,7 +75,7 @@
                                         <h6 class="mb-0">Email</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="email" class="form-control" id="email" th:value="${learner.email}" readonly>
+                                        <input type="email" name="email" th:value="${learner.email}" class="form-control" readonly />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -83,7 +83,7 @@
                                         <h6 class="mb-0">Phone</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" id="phone" name="phone" th:value="${learner.phone}">
+                                        <input type="text" id="phone" name="phone" class="form-control" th:value="${learner.phone}" required />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -91,18 +91,22 @@
                                         <h6 class="mb-0">Address</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="text" class="form-control" id="address" name="address" th:value="${learner.address}">
+                                        <input type="text" id="address" name="address" class="form-control" th:value="${learner.address}" required />
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-3"></div>
                                     <div class="col-sm-9 text-secondary">
-                                        <button type="submit" class="btn btn-primary px-4">Update</button>">
+                                        <button type="submit" class="btn btn-primary px-4">Update</button>
                                     </div>
                                 </div>
                             </form>
 						</div>
 					</div>
+                    <div th:if="${learner == null}">
+                        <div class="alert alert-warning text-center">No learner profile found. Access denied or please log in with a learner account.</div>
+                        <a th:href="@{/login}" class="btn btn-primary mt-3">Back to Login</a>
+                    </div>
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="card">
