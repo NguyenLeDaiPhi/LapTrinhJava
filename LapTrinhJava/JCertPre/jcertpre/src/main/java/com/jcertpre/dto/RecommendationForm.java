@@ -7,17 +7,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class RecommendationForm {
-    @NotBlank(message = "Họ và tên không được để trống")
+    @NotBlank(message = "Full name cannot be left blank")
     private String fullName;
 
-    @NotBlank(message = "Email không được để trống")
-    @Email(message = "Email không hợp lệ")
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Invalid email! Please enter a valid email address.")
     private String email;
 
-    @NotNull(message = "Vui lòng chọn mức hiện tại")
+    @NotNull(message = "Please select current level")
     private JapaneseLevel currentLevel;
 
-    @NotNull(message = "Vui lòng chọn mức mục tiêu")
+    @NotNull(message = "Please select target level")
     private JapaneseLevel targetLevel;
 
     // getters/setters
