@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Learner</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; }
+        .form-container { background: white; padding: 20px; border-radius: 8px; max-width: 500px; margin: auto; }
+        label { display: block; margin-top: 12px; }
+        input[type=text], input[type=email], input[type=password] {
+            width: 100%; padding: 8px; margin-top: 6px; box-sizing: border-box;
+        }
+        button { margin-top: 20px; padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; }
+        button:hover { background: #218838; }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <h2 th:text="${learner.id == null} ? 'Thêm Learner' : 'Chỉnh sửa Learner'"></h2>
+    <form th:action="@{/admin/learners/save}" th:object="${learner}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+
+        <label>Họ và tên</label>
+        <input type="text" th:field="*{name}" required/>
+
+        <label>Email</label>
+        <input type="email" th:field="*{email}" required/>
+
+        <label>Mật khẩu</label>
+        <input type="password" th:field="*{password}" required/>
+
+        <label>Số điện thoại</label>
+        <input type="text" th:field="*{phone}" />
+
+        <label>Địa chỉ</label>
+        <input type="text" th:field="*{address}" />
+
+        <button type="submit">Lưu</button>
+    </form>
+    <br>
+    <a href="/admin/learners/view">← Quay lại danh sách</a>
+</div>
+</body>
+</html>
