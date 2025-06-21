@@ -11,12 +11,17 @@ public class HomeController {
         return "index"; // Loads index.html from templates/
     }
 
+    @GetMapping("/course")
+    public String showCoursePage() {
+        return "course"; // Loads index.html from templates/
+    }
+
     @GetMapping("/about")
     public String showAboutPage() {
         return "about"; // Loads about.html from templates/
     }
 
-    @GetMapping("/teacher") 
+    @GetMapping("/teacher")
     public String showTeacherPage() {
         return "teacher"; // Loads teacher.html from templates/
     }
@@ -36,5 +41,4 @@ public class HomeController {
         return "single"; // Loads single.html from templates/
     }
 
-    
 }
