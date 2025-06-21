@@ -1,0 +1,3 @@
+Chức năng CRUD đang gặp vấn đề về MYSQL cụ thể là chưa thể register và Add Edit được bởi vì mẫu thuân giữa các cột dữ liệu nhưng lỗi này có thể dễ dàng sửa chữa
+
+ 
