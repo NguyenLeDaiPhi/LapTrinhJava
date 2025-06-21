@@ -1,11 +1,17 @@
 package com.jcertpre.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "learner")
@@ -53,5 +59,20 @@ public class Learner {
     
     // Default constructor for JPA
         // Default constructor for JPA
+    @ManyToMany
+@JoinTable(
+    name = "learner_course",
+    joinColumns = @JoinColumn(name = "learner_id"),
+    inverseJoinColumns = @JoinColumn(name = "course_id")
+)
+private List<Course> Courses = new ArrayList<>();
+
+public List<Course> getCourses() {
+    return Courses;
+}
+
+public void setCourses(List<Course> Courses) {
+    this.Courses = Courses;
+}
 
 }

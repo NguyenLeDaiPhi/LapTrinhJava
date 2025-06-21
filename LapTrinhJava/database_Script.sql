@@ -19,3 +19,13 @@ BEGIN
     );
 END
 GO
+-- Nhớ tạo thêm bảng liên kết(learner_course) giữa learner và course
+    CREATE TABLE learner_course (
+    learner_id BIGINT NOT NULL,
+    course_id BIGINT NOT NULL,
+    PRIMARY KEY (learner_id, course_id),
+    FOREIGN KEY (learner_id) REFERENCES learner(id),
+    FOREIGN KEY (course_id) REFERENCES course(id)
+    -- này mới demo với id thôi dự định còn in ra tên learner và course nữa
+);
+
