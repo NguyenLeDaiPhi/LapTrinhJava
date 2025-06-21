@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Exam Result</title>
+  <link rel="stylesheet" th:href="@{/bootstrap/bootstrap.min.css}" />
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+  <div class="container mt-4">
+    <h2 class="text-success mb-4">Exam Result</h2>
+    <p><strong>Total Questions:</strong> <span th:text="${totalQuestions}"></span></p>
+    <p><strong>Correct Answers:</strong> <span th:text="${correctAnswers}"></span></p>
+    <p><strong>Score:</strong> <span th:text="${score}"></span></p>
+
+    <div th:each="a : ${answerDetails}" class="question-block">
+      <h5 th:text="'Q: ' + ${a.question}"></h5>
+      <p><strong>Your Answer:</strong> <span th:text="${a.selected}"></span></p>
+      <p><strong>Correct Answer:</strong> <span th:text="${a.correct}"></span></p>
+      <p th:if="${a.correct == a.selected}" class="text-success"> Correct</p>
+      <p th:if="${a.correct != a.selected}" class="text-danger"> Incorrect</p>
+    </div>
+
+    <div class="text-center mt-4">
+      <a th:href="@{/exam/history}" class="btn btn-secondary">View History</a>
+      <a th:href="@{/exam/index}" class="btn btn-outline-primary">Back to Home</a>
+    </div>
+  </div>
+
+  <script th:src="@{/bootstrap/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/js/examsimulation.js}"></script>
+</body>
+</html>

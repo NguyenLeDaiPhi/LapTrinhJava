@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Exam Simulation</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+<div class="container mt-4">
+    <h2 class="text-primary mb-4">📝 JLPT Exam Simulation</h2>
+
+    <form th:action="@{/exam/submit}" method="post">
+        <input type="hidden" name="examType" value="JLPT-N3" />
+
+        <div th:each="q, stat : ${questions}" class="question-block">
+            <h5 th:text="'❓ ' + ${stat.index + 1} + '. ' + ${q.question}"></h5>
+
+            <div th:each="c : ${q.choices}">
+                <label>
+                    <input type="radio" th:name="'answer_' + ${q.id}" th:value="${c.content}" />
+                    <span th:text="${c.content}"></span>
+                </label>
+            </div>
+
+            <hr />
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script th:src="@{/bootstrap/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/examsimulation.js}"></script>
+</body>
+</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const submitBtn = document.querySelector('.submit-btn');
+        submitBtn.addEventListener('click', function(event) {
+            if (!confirm('Are you sure you want to submit your answers?')) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+<script th:inline="javascript">
+      

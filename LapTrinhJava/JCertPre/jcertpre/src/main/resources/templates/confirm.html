@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Submission</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/bootstrap.min.css}">
+</head>
+<body class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">Are you sure you want to submit your answers?</h2>
+
+    <div class="text-center">
+        <a href="/exam/simulation" class="btn btn-secondary">← Go Back</a>
+        <form th:action="@{/exam/submit}" method="post" style="display: inline;">
+            <button type="submit" class="btn btn-danger">Yes, Submit</button>
+        </form>
+    </div>
+</body>
+</html>
