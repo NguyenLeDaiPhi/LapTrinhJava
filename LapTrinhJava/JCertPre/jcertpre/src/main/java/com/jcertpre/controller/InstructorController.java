@@ -163,65 +163,18 @@ public class InstructorController {
         model.addAttribute("courses", courseService.getCoursesByInstructor(instructor));
         return "instructor_course";
     }
-
-    @GetMapping("/community")
-    public String showCommunityPage(Model model) {
-        List<Post> posts = communityService.getAllPosts();
-        Map<Long, List<Comment>> postCommentsMap = new HashMap<>();
-
-        for (Post post : posts) {
-            postCommentsMap.put(post.getId(), communityService.getCommentsByPost(post));
-        }
-
-        model.addAttribute("posts", posts);
-        model.addAttribute("postCommentsMap", postCommentsMap);
-        return "community";
-    }
-
-    @PostMapping("/community/post")
-    public String createPost(
-            @RequestParam("title") String title,
-            @RequestParam("content") String content,
-            Model model) {
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        String error = communityService.createPost(title, content, username);
-
-        if (error != null) {
-            Map<String, String> errors = new HashMap<>();
-            String[] errorParts = error.split(":", 2);
-            errors.put(errorParts[0], errorParts[1]);
-            model.addAttribute("errors", errors);
-
-            List<Post> posts = communityService.getAllPosts();
-            Map<Long, List<Comment>> postCommentsMap = new HashMap<>();
-            for (Post post : posts) {
-                postCommentsMap.put(post.getId(), communityService.getCommentsByPost(post));
-            }
-
-            model.addAttribute("posts", posts);
-            model.addAttribute("postCommentsMap", postCommentsMap);
-            return "community";
-        }
+          @GetMapping("/instructorcommunity")
+    public String redirectToInstructorCommunity() {
         return "redirect:/instructor/community";
     }
-
-    @PostMapping("/community/comment")
-    public String createComment(
-            @RequestParam("postId") Long postId,
-            @RequestParam("content") String content,
-            Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        String error = communityService.createComment(postId, content, username);
-        if (error != null) {
-            Map<String, String> errors = new HashMap<>();
-            String[] errorParts = error.split(":", 2);
-            errors.put(errorParts[0], errorParts[1]);
-            model.addAttribute("errors", errors);
-            model.addAttribute("posts", communityService.getAllPosts());
-            return "community";
-        }
-        logger.info("Comment created by {} on post {}", username, postId);
-        return "redirect:/instructor/community";
-    }
+    @PostMapping("/instructorcommunity/post")
+public String createPost(@RequestParam String title, @RequestParam String content) {
+    System.out.println("Instructor Post: " + title);
+    Post post = new Post();
+    post.setTitle(title);
+    post.setContent(content);
+    post.setAuthorName("Instructor");
+    postRepo.save(post);
+    return "redirect:/instructorcommunity";
+   }
 }
