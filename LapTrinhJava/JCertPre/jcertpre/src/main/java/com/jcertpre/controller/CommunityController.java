@@ -54,7 +54,7 @@ public class CommunityController {
         post.setContent(content);
         post.setAuthorName("Instructor"); // Gán tạm, có thể lấy từ session
         postRepo.save(post);
-        return "redirect:/instructorcommunity";
+        return "redirect:/instructor/community";
     }
      @PostMapping("/learner/community/comment2")
      public String createComment(@RequestParam Long postId, @RequestParam String content) {
@@ -64,7 +64,7 @@ public class CommunityController {
         comment.setAuthorName("Learner");
         comment.setCommentedAt(LocalDateTime.now());
         commentRepo.save(comment);
-         return "redirect:/learnercommunity";
+         return "redirect:/learner/community";
 }
 
     private Map<Long, List<Comment>> getCommentsByPost(List<Post> posts) {
