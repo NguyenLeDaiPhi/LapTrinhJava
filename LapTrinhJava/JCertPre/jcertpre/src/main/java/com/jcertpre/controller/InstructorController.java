@@ -163,11 +163,11 @@ public class InstructorController {
         model.addAttribute("courses", courseService.getCoursesByInstructor(instructor));
         return "instructor_course";
     }
-          @GetMapping("/instructorcommunity")
+          @GetMapping("/instructor/community")
     public String redirectToInstructorCommunity() {
         return "redirect:/instructor/community";
     }
-    @PostMapping("/instructorcommunity/post")
+    @PostMapping("/instructor/community/post")
 public String createPost(@RequestParam String title, @RequestParam String content) {
     System.out.println("Instructor Post: " + title);
     Post post = new Post();
@@ -175,6 +175,6 @@ public String createPost(@RequestParam String title, @RequestParam String conten
     post.setContent(content);
     post.setAuthorName("Instructor");
     postRepo.save(post);
-    return "redirect:/instructorcommunity";
+    return "redirect:/instructor/community";
    }
 }
