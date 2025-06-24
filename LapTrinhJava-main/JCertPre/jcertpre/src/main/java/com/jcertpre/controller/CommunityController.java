@@ -59,6 +59,7 @@ public class CommunityController {
      @PostMapping("/learner/community/comment2")
      public String createComment(@RequestParam Long postId, @RequestParam String content) {
         Comment comment = new Comment();
+        Post post = postRepo.findById(postId).orElseThrow();
         comment.setPostId(postId);
         comment.setContent(content);
         comment.setAuthorName("Learner");
