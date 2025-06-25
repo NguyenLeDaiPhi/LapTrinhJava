@@ -51,7 +51,8 @@ public class HomeController {
     public String showSinglePage() {
         return "single"; // Loads single.html from templates/
     }
-     @GetMapping("/learnercommunity")
+
+    @GetMapping("/learnercommunity")
     public String redirectToLearnerCommunity() {
         return "redirect:/learner/community";
     }

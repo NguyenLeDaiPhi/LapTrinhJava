@@ -83,7 +83,8 @@ public class Instructor {
     public void setLogin(String login) { this.login = login; }
     public List<Course> getCourses() { return courses; }
     public void setCourses(List<Course> courses) { this.courses = courses; }
+<<<<<<< HEAD
      public String getName() {
     return this.firstName + " " + this.lastName;
-}
+  }
 }

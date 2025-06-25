@@ -12,5 +12,4 @@ import com.jcertpre.model.Instructor;
 public interface CourseRepository extends JpaRepository<Course, Long>{
     List<Course> findByInstructor(Instructor instructor);
     Page<Course> findAll(Pageable pageable);
-
 }
