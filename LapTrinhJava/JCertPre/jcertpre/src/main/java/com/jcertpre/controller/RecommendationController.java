@@ -3,6 +3,7 @@ package com.jcertpre.controller;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -67,7 +68,7 @@ public class RecommendationController {
             String e = email.trim().toLowerCase();
             // Giả sử repository trả null nếu không tìm, hoặc bạn có existsByEmail:
             // exists = learnerRepository.existsByEmail(e);
-            Learner learner = learnerRepository.findByEmail(e);
+            Optional<Learner> learner = learnerRepository.findByEmail(e);
             exists = (learner != null);
         }
         return Collections.singletonMap("exists", exists);
@@ -100,7 +101,7 @@ public class RecommendationController {
 
             // 3. Kiểm email tồn tại trong DB
             String emailTrim = form.getEmail().trim().toLowerCase();
-            Learner learner = learnerRepository.findByEmail(emailTrim);
+            Optional<Learner> learner = learnerRepository.findByEmail(emailTrim);
             if (learner == null) {
                 bindingResult.rejectValue("email", "notExist", "Email chưa đăng ký hoặc không phải thành viên");
                 model.addAttribute("step", 1);
@@ -109,7 +110,7 @@ public class RecommendationController {
 
             // 4. Kiểm họ tên khớp
             String formName = form.getFullName().trim();
-            String learnerName = learner.getName(); // hoặc getFullName()
+            String learnerName = learner.get().getName(); // hoặc getFullName()
             if (learnerName == null || !learnerName.equalsIgnoreCase(formName)) {
                 bindingResult.rejectValue("fullName", "mismatch", "Họ tên không khớp với tài khoản");
                 model.addAttribute("step", 1);
@@ -137,7 +138,7 @@ public class RecommendationController {
             model.addAttribute("learnerName", learnerName);
             model.addAttribute("currentLevel", current != null ? current.getDisplayName() : "");
             model.addAttribute("targetLevel", target.name());
-            List<StudyPlanItem> planItems = recommendationService.generatePlan(learner, form);
+            List<StudyPlanItem> planItems = recommendationService.generatePlan(learner.get(), form);
             model.addAttribute("planItems", planItems);
 
             // 8. Chọn view kết quả chỉ dựa vào targetLevel

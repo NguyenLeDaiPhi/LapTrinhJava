@@ -16,11 +16,6 @@ public class HomeController {
         return "about"; // Loads about.html from templates/
     }
 
-    @GetMapping("/course") 
-    public String showCoursePage() {
-        return "course"; // Loads course.html from templates/
-    }
-
     @GetMapping("/teacher") 
     public String showTeacherPage() {
         return "teacher"; // Loads teacher.html from templates/
@@ -40,4 +35,6 @@ public class HomeController {
     public String showSinglePage() {
         return "single"; // Loads single.html from templates/
     }
+    
+
 }

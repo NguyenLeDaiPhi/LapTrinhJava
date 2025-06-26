@@ -1,7 +1,5 @@
 package com.jcertpre.controller;
 
-import com.jcertpre.model.Learner;
-import com.jcertpre.service.LearnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,56 +11,55 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jcertpre.model.Learner;
+import com.jcertpre.service.LearnerService;
+
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
 
-    private final LearnerService learnerService;
-
     @Autowired
-    public ProfileController(LearnerService learnerService) {
-        this.learnerService = learnerService;
-    }
+    private LearnerService learnerService;
 
     @GetMapping
     public String showProfile(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-
-        try {
-            Learner learner = learnerService.findByEmail(email);
-            model.addAttribute("learner", learner);
-            return "profile";
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", "User not found");
-            return "error";
-        }
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth == null || !auth.isAuthenticated() || auth.getName() == null) {
+        model.addAttribute("error", "Please log in as a learner.");
+        return "login";
     }
 
+    String email = auth.getName();
+    Learner learner = learnerService.findByEmail(email);
+
+    if (learner != null) {
+        model.addAttribute("learner", learner);
+        model.addAttribute("courses", learner.getCourses()); 
+    } else {
+        model.addAttribute("error", "Access denied. This page is for learners only.");
+        return "access-denied";
+    }
+
+    // Flash messages
+    model.addAttribute("success", model.containsAttribute("success") ? model.asMap().get("success") : null);
+    model.addAttribute("error", model.containsAttribute("error") ? model.asMap().get("error") : null);
+
+    return "profile";
+}
+
+
     @PostMapping("/update")
-    public String updateProfile(
-            @RequestParam("name") String name,
-            @RequestParam("phone") String phone,
-            @RequestParam("address") String address,
-            RedirectAttributes redirectAttributes) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
-
+    public String updateProfile(@RequestParam("email") String email,
+                                @RequestParam("name") String name,
+                                @RequestParam("phone") String phone,
+                                @RequestParam("address") String address,
+                                RedirectAttributes redirectAttributes) {
         try {
-            Learner updatedLearner = learnerService.updateProfile(email, name, phone, address);
-            // Use RedirectAttributes to add flash attributes (available after redirect)
-            redirectAttributes.addFlashAttribute("success", "Profile updated successfully!");
-            // It's not necessary to pass the learner object if index.html doesn't display profile details
-            // If you need it, you can add: redirectAttributes.addFlashAttribute("learner", updatedLearner);
-
-            return "redirect:/"; // <--- CHANGE THIS LINE
-        } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("error", "User not found");
-            return "redirect:/"; // <--- CHANGE THIS LINE
+            learnerService.updateProfile(email, name, phone, address);
+            redirectAttributes.addFlashAttribute("success", "Profile updated successfully.");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "An unexpected error occurred during profile update.");
-            e.printStackTrace();
-            return "redirect:/"; // <--- CHANGE THIS LINE
+            redirectAttributes.addFlashAttribute("error", "Error updating profile: " + e.getMessage());
         }
+        return "redirect:/profile";
     }
 }

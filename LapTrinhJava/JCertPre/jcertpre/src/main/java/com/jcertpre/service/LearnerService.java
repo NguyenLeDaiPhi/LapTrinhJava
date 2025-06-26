@@ -3,18 +3,23 @@ package com.jcertpre.service;
 import com.jcertpre.dto.RegisterRequest;
 import com.jcertpre.model.Learner;
 import com.jcertpre.repository.LearnerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class LearnerService {
 
-    @Autowired
     private LearnerRepository learnerRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    public LearnerService(LearnerRepository learnerRepository, PasswordEncoder passwordEncoder) {
+        this.learnerRepository = learnerRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public String registerLearner(RegisterRequest request) {
         if (!request.getPassword().equals(request.getConfirmPassword())) {
@@ -36,14 +41,16 @@ public class LearnerService {
     }
 
     public Learner findByEmail(String email) {
-        return learnerRepository.findByEmail(email);
+        Optional<Learner> learnerOpt = learnerRepository.findByEmail(email);
+        return learnerOpt.orElse(null);
     }
 
     public Learner updateProfile(String email, String name, String phone, String address) {
-        Learner learner = learnerRepository.findByEmail(email);
-        if (learner == null) {
+        Optional<Learner> learnerOpt = learnerRepository.findByEmail(email);
+        if (!learnerOpt.isPresent()) {
             throw new IllegalArgumentException("Learner not found with email: " + email);
         }
+        Learner learner = learnerOpt.get();
 
         // Update only name, phone, and address; email remains unchanged
         learner.setName(name);

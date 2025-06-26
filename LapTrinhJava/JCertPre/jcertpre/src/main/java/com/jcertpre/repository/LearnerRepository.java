@@ -1,11 +1,14 @@
 package com.jcertpre.repository;
 
+import com.jcertpre.model.Learner;
+
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.jcertpre.model.Learner;
 
-
 public interface LearnerRepository extends JpaRepository<Learner, Long> {
-    Learner findByEmail(String email);
+    Optional<Learner> findByEmail(String email);
     boolean existsByEmail(String email);
 }
