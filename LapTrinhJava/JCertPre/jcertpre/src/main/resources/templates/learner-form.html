@@ -16,29 +16,30 @@
 </head>
 <body>
 <div class="form-container">
-    <h2 th:text="${learner.id == null} ? 'Thêm Learner' : 'Chỉnh sửa Learner'"></h2>
+    <h2 th:text="${learner.id == null} ? 'Add Learner' : 'Edit Learner'"></h2>
     <form th:action="@{/admin/learners/save}" th:object="${learner}" method="post">
         <input type="hidden" th:field="*{id}"/>
 
-        <label>Họ và tên</label>
+        <label>Name</label>
         <input type="text" th:field="*{name}" required/>
 
         <label>Email</label>
         <input type="email" th:field="*{email}" required/>
 
-        <label>Mật khẩu</label>
+        <label>Password</label>
         <input type="password" th:field="*{password}" required/>
 
-        <label>Số điện thoại</label>
+        <label>Phone Number</label>
         <input type="text" th:field="*{phone}" />
 
-        <label>Địa chỉ</label>
+        <label>Address</label>
         <input type="text" th:field="*{address}" />
 
-        <button type="submit">Lưu</button>
+        <button type="submit">Save</button>
     </form>
     <br>
-    <a href="/admin/learners/view">← Quay lại danh sách</a>
+    <a href="/admin/learners/view">← Back to list</a>
 </div>
 </body>
+
 </html>

@@ -13,12 +13,12 @@
     </style>
 </head>
 <body>
-    <h1>Danh sách Learners</h1>
-    <a href="/admin/learners/add" class="button">Thêm học viên</a>
+    <h1>Learners List</h1>
+    <a href="/admin/learners/add" class="button">Add Learner</a>
     <table>
         <thead>
             <tr>
-                <th>ID</th><th>Tên</th><th>Email</th><th>SĐT</th><th>Địa chỉ</th><th>Thao tác</th>
+                <th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Address</th><th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -29,14 +29,15 @@
                 <td th:text="${learner.phone}"></td>
                 <td th:text="${learner.address}"></td>
                 <td>
-                    <a th:href="@{'/admin/learners/edit/' + ${learner.id}}" class="button">Sửa</a>
+                    <a th:href="@{'/admin/learners/edit/' + ${learner.id}}" class="button">Edit</a>
                     <a th:href="@{'/admin/learners/delete/' + ${learner.id}}" class="button" 
-                       onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
+                       onclick="return confirm('Are you sure you want to delete this learner?')">Delete</a>
                 </td>
             </tr>
         </tbody>
     </table>
     <br>
-    <a href="/admin-dashboard">← Về trang quản trị</a>
+    <a href="/admin-dashboard">← Back to Admin Dashboard</a>
 </body>
+
 </html>
