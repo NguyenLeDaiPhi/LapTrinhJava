@@ -2,6 +2,8 @@ package com.jcertpre.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
@@ -22,6 +24,9 @@ public class Post {
     @Column(nullable = false)
     private LocalDateTime postedAt;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
     public Post() {
         this.postedAt = LocalDateTime.now();
     }
@@ -36,4 +41,11 @@ public class Post {
     public void setAuthorName(String authorName) { this.authorName = authorName; }
     public LocalDateTime getPostedAt() { return postedAt; }
     public void setPostedAt(LocalDateTime postedAt) { this.postedAt = postedAt; }
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }

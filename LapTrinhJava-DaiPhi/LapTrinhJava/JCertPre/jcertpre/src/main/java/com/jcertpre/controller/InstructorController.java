@@ -9,6 +9,7 @@ import com.jcertpre.model.Instructor;
 import com.jcertpre.model.Notification;
 import com.jcertpre.model.Post;
 import com.jcertpre.model.Question;
+import com.jcertpre.repository.PostRepository;
 import com.jcertpre.service.CommunityService;
 import com.jcertpre.service.CourseService;
 import com.jcertpre.service.InstructorService;
@@ -40,6 +41,9 @@ public class InstructorController {
     private final InstructorService instructorService;
 
     @Autowired
+    private final PostRepository postRepo;
+
+    @Autowired
     private final CourseService courseService;
 
     @Autowired
@@ -50,9 +54,10 @@ public class InstructorController {
 
     private static final Logger logger = LoggerFactory.getLogger(InstructorController.class);
 
-    public InstructorController(InstructorService instructorService, CourseService courseService) {
+    public InstructorController(InstructorService instructorService, CourseService courseService, PostRepository postRepo) {
         this.instructorService = instructorService;
         this.courseService = courseService;
+        this.postRepo = postRepo;
     }
 
     @GetMapping("/login")
@@ -185,67 +190,6 @@ public class InstructorController {
         }
         model.addAttribute("courses", courseService.getCoursesByInstructor(instructor));
         return "instructor_course";
-    }
-
-    @GetMapping("/community")
-    public String showCommunityPage(Model model) {
-        List<Post> posts = communityService.getAllPosts();
-        Map<Long, List<Comment>> postCommentsMap = new HashMap<>();
-
-        for (Post post : posts) {
-            postCommentsMap.put(post.getId(), communityService.getCommentsByPost(post));
-        }
-
-        model.addAttribute("posts", posts);
-        model.addAttribute("postCommentsMap", postCommentsMap);
-        return "community";
-    }
-
-    @PostMapping("/community/post")
-    public String createPost(
-            @RequestParam("title") String title,
-            @RequestParam("content") String content,
-            Model model) {
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        String error = communityService.createPost(title, content, username);
-
-        if (error != null) {
-            Map<String, String> errors = new HashMap<>();
-            String[] errorParts = error.split(":", 2);
-            errors.put(errorParts[0], errorParts[1]);
-            model.addAttribute("errors", errors);
-
-            List<Post> posts = communityService.getAllPosts();
-            Map<Long, List<Comment>> postCommentsMap = new HashMap<>();
-            for (Post post : posts) {
-                postCommentsMap.put(post.getId(), communityService.getCommentsByPost(post));
-            }
-
-            model.addAttribute("posts", posts);
-            model.addAttribute("postCommentsMap", postCommentsMap);
-            return "community";
-        }
-        return "redirect:/instructor/community";
-    }
-
-    @PostMapping("/community/comment")
-    public String createComment(
-            @RequestParam("postId") Long postId,
-            @RequestParam("content") String content,
-            Model model) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        String error = communityService.createComment(postId, content, username);
-        if (error != null) {
-            Map<String, String> errors = new HashMap<>();
-            String[] errorParts = error.split(":", 2);
-            errors.put(errorParts[0], errorParts[1]);
-            model.addAttribute("errors", errors);
-            model.addAttribute("posts", communityService.getAllPosts());
-            return "community";
-        }
-        logger.info("Comment created by {} on post {}", username, postId);
-        return "redirect:/instructor/community";
     }
 
     @GetMapping("/course/{courseId}")
@@ -430,13 +374,7 @@ public class InstructorController {
                 return "instructor_course_management";
             }
 
-            ExamSimulationRequest updatedExam = new ExamSimulationRequest();
-            if (course.getExamSimulation() != null && course.getExamSimulation().getQuestions() != null) {
-                updatedExam.setQuestions(new ArrayList<>(course.getExamSimulation().getQuestions()));
-            }
-            updatedExam.getQuestions().add(newQuestion);
-
-            courseService.saveExamSimulation(courseId, updatedExam);
+            courseService.saveExamSimulation(courseId, examRequest);
             logger.info("Exam question saved for courseId: {}, question: {}", courseId, newQuestion.getText());
             redirectAttributes.addFlashAttribute("success", "Question added successfully!");
             return "redirect:/instructor/course/" + courseId;

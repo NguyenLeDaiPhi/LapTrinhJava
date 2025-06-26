@@ -31,8 +31,8 @@ public class Comment {
     public void setId(Long id) { this.id = id; }
     public Post getPost() { return post; }
     public void setPost(Post post) { this.post = post; }
-    public String getAuthorName() { return authorName; }
-    public void setAuthorName(String authorEmail) { this.authorName = authorName; }
+    public String getAuthorName() { return this.authorName; }
+    public void setAuthorName(String authorName) { this.authorName = authorName; }
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
     public LocalDateTime getCommentedAt() { return commentedAt; }

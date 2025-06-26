@@ -53,7 +53,7 @@ public class Course {
     private Instructor instructor;
 
     @OneToOne(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-private ExamSimulation examSimulation; // The exam simulation for this course
+    private ExamSimulation examSimulation; // The exam simulation for this course
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Notification> notifications = new ArrayList<>();

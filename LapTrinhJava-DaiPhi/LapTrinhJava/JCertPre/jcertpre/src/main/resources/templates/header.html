@@ -121,6 +121,10 @@
                                 th:classappend="${activePage == 'contact'} ? ' active'">Contact</a>
                             <a th:href="@{/profile}" class="nav-item nav-link" 
                                 th:classappend="${activePage == 'profile'} ? ' active'">Profile</a>
+
+                            <!-- Thêm Community cho learner -->
+                            <a th:href="@{/learnercommunity}" class="nav-item nav-link" 
+                                th:classappend="${activePage == 'community'} ? ' active'">Community</a>
                         </div>
                         <a class="btn btn-primary py-2 px-4 ml-auto d-none d-lg-block"
                             th:href="@{/recommendation}">

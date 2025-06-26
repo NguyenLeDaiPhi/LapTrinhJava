@@ -36,5 +36,8 @@ public class HomeController {
         return "single"; // Loads single.html from templates/
     }
     
-
+    @GetMapping("/learnercommunity")
+    public String redirectToLearnerCommunity() {
+        return "redirect:/learner/community";
+    }
 }
