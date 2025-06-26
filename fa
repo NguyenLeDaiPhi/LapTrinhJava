@@ -1,0 +1,27 @@
+[33mc8981e8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mtruongcongly[m[33m, [m[1;31morigin/truongcongly[m[33m)[m Update project files in truongcongly branch
+[33mc4a284a[m Merge branch 'main' into truongcongly
+[33m6a2f5b8[m Update take exam simulation
+[33maa04b0e[m fix sau merge
+[33m31c918e[m Merge AnhTuan into truongcongly
+[33maae2356[m update lại thư mục LapTrinhJava
+[33m59c7f2e[m Remove all files
+[33m954c845[m Upload
+[33m774b862[m delete up lại r merge
+[33m181a5a0[m update
+[33m85a6385[m Thêm thư mục mới hoàn thiện xong community
+[33m9ebaff3[m Delete để fix lại và update giao dien thêm cho community
+[33m2fedd8d[m fix xog lỗi
+[33m4469259[m fix lỗi 404 khi instructor post bài
+[33ma6333d7[m xog community ( dang chinh sua giao dien cho dep hon)
+[33ma64ef3a[m Update chuc nang community phan quyen giua learner va instructor
+[33me3a9348[m update function post and comment for instructor
+[33mc17ef35[m add community for learner
+[33m76bb2df[m Update function Post
+[33m5a78e5f[m fix comment
+[33m02df562[m add
+[33ma67928c[m update
+[33meb5f0a8[m add giao diện learner community
+[33ma462aea[m Update giao diện course
+[33mc346709[m fix function HomeController
+[33m3f63ba5[m[33m ([m[1;31morigin/AnhTuan[m[33m)[m xong phần enroll course (đang chỉnh sửa lại phần khoá học trong profile cho đẹp)
+[33m777fba7[m Update posting function for instructor which allowing learner can interact with instructor througout the comment in their post.
