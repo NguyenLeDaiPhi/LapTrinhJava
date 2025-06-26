@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-JCertPreApplication<jcertpre>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.jcertpre.JCertPreApplication",
+      "projectName": "jcertpre",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
