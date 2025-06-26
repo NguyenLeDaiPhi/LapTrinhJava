@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>N1 Study Plan</title>
+
+  <!-- Bootstrap từ CDN -->
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+  />
+
+  <!-- Google Fonts -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Poppins:400,500,600,700"
+  />
+
+  <!-- CSS custom -->
+  <link rel="stylesheet" th:href="@{/css/createPlan.css}" />
+  <link rel="stylesheet" th:href="@{/css/timeline.css}" />
+  <style>
+      .pt-100{
+      padding-top:100px;
+  }
+  .pb-100{
+      padding-bottom:100px;
+  }
+  .section-title {
+    margin-bottom: 60px;
+  }
+  .section-title p {
+    color: #777;
+    font-size: 16px;
+  }
+  .section-title h4 {
+    text-transform: capitalize;
+    font-size: 40px;
+    position: relative;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .section-title h4:before {
+    position: absolute;
+    content: "";
+    width: 60px;
+    height: 2px;
+    background-color: #ff3636;
+    bottom: 0;
+    left: 50%;
+    margin-left: -30px;
+  }
+  .section-title h4:after {
+    position: absolute;
+    background-color: #ff3636;
+    content: "";
+    width: 10px;
+    height: 10px;
+    bottom: -4px;
+    left: 50%;
+    margin-left: -5px;
+    border-radius: 50%;
+  }
+  ul.timeline-list {
+    position: relative;
+    margin: 0;
+    padding: 0
+  }
+  ul.timeline-list:before {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 100%;
+    background-color: #ff3636;
+    left: 50%;
+    top: 0;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+  }
+  ul.timeline-list li {
+    position: relative;
+    clear: both;
+    display: table;
+  }
+  .timeline_content {
+    border: 2px solid #ff3636;
+    background-color:#fff
+  }
+  ul.timeline-list li .timeline_content {
+    width: 45%;
+    color: #333;
+    padding: 30px;
+    float: left;
+    text-align: right;
+  }
+  ul.timeline-list li:nth-child(2n) .timeline_content {
+    float: right;
+    text-align: left;
+  }
+  .timeline_content h4 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 10px 0;
+  }
+  ul.timeline-list li:before {
+    position: absolute;
+    content: "";
+    width: 25px;
+    height: 25px;
+    background-color: #ff3636;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+  .timeline_content span {
+    font-size: 18px;
+    font-weight: 500;
+    font-family: poppins;
+    color: #ff3636;
+  }
+  .back-button {
+    position: fixed;
+    top: 20px;    /* khoảng cách từ mép trên */
+    left: 20px;   /* khoảng cách từ mép trái */
+    z-index: 1000; /* luôn hiện trên */
+    /* Tùy chỉnh thêm */
+    /* background-color, color, padding, border-radius nếu muốn */
+}
+  .back-button:hover {
+    background-color: #e0e0e0; /* Màu nền khi hover */
+    color: rgb(197, 57, 57); /* Màu chữ khi hover */
+  }
+  </style>
+</head>
+<body>
+  <a th:href="@{/recommendation}"
+     class="btn btn-secondary back-button">
+    &larr; Back
+  </a>
+  <section class="experience pt-100 pb-100" id="experience">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-8 mx-auto text-center">
+          <div class="section-title">
+            <h4>Plan for N1 level</h4>
+            <p>Focus on this path and you will succeed</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+         <div class="col-xl-12">
+            <ul class="timeline-list">
+               <!-- Single Experience -->
+               <li>
+                  <div class="timeline_content">
+                     <span>Month 1</span>
+                     <h4>Review N2 & Start N1 Grammar</h4>
+                     <p>
+                      Begin by reviewing core N2 grammar, vocabulary (~6,000 words), and 1,000 Kanji to ensure a strong base. Identify weak points from previous mock exams and correct recurring mistakes. Start learning 20–30 N1 grammar patterns, which often include subtle nuances and advanced expressions. Begin reading formal essays, newspaper articles, and academic writing to get accustomed to N1-style texts.
+                     </p>
+                  </div>
+               </li>
+               <!-- Single Experience -->
+               <li>
+                  <div class="timeline_content">
+                    <span>Month 2</span>
+                     <h4>Expand Vocabulary & Master Grammar</h4>
+                     <p>
+                     Learn 500–600 advanced vocabulary words and 150 Kanji commonly seen at N1 level. Continue studying N1 grammar, focusing on usage and contrast with similar expressions. Strengthen reading skills with texts that include logical arguments, editorial opinions, and policy-related content. Listen to news reports, debates, and lectures to improve comprehension of implicit meaning and abstract topics. Begin working with N1-level reading and listening drills.
+                     </p>
+                  </div>
+               </li>
+               <!-- Single Experience -->
+               <li>
+                  <div class="timeline_content">
+                    <span>Month 3</span>
+                     <h4>Deepen Comprehension & Increase Practice</h4>
+                     <p>
+                       Add another 500 vocabulary words and 150 Kanji. Complete most of the N1 grammar syllabus and begin weekly review cycles. Practice reading dense academic texts, essays with layered arguments, and documents with formal/journalistic tone. Listen to high-level materials like NHK documentaries, interviews, and conference talks, focusing on tone, implication, and logical flow. Take partial mock exams under time limits to build speed and endurance.
+                     </p>
+                  </div>
+               </li>
+               <!-- Single Experience -->
+               <li>
+                  <div class="timeline_content">
+                    <span>Month 4</span>
+                     <h4>Final Review and Full-Length Simulation</h4>
+                     <p>
+                       Learn the final 300–400 vocabulary words and 100–150 Kanji. Dedicate this month to reviewing all N1 grammar, refining comprehension of similar and easily confused patterns. Take full-length N1 mock exams weekly under test conditions, analyze your performance in detail, and refine your time management and answering strategies. Continue daily reading and listening with native sources to build fluency, accuracy, and confidence before the exam.
+                     </p>
+                  </div>
+               </li>
+            </ul>
+         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- jQuery trước Bootstrap JS -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+  </script>
+  <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js">
+  </script>
+
+  <!-- JS custom nếu có -->
+  <script th:src="@{/js/app.js}"></script>
+</body>
+</html>
