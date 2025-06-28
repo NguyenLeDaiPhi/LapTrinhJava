@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${course.title} + ' Exam Simulation'"></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"/>
+    <style>
+        body { padding: 20px; }
+        .question-card { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .options label { display: block; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 th:text="${course.title} + ' Exam Simulation'"></h2>
+        <p>Answer all questions and submit.</p>
+
+        <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+
+        <form th:action="@{/learner/course/{courseId}/exam/submit(courseId=${course.id})}" th:object="${examSubmission}" method="post">
+            <div th:each="question, stat : ${questions}" class="question-card">
+                <h5 th:text="${stat.index + 1} + '. ' + ${question.text}">Question Text</h5>
+                <div class="options">
+                    <label>
+                        <input type="radio" th:name="'answers[' + ${question.id} + ']'" value="a" required/>
+                        <span th:text="${question.optionA}">Option A</span>
+                    </label>
+                    <label>
+                        <input type="radio" th:name="'answers[' + ${question.id} + ']'" value="b" required/>
+                        <span th:text="${question.optionB}">Option B</span>
+                    </label>
+                    <label>
+                        <input type="radio" th:name="'answers[' + ${question.id} + ']'" value="c" required/>
+                        <span th:text="${question.optionC}">Option C</span>
+                    </label>
+                    <label>
+                        <input type="radio" th:name="'answers[' + ${question.id} + ']'" value="d" required/>
+                        <span th:text="${question.optionD}">Option D</span>
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Exam</button>
+        </form>
+    </div>
+</body>
+</html>
