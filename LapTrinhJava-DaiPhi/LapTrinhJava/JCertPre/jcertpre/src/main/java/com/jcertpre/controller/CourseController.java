@@ -1,30 +1,33 @@
 package com.jcertpre.controller;
 
 import java.security.Principal;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jcertpre.model.Course;
 import com.jcertpre.model.Learner;
-import com.jcertpre.repository.CourseRepository;
-import com.jcertpre.repository.LearnerRepository;
+import com.jcertpre.service.CourseService;
+import com.jcertpre.service.LearnerService;
 
 @Controller
 public class CourseController {
 
     @Autowired
-    private CourseRepository courseRepository;
+    private CourseService courseService;
 
     @Autowired
-    private LearnerRepository learnerRepository;
+    private LearnerService learnerService;
 
     // Hiển thị danh sách khóa học phân trang
     @GetMapping("/course")
@@ -32,8 +35,8 @@ public class CourseController {
                                  @RequestParam(defaultValue = "0") int page) {
         int size = 4; // Số khóa học mỗi trang
 
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Course> coursePage = courseRepository.findAll(pageable);
+        Pageable pageable = PageRequest.of(page, size); 
+        Page<Course> coursePage = courseService.getAllCoursesPaginated(pageable);
 
         model.addAttribute("courses", coursePage.getContent());
         model.addAttribute("currentPage", page);
@@ -44,41 +47,24 @@ public class CourseController {
     // Đăng ký khóa học (POST)
     @PostMapping("/course/register/{id}")
     public String registerCourse(@PathVariable("id") Long courseId,
-                                 Principal principal,
-                                 RedirectAttributes redirectAttributes
-                                 ) {
+                                 Authentication authentication,
+                                 RedirectAttributes redirectAttributes) {
 
-        if (principal == null) {
+        if (authentication == null || !authentication.isAuthenticated()) {
             redirectAttributes.addFlashAttribute("error", "Please log in to register for a course.");
             return "redirect:/login";
         }
 
-        Optional<Course> courseOpt = courseRepository.findById(courseId);
-        if (courseOpt.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Course not found.");
+        String learnerEmail = authentication.getName();
+
+        try {
+            courseService.enrollLearnerInCourse(learnerEmail, courseId);
+            redirectAttributes.addFlashAttribute("success", "Successfully enrolled in the course! It has been added to your profile.");
+            return "redirect:/profile"; // Chuyển hướng đến trang profile
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/course";
         }
-
-        Course course = courseOpt.get();
-
-        Optional<Learner> learnerOpt = learnerRepository.findByEmail(principal.getName());
-        if (learnerOpt.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Learner not found.");
-            return "redirect:/course";
-        }
-
-        Learner learner = learnerOpt.get();
-
-        if (learner.getCourses().contains(course)) {
-            redirectAttributes.addFlashAttribute("info", "You are already enrolled in this course.");
-        } else {
-            learner.getCourses().add(course);
-            course.setStudentCount(course.getStudentCount() + 1);
-            learnerRepository.save(learner);
-            courseRepository.save(course);
-            redirectAttributes.addFlashAttribute("success", "Successfully registered for the course!");
-        }
-        return "redirect:/learner/course/" + courseId;
     }
 
     @GetMapping("/learner/course/{id}")
@@ -92,21 +78,17 @@ public class CourseController {
             return "redirect:/login";
         }
 
-        Optional<Learner> learnerOpt = learnerRepository.findByEmail(principal.getName());
-        if (learnerOpt.isEmpty()) {
+        Learner learner = learnerService.findByEmail(principal.getName());
+        if (learner == null) {
             redirectAttributes.addFlashAttribute("error", "Learner account not found.");
             return "redirect:/login";
         }
 
-        Learner learner = learnerOpt.get();
-
-        Optional<Course> courseOpt = courseRepository.findById(courseId);
-        if (courseOpt.isEmpty()) {
+        Course course = courseService.findById(courseId);
+        if (course == null) {
             redirectAttributes.addFlashAttribute("error", "Course not found.");
             return "redirect:/course";
         }
-
-        Course course = courseOpt.get();
 
         // Security check: Is the learner enrolled in this course?
         if (learner.getCourses().stream().noneMatch(c -> c.getId().equals(courseId))) {

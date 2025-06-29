@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/learner/course/{courseId}/exam")
+@RequestMapping("/learner")
 public class LearnerExamController {
 
     private static final Logger logger = LoggerFactory.getLogger(LearnerExamController.class);
@@ -31,7 +31,7 @@ public class LearnerExamController {
      * @param model The Spring Model to pass data to the view.
      * @return The name of the Thymeleaf template for the exam page.
      */
-    @GetMapping
+    @GetMapping("/course/{courseId}/exam")
     public String showExamSimulation(@PathVariable Long courseId, Model model, RedirectAttributes redirectAttributes) {
         try {
             Course course = courseService.findCourseById(courseId);
@@ -72,7 +72,7 @@ public class LearnerExamController {
             model.addAttribute("submittedAnswers", submission.getAnswers());
             model.addAttribute("questions", courseService.getExamQuestionsForCourse(courseId));
             model.addAttribute("course", courseService.findCourseById(courseId));
-            return "learner_exam_results"; // Create this Thymeleaf template
+            return "learner_exam_results"; 
         } catch (RuntimeException e) {
             logger.error("Error submitting exam for course {}: {}", courseId, e.getMessage());
             redirectAttributes.addFlashAttribute("error", "Error submitting exam: " + e.getMessage());

@@ -1,7 +1,7 @@
 package com.jcertpre.service;
 
-import com.jcertpre.model.Instructor;
-import com.jcertpre.repository.InstructorRepository;
+import java.util.Collections;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import com.jcertpre.model.Instructor;
+import com.jcertpre.repository.InstructorRepository;
 
 @Service
 public class InstructorDetailsService implements UserDetailsService {

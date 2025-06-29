@@ -1,22 +1,31 @@
 package com.jcertpre.service;
 
-import com.jcertpre.dto.RegisterRequest;
-import com.jcertpre.model.Learner;
-import com.jcertpre.repository.LearnerRepository;
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import com.jcertpre.dto.RegisterRequest;
+import com.jcertpre.model.Course;
+import com.jcertpre.model.Learner;
+import com.jcertpre.repository.CourseRepository;
+import com.jcertpre.repository.LearnerRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class LearnerService {
 
-    private LearnerRepository learnerRepository;
-    private PasswordEncoder passwordEncoder;
+    private final LearnerRepository learnerRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final CourseRepository courseRepository;
 
-    public LearnerService(LearnerRepository learnerRepository, PasswordEncoder passwordEncoder) {
+    public LearnerService(LearnerRepository learnerRepository,
+                          PasswordEncoder passwordEncoder,
+                          CourseRepository courseRepository) {
         this.learnerRepository = learnerRepository;
         this.passwordEncoder = passwordEncoder;
+        this.courseRepository = courseRepository;
     }
 
     public String registerLearner(RegisterRequest request) {
@@ -56,5 +65,23 @@ public class LearnerService {
         learner.setAddress(address);
 
         return learnerRepository.save(learner);
+    }
+
+    @Transactional
+    public void unenrollFromCourse(String learnerEmail, Long courseId) {
+        Learner learner = learnerRepository.findByEmail(learnerEmail)
+                .orElseThrow(() -> new IllegalArgumentException("Learner not found with email: " + learnerEmail));
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found with ID: " + courseId));
+
+        if (learner.getCourses().remove(course)) {
+            // Decrement student count, ensuring it doesn't go below zero
+            course.setStudentCount(Math.max(0, course.getStudentCount() - 1));
+            learnerRepository.save(learner);
+            courseRepository.save(course);
+        } else {
+            throw new IllegalStateException("Cannot unenroll. Learner is not enrolled in this course.");
+        }
     }
 }

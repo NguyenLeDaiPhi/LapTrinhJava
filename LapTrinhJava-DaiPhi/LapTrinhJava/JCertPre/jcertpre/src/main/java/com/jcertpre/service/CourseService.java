@@ -1,21 +1,5 @@
 package com.jcertpre.service;
 
-import com.jcertpre.dto.CourseRequest;
-import com.jcertpre.dto.ExamSimulationRequest;
-import com.jcertpre.model.Course;
-import com.jcertpre.model.ExamSimulation;
-import com.jcertpre.model.Instructor;
-import com.jcertpre.model.Question;
-import com.jcertpre.repository.CourseRepository;
-import com.jcertpre.repository.InstructorRepository;
-
-import jakarta.transaction.Transactional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,7 +8,27 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.jcertpre.dto.CourseRequest;
+import com.jcertpre.dto.ExamSimulationRequest;
 import com.jcertpre.dto.ExamSubmissionRequest;
+import com.jcertpre.model.Course;
+import com.jcertpre.model.ExamSimulation;
+import com.jcertpre.model.Instructor;
+import com.jcertpre.model.Learner;
+import com.jcertpre.model.Question;
+import com.jcertpre.repository.CourseRepository;
+import com.jcertpre.repository.InstructorRepository;
+import com.jcertpre.repository.LearnerRepository;
+
+import jakarta.transaction.Transactional;
 @Service
 public class CourseService {
 
@@ -32,10 +36,14 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
+    private final LearnerRepository learnerRepository;
 
-    public CourseService(CourseRepository courseRepository, InstructorRepository instructorRepository) {
+    public CourseService(CourseRepository courseRepository,
+                         InstructorRepository instructorRepository,
+                         LearnerRepository learnerRepository) {
         this.courseRepository = courseRepository;
         this.instructorRepository = instructorRepository;
+        this.learnerRepository = learnerRepository;
     }
 
     public String uploadCourse(CourseRequest request, Instructor instructor) {
@@ -228,5 +236,31 @@ public class CourseService {
 
     public Course findById(Long id) {
         return courseRepository.findById(id).orElse(null);
+    }
+
+    public Page<Course> getAllCoursesPaginated(Pageable pageable) {
+        return courseRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public void enrollLearnerInCourse(String learnerEmail, Long courseId) {
+        Learner learner = learnerRepository.findByEmail(learnerEmail)
+                .orElseThrow(() -> new IllegalStateException("Learner not found with email: " + learnerEmail));
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalStateException("Course not found with ID: " + courseId));
+
+        // Check if already enrolled
+        if (learner.getCourses().contains(course)) {
+            throw new IllegalStateException("You are already enrolled in this course.");
+        }
+
+        // Enroll the learner
+        learner.getCourses().add(course);
+        course.setStudentCount(course.getStudentCount() + 1);
+
+        // Save both entities to persist changes
+        learnerRepository.save(learner);
+        courseRepository.save(course);
     }
 }

@@ -56,6 +56,25 @@
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-lg-12 col-xl-11">
           <div class="card text-black" style="border-radius: 25px">
+            <!-- Flash Messages -->
+            <div class="card-header bg-transparent border-0">
+              <div
+                th:if="${success}"
+                class="alert alert-success text-center"
+                th:text="${success}"
+              ></div>
+              <div
+                th:if="${error}"
+                class="alert alert-danger text-center"
+                th:text="${error}"
+              ></div>
+              <div
+                th:if="${info}"
+                class="alert alert-info text-center"
+                th:text="${info}"
+              ></div>
+            </div>
+
             <div class="card-body p-md-5">
               <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
                 Available Courses
