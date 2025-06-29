@@ -65,14 +65,14 @@ public class Learner {
         joinColumns = @JoinColumn(name = "learner_id"),
         inverseJoinColumns = @JoinColumn(name = "course_id")
     )
-    private List<Course> Courses = new ArrayList<>();
+    private List<Course> courses = new ArrayList<>();
 
     public List<Course> getCourses() {
-        return Courses;
+        return courses;
     }
 
     public void setCourses(List<Course> Courses) {
-        this.Courses = Courses;
+        this.courses = Courses;
     }
 
 }

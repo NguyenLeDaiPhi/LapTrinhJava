@@ -1,21 +1,8 @@
 package com.jcertpre.controller;
 
-import com.jcertpre.dto.CourseRequest;
-import com.jcertpre.dto.ExamSimulationRequest;
-import com.jcertpre.model.Comment;
-import com.jcertpre.model.Course;
-import com.jcertpre.model.ExamSimulation;
-import com.jcertpre.model.Instructor;
-import com.jcertpre.model.Notification;
-import com.jcertpre.model.Post;
-import com.jcertpre.model.Question;
-import com.jcertpre.repository.PostRepository;
-import com.jcertpre.service.CommunityService;
-import com.jcertpre.service.CourseService;
-import com.jcertpre.service.InstructorService;
-import com.jcertpre.service.NotificationService;
-
-import jakarta.validation.Valid;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +11,28 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.jcertpre.dto.CourseRequest;
+import com.jcertpre.dto.ExamSimulationRequest;
+import com.jcertpre.model.Course;
+import com.jcertpre.model.ExamSimulation;
+import com.jcertpre.model.Instructor;
+import com.jcertpre.model.Notification;
+import com.jcertpre.model.Question;
+import com.jcertpre.repository.PostRepository;
+import com.jcertpre.service.CourseService;
+import com.jcertpre.service.InstructorService;
+import com.jcertpre.service.NotificationService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/instructor")
@@ -45,9 +46,6 @@ public class InstructorController {
 
     @Autowired
     private final CourseService courseService;
-
-    @Autowired
-    private CommunityService communityService;
 
     @Autowired 
     private NotificationService notificationService;
@@ -125,28 +123,9 @@ public class InstructorController {
         logger.info("Course upload attempt for title: {}", request.getTitle());
 
         Map<String, String> errors = new HashMap<>();
-        if (request.getTitle() == null || request.getTitle().trim().isEmpty()) {
-            errors.put("title", "Title is required");
-        }
-        if (request.getDescription() == null || request.getDescription().trim().isEmpty()) {
-            errors.put("description", "Description is required");
-        }
-        if (request.getPrice() < 0) {
-            errors.put("price", "Price cannot be negative");
-        }
-
-        if (!errors.isEmpty()) {
-            logger.warn("Validation errors: {}", errors);
-            model.addAttribute("errors", errors);
-            return "upload_course";
-        }
-
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         if (username == null || username.equals("anonymousUser")) {
             logger.error("No authenticated user found for course upload");
-            errors.put("general", "Please login to upload a course");
-            model.addAttribute("errors", errors);
-            return "upload_course";
         }
 
         Instructor instructor = courseService.getInstructorByEmail(username);
@@ -162,7 +141,7 @@ public class InstructorController {
             logger.warn("Upload failed: {}", error);
             String[] errorParts = error.split(":", 2);
             if (errorParts.length == 2) {
-                errors.put(errorParts[0], error);
+                errors.put(errorParts[0], errorParts[1]);
             } else {
                 errors.put("general", error);
             }
@@ -208,7 +187,10 @@ public class InstructorController {
 
     @PostMapping("/course/{courseId}/update")
     public String updateCourse(@PathVariable("courseId") Long courseId,
-                              @ModelAttribute("course") Course course,
+                               @RequestParam("title") String title,
+                              @RequestParam("description") String description,
+                              @RequestParam("price") Double price,
+                              @RequestParam("duration") String duration,
                               @RequestParam("files") MultipartFile[] files,
                               Model model,
                               RedirectAttributes redirectAttributes) {
@@ -220,17 +202,27 @@ public class InstructorController {
         }
 
         Map<String, String> errors = new HashMap<>();
-        if (course.getTitle() == null || course.getTitle().trim().isEmpty()) {
+        if (title == null || title.trim().isEmpty()) {
             errors.put("title", "Title is required");
         }
-        if (course.getDescription() == null || course.getDescription().trim().isEmpty()) {
+        if (description == null || description.trim().isEmpty()) {
             errors.put("description", "Description is required");
         }
-        if (course.getPrice() < 0) {
-            errors.put("price", "Price cannot be negative");
+        if (price == null || price < 0) {
+            errors.put("price", "Price is required and cannot be negative");
+        }
+        if (duration == null || duration.trim().isEmpty()) {
+            errors.put("duration", "Duration is required");
         }
 
         if (!errors.isEmpty()) {
+            // Preserve user input on validation failure
+            existingCourse.setTitle(title);
+            existingCourse.setDescription(description);
+            existingCourse.setPrice(price);
+            existingCourse.setDuration(duration);
+
+            model.addAttribute("course", existingCourse);
             model.addAttribute("errors", errors);
             model.addAttribute("exam", existingCourse.getExamSimulation() != null ? existingCourse.getExamSimulation() : new ExamSimulation());
             model.addAttribute("notification", new Notification());
@@ -238,15 +230,18 @@ public class InstructorController {
         }
 
         try {
-            existingCourse.setTitle(course.getTitle());
-            existingCourse.setDescription(course.getDescription());
-            existingCourse.setPrice(course.getPrice());
+            // Update the existing course with new details
+            existingCourse.setTitle(title);
+            existingCourse.setDescription(description);
+            existingCourse.setPrice(price);
+            existingCourse.setDuration(duration);
             courseService.updateCourse(existingCourse, files);
             redirectAttributes.addFlashAttribute("success", "Course updated successfully!");
             logger.info("Course {} updated by {}", courseId, email);
-        } catch (Exception e) {
+        } catch (IOException e) {
             logger.error("Failed to update course {}: {}", courseId, e.getMessage(), e);
             errors.put("general", "Failed to update course: " + e.getMessage());
+            model.addAttribute("course", existingCourse);
             model.addAttribute("errors", errors);
             model.addAttribute("exam", existingCourse.getExamSimulation() != null ? existingCourse.getExamSimulation() : new ExamSimulation());
             model.addAttribute("notification", new Notification());

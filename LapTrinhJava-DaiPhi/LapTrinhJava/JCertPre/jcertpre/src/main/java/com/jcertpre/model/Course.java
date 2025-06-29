@@ -33,16 +33,16 @@ public class Course {
     private String description;
 
     @Column(name = "Price", nullable = false)
-    private double price;
+    private Double price;
 
     @Column(name = "Duration")
     private String duration;
 
     @Column(name = "Rating")
-    private double rating;
+    private Double rating = 0.0;
 
     @Column(name = "Student_Count")
-    private int studentCount;
+    private Integer studentCount = 0;
 
     @ElementCollection
     @Column(name = "files")
@@ -60,7 +60,7 @@ public class Course {
 
     public Course() {}
 
-    public Course(String title, String description, double price, String duration, double rating, int studentCount, Instructor instructor) {
+    public Course(String title, String description, Double price, String duration, Double rating, Integer studentCount, Instructor instructor) {
         this.title = title;
         this.description = description;
         this.price = price;
@@ -76,8 +76,8 @@ public class Course {
     public void setTitle(String title) { this.title = title; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) { this.price = price; }
     public String getDuration() { return duration; }
     public void setDuration(String duration) { this.duration = duration; }
     public Double getRating() { return rating; }

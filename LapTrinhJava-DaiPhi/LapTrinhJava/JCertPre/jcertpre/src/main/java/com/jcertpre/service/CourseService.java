@@ -1,28 +1,34 @@
 package com.jcertpre.service;
 
-import com.jcertpre.dto.CourseRequest;
-import com.jcertpre.dto.ExamSimulationRequest;
-import com.jcertpre.model.Course;
-import com.jcertpre.model.ExamSimulation;
-import com.jcertpre.model.Instructor;
-import com.jcertpre.model.Question;
-import com.jcertpre.repository.CourseRepository;
-import com.jcertpre.repository.InstructorRepository;
-
-import jakarta.transaction.Transactional;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.jcertpre.dto.CourseRequest;
+import com.jcertpre.dto.ExamSimulationRequest;
+import com.jcertpre.dto.ExamSubmissionRequest;
+import com.jcertpre.model.Course;
+import com.jcertpre.model.ExamSimulation;
+import com.jcertpre.model.Instructor;
+import com.jcertpre.model.Learner;
+import com.jcertpre.model.Question;
+import com.jcertpre.repository.CourseRepository;
+import com.jcertpre.repository.InstructorRepository;
+import com.jcertpre.repository.LearnerRepository;
+
+import jakarta.transaction.Transactional;
 @Service
 public class CourseService {
 
@@ -30,10 +36,14 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final InstructorRepository instructorRepository;
+    private final LearnerRepository learnerRepository;
 
-    public CourseService(CourseRepository courseRepository, InstructorRepository instructorRepository) {
+    public CourseService(CourseRepository courseRepository,
+                         InstructorRepository instructorRepository,
+                         LearnerRepository learnerRepository) {
         this.courseRepository = courseRepository;
         this.instructorRepository = instructorRepository;
+        this.learnerRepository = learnerRepository;
     }
 
     public String uploadCourse(CourseRequest request, Instructor instructor) {
@@ -65,49 +75,83 @@ public class CourseService {
         return null;
     }
 
-    public String storeFiles(MultipartFile[] files) throws IOException {
+    private List<String> storeFiles(MultipartFile[] files) throws IOException {
         String uploadDir = "uploads/";
         Path uploadPath = Paths.get(uploadDir);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
+        List<String> storedFileNames = new ArrayList<>();
         for (MultipartFile file : files) {
             if (file != null && !file.isEmpty()) {
-                if (!file.getContentType().matches("application/(pdf|zip|msword|plain)")) {
-                    logger.warn("Invalid file type: {}", file.getOriginalFilename());
-                    return "files:Invalid file type. Must be PDF, ZIP, DOC, or TXT";
+                String contentType = file.getContentType();
+                if (contentType == null ||
+                        !(contentType.equals("application/pdf") ||
+                          contentType.equals("application/zip") ||
+                          contentType.equals("application/msword") ||
+                          contentType.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document") || // .docx
+                          contentType.equals("text/plain"))) {
+                    logger.warn("Invalid file type: {} for file {}", contentType, file.getOriginalFilename());
+                    throw new IOException("Invalid file type for " + file.getOriginalFilename() + ". Must be PDF, ZIP, DOC, DOCX, or TXT");
                 }
                 if (file.getSize() > 10 * 1024 * 1024) {
                     logger.warn("File too large: {}", file.getOriginalFilename());
-                    return "files:File size must not exceed 10MB";
+                    throw new IOException("File size for " + file.getOriginalFilename() + " must not exceed 10MB");
                 }
                 String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
                 Path filePath = uploadPath.resolve(fileName);
                 Files.copy(file.getInputStream(), filePath);
+                storedFileNames.add(fileName);
                 logger.info("File stored successfully: {}", fileName);
             }
         }
-        return null; // Success
+        return storedFileNames;
     }
 
+    @Transactional
     public void updateCourse(Course course, MultipartFile[] files) throws IOException {
         if (course == null || course.getId() == null) {
             logger.warn("Update failed: Invalid course or ID");
             throw new IllegalArgumentException("Course or ID is invalid");
         }
-        String fileError = storeFiles(files);
-        if (fileError != null) {
-            logger.warn("Update failed due to file errors: {}", fileError);
-            throw new IOException(fileError);
+
+        // Store new files and add their names to the course's existing file list
+        List<String> newFileNames = storeFiles(files);
+        if (course.getFiles() == null) {
+            course.setFiles(new ArrayList<>());
         }
-        for (MultipartFile file : files) {
-            if (file != null && !file.isEmpty()) {
-                String fileName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
-                course.getFiles().add(fileName);
-            }
-        }
+        course.getFiles().addAll(newFileNames);
+
         courseRepository.save(course);
         logger.info("Course updated successfully: {}", course.getTitle());
+    }
+
+    public List<Question> getExamQuestionsForCourse(Long courseId) {
+        Course course = courseRepository.findById(courseId).orElseThrow(() -> new RuntimeException("Course not found: " + courseId));
+        if (course.getExamSimulation() != null && course.getExamSimulation().getQuestions() != null) {
+            return course.getExamSimulation().getQuestions();
+        }
+        return new ArrayList<>();
+    }
+
+    public Map.Entry<Integer, Map<Long, Boolean>> gradeExam(Long courseId, ExamSubmissionRequest submission) {
+        List<Question> examQuestions = getExamQuestionsForCourse(courseId);
+        Map<Long, String> submittedAnswers = submission.getAnswers();
+
+        int score = 0;
+        Map<Long, Boolean> results = new java.util.HashMap<>();
+
+        for (Question question : examQuestions) {
+            String correctAnswer = question.getCorrectAnswer();
+            String learnerAnswer = submittedAnswers.get(question.getId());
+
+            boolean isCorrect = (learnerAnswer != null && learnerAnswer.equalsIgnoreCase(correctAnswer));
+            results.put(question.getId(), isCorrect);
+            if (isCorrect) {
+                score++;
+            }
+        }
+        return new AbstractMap.SimpleEntry<>(score, results);
     }
 
     @Transactional
@@ -192,5 +236,31 @@ public class CourseService {
 
     public Course findById(Long id) {
         return courseRepository.findById(id).orElse(null);
+    }
+
+    public Page<Course> getAllCoursesPaginated(Pageable pageable) {
+        return courseRepository.findAll(pageable);
+    }
+
+    @Transactional
+    public void enrollLearnerInCourse(String learnerEmail, Long courseId) {
+        Learner learner = learnerRepository.findByEmail(learnerEmail)
+                .orElseThrow(() -> new IllegalStateException("Learner not found with email: " + learnerEmail));
+
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalStateException("Course not found with ID: " + courseId));
+
+        // Check if already enrolled
+        if (learner.getCourses().contains(course)) {
+            throw new IllegalStateException("You are already enrolled in this course.");
+        }
+
+        // Enroll the learner
+        learner.getCourses().add(course);
+        course.setStudentCount(course.getStudentCount() + 1);
+
+        // Save both entities to persist changes
+        learnerRepository.save(learner);
+        courseRepository.save(course);
     }
 }

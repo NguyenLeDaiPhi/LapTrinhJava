@@ -67,6 +67,12 @@
                   />
                   <div class="mt-3">
                     <h4 th:text="${learner.name}"></h4>
+                    <form th:action="@{/logout}" method="post" class="mt-2">
+                      <!-- CSRF token is automatically included by Spring Security with Thymeleaf -->
+                      <button type="submit" class="btn btn-danger btn-sm">
+                        Logout
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -166,46 +172,117 @@
             </div>
             <div class="row">
               <div class="col-sm-12">
-                <div class="card">
+                <div class="card mt-4">
                   <div class="card-body">
                     <h5 class="d-flex align-items-center mb-3">
                       Enrolled Courses
                     </h5>
 
-                    <div th:if="${courses.isEmpty()}">
-                      <p class="text-muted">
-                        You haven't enrolled in any course yet.
-                      </p>
-                    </div>
-
-                    <div class="row" th:each="course : ${courses}">
-                      <div class="col-md-6 mb-3">
-                        <div class="card">
-                          <div class="card-body">
-                            <h5 th:text="${course.title}">Course Title</h5>
-                            <p th:text="${course.description}">Description</p>
-                            <p>
-                              <strong>Duration:</strong>
-                              <span th:text="${course.duration}">4 weeks</span>
-                            </p>
-                            <p>
-                              <strong>Price:</strong> $<span
-                                th:text="${course.price}"
-                                >149.99</span
+                    <!-- Enrolled Courses List -->
+                    <div
+                      th:if="${coursePage != null and !coursePage.isEmpty()}"
+                    >
+                      <div
+                        class="card mb-3"
+                        th:each="course : ${coursePage.content}"
+                      >
+                        <div class="card-body">
+                          <div
+                            class="d-flex justify-content-between align-items-center"
+                          >
+                            <div>
+                              <h5 class="card-title" th:text="${course.title}">
+                                Course Title
+                              </h5>
+                              <p
+                                class="card-text text-muted mb-1"
+                                th:text="${course.description}"
                               >
-                            </p>
-                            <p>
-                              <strong>Rating:</strong>
-                              <span th:text="${course.rating}">4.5</span>
-                            </p>
-                            <p>
-                              <strong>Students:</strong>
-                              <span th:text="${course.studentCount}">100</span>
-                            </p>
+                                Course Description
+                              </p>
+                              <small
+                                class="text-muted"
+                                th:text="'Duration: ' + ${course.duration}"
+                                >Duration</small
+                              >
+                            </div>
+                            <div class="ms-3 text-end">
+                              <a
+                                th:href="@{/learner/course/{id}(id=${course.id})}"
+                                class="btn btn-primary btn-sm mb-2 d-block"
+                                >View Course</a
+                              >
+                              <form
+                                th:action="@{/profile/unenroll/{id}(id=${course.id})}"
+                                method="post"
+                                class="d-inline"
+                              >
+                                <button
+                                  type="submit"
+                                  class="btn btn-outline-danger btn-sm d-block w-100"
+                                  onclick="return confirm('Are you sure you want to unenroll from this course?');"
+                                >
+                                  Unenroll
+                                </button>
+                              </form>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
+
+                    <!-- No Courses Message -->
+                    <div
+                      th:if="${coursePage == null or coursePage.isEmpty()}"
+                      class="text-center text-muted mt-4"
+                    >
+                      <p>You have not enrolled in any courses yet.</p>
+                      <a href="/course" class="btn btn-success"
+                        >Browse Courses</a
+                      >
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <nav
+                      aria-label="Page navigation"
+                      th:if="${coursePage != null and coursePage.totalPages > 1}"
+                      class="mt-4 d-flex justify-content-center"
+                    >
+                      <ul class="pagination">
+                        <li
+                          class="page-item"
+                          th:classappend="${coursePage.isFirst()} ? 'disabled'"
+                        >
+                          <a
+                            class="page-link"
+                            th:href="@{/profile(page=${coursePage.number - 1})}"
+                            >Previous</a
+                          >
+                        </li>
+                        <li
+                          class="page-item"
+                          th:each="i : ${#numbers.sequence(0, coursePage.totalPages - 1)}"
+                          th:classappend="${i == coursePage.number} ? 'active'"
+                        >
+                          <a
+                            class="page-link"
+                            th:href="@{/profile(page=${i})}"
+                            th:text="${i + 1}"
+                            >1</a
+                          >
+                        </li>
+                        <li
+                          class="page-item"
+                          th:classappend="${coursePage.isLast()} ? 'disabled'"
+                        >
+                          <a
+                            class="page-link"
+                            th:href="@{/profile(page=${coursePage.number + 1})}"
+                            >Next</a
+                          >
+                        </li>
+                      </ul>
+                    </nav>
                   </div>
                 </div>
               </div>
