@@ -18,8 +18,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Autowired
-private CustomLoginSuccessHandler customLoginSuccessHandler;
+    private CustomLoginSuccessHandler customLoginSuccessHandler;
 
     @Autowired
     private LearnerDetailsService learnerDetailsService;
@@ -30,11 +31,12 @@ private CustomLoginSuccessHandler customLoginSuccessHandler;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/register", "/login", "/registration-success").permitAll()
-                .anyRequest().authenticated()
-            )
-            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+    .requestMatchers("/register", "/register/**", "/registration-success", "/login", "/css/**", "/js/**", "/images/**", "/webjars/**")
+    .permitAll()
+    .anyRequest().authenticated()
+)
+
             .formLogin(form -> form
                 .loginPage("/login")
                 .successHandler(customLoginSuccessHandler)
@@ -51,7 +53,7 @@ private CustomLoginSuccessHandler customLoginSuccessHandler;
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = 
+        AuthenticationManagerBuilder authenticationManagerBuilder =
             http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder
             .userDetailsService(learnerDetailsService)

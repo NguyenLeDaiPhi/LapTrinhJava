@@ -44,11 +44,17 @@ public class AdminController {
         return "learner-form";
     }
 
-    @PostMapping("/save")
+ @PostMapping("/save")
     public String saveLearner(@ModelAttribute("learner") Learner learner) {
-        learnerService.saveLearner(learner);
-        return "redirect:/admin/learners/view";
+    if (learner.getRole() == null) {
+        learner.setRole("USER");
     }
+    
+    learnerService.saveLearner(learner); // <== BẮT BUỘC PHẢI CÓ
+
+    return "redirect:/admin/learners/view";
+}
+
 
     @GetMapping("/delete/{id}")
     public String deleteLearner(@PathVariable Long id) {
