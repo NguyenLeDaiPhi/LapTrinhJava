@@ -36,7 +36,7 @@ public class Learner {
     @Column(name = "Address")
     private String address;
 
-    public Learner() {}
+    private String role; // "ADMIN" hoặc "USER"
 
     public Learner(String name, String email, String phone) {
         this.name = name;
@@ -44,6 +44,20 @@ public class Learner {
         this.phone = phone;
     }
 
+    public Learner() {
+        // Default constructor
+    }
+
+    @ManyToMany
+    @JoinTable(
+        name = "learner_course",
+        joinColumns = @JoinColumn(name = "learner_id"),
+        inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> courses = new ArrayList<>();
+
+    public List<Course> getCourses() { return courses; }
+    public void setCourses(List<Course> Courses) { this.courses = Courses;}
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getName() { return name; }
@@ -56,23 +70,8 @@ public class Learner {
     public void setPhone(String phone) { this.phone = phone; }
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
-    
-    // Default constructor for JPA
-        // Default constructor for JPA
-    @ManyToMany
-    @JoinTable(
-        name = "learner_course",
-        joinColumns = @JoinColumn(name = "learner_id"),
-        inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
-    private List<Course> courses = new ArrayList<>();
-
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Course> Courses) {
-        this.courses = Courses;
-    }
+    // Getter và Setter for user's role
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
 }

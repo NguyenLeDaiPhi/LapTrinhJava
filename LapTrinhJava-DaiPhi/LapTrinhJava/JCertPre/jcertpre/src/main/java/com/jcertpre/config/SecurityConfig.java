@@ -1,5 +1,6 @@
 package com.jcertpre.config;
 
+import com.jcertpre.model.Learner;
 import com.jcertpre.repository.InstructorRepository;
 import com.jcertpre.repository.LearnerRepository;
 import com.jcertpre.service.InstructorDetailsService;
@@ -13,24 +14,46 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.jcertpre.repository.LearnerRepository;
-import com.jcertpre.service.LearnerDetailsService;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private LearnerRepository learnerRepository;
+    private final LearnerRepository learnerRepository;
+    private final InstructorRepository instructorRepository;
 
     @Autowired
-    private InstructorRepository instructorRepository;
+    public SecurityConfig(LearnerRepository learnerRepository, InstructorRepository instructorRepository) {
+        this.learnerRepository = learnerRepository;
+        this.instructorRepository = instructorRepository;
+    }
+
+    @Bean
+    @Order(0) // Highest priority for admin security
+    public SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .securityMatcher("/admin/**", "/admin-dashboard") // Apply this rule to all admin URLs
+            .authorizeHttpRequests(authorize -> authorize
+                .anyRequest().hasRole("ADMIN") // Require the user to have the ADMIN role
+            )
+            .formLogin(form -> form
+                .loginPage("/login") // Redirect to the main login page if not authenticated
+                .failureUrl("/login?error=true")
+            )
+            .logout(logout -> logout.logoutSuccessUrl("/"))
+            .exceptionHandling(e -> e.accessDeniedPage("/access-denied")) // Show access denied page if role is wrong
+            .csrf(AbstractHttpConfigurer::disable); // For simplicity, can be configured more securely
+        return http.build();
+    }
 
     @Bean
     @Order(1)
@@ -65,8 +88,8 @@ public class SecurityConfig {
         http
             .securityMatcher("/**")
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/register", "/login", "/registration-success", "/access-denied", "/courses").permitAll()
-                .requestMatchers("/profile", "/learner/**").hasRole("LEARNER")
+                .requestMatchers("/", "/register", "/login", "/registration-success", "/access-denied", "/courses", "/css/**", "/assets/**", "/js/**", "/lib/**", "/img/**").permitAll()
+                .requestMatchers("/profile", "/learner/**").hasRole("USER") // Role should be USER to match database
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -79,9 +102,6 @@ public class SecurityConfig {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
-            )
-            .csrf(csrf -> csrf
-                .ignoringRequestMatchers("/h2-console/**")
             );
 
         return http.build();
@@ -92,11 +112,16 @@ public class SecurityConfig {
         return username -> {
             var learner = learnerRepository.findByEmail(username);
             if (learner.isPresent()) {
-                return new org.springframework.security.core.userdetails.User(
-                    learner.get().getEmail(),
-                    learner.get().getPassword(),
-                    java.util.List.of(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_LEARNER"))
-                );
+                Learner l = learner.get();
+                List<org.springframework.security.core.authority.SimpleGrantedAuthority> authorities = new ArrayList<>();
+                if (l.getRole() != null && !l.getRole().isBlank()) {
+                    // This correctly assigns ADMIN or USER roles from the database
+                    authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_" + l.getRole().toUpperCase()));
+                } else {
+                    // Default to USER if no role is set
+                    authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority("ROLE_USER"));
+                }
+                return new org.springframework.security.core.userdetails.User(l.getEmail(), l.getPassword(), authorities);
             }
             var instructor = instructorRepository.findByEmail(username);
             if (instructor.isPresent()) {
