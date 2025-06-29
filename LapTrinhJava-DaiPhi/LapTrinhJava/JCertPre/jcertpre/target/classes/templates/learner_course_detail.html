@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title th:text="${course.title}"></title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        padding: 20px;
+        background-color: #f8f9fa;
+      }
+      .card {
+        margin-bottom: 20px;
+      }
+      .card-header {
+        background-color: #007bff;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 th:text="${course.title}">Course Title</h1>
+      <p class="lead" th:text="${course.description}">Course Description</p>
+      <hr />
+
+      <!-- Flash Messages -->
+      <div
+        th:if="${success}"
+        class="alert alert-success"
+        th:text="${success}"
+      ></div>
+      <div th:if="${info}" class="alert alert-info" th:text="${info}"></div>
+      <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+      <div class="row">
+        <div class="col-md-8">
+          <!-- Notifications Section -->
+          <div class="card">
+            <div class="card-header">
+              <h4>Notifications</h4>
+            </div>
+            <div class="card-body">
+              <div th:if="${!course.notifications.isEmpty()}">
+                <ul class.list-group.list-group-flush>
+                  <li
+                    class="list-group-item"
+                    th:each="notification : ${course.notifications}"
+                  >
+                    <p class="mb-1" th:text="${notification.message}"></p>
+                    <small
+                      class="text-muted"
+                      th:text="'Posted on: ' + ${#temporals.format(notification.createdAt, 'dd-MM-yyyy HH:mm')}"
+                    ></small>
+                  </li>
+                </ul>
+              </div>
+              <p th:if="${course.notifications.isEmpty()}">
+                No notifications yet.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <!-- Course Materials/Files Section -->
+          <div class="card">
+            <div class="card-header">
+              <h4>Course Materials</h4>
+            </div>
+            <div class="card-body">
+              <div th:if="${!course.files.isEmpty()}">
+                <ul class="list-group">
+                  <li class="list-group-item" th:each="file : ${course.files}">
+                    <a
+                      th:href="@{/download/file(fileName=${file})}"
+                      th:text="${file.substring(file.indexOf('_') + 1)}"
+                      >File Name</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <p th:if="${course.files.isEmpty()}">
+                No materials available for download.
+              </p>
+            </div>
+          </div>
+
+          <!-- Exam Section -->
+          <div class="card">
+            <div class="card-header">
+              <h4>Exam Simulation</h4>
+            </div>
+            <div class="card-body text-center">
+              <a
+                th:if="${examAvailable}"
+                th:href="@{/learner/course/{courseId}/exam(courseId=${course.id})}"
+                class="btn btn-primary btn-lg"
+                >Take Exam</a
+              >
+              <p th:unless="${examAvailable}" class="text-muted">
+                The exam for this course is not yet available.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a href="/course" class="btn btn-secondary mt-3">Back to All Courses</a>
+    </div>
+  </body>
+</html>
