@@ -1,13 +1,14 @@
 package com.jcertpre.service;
 
-import com.jcertpre.model.Course;
-import com.jcertpre.model.Instructor;
-import com.jcertpre.repository.InstructorRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.jcertpre.model.Course;
+import com.jcertpre.model.Instructor;
+import com.jcertpre.repository.InstructorRepository;
 
 @Service
 public class InstructorService {
