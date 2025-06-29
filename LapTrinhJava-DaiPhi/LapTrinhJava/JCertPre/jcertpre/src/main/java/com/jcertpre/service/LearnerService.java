@@ -42,6 +42,7 @@ public class LearnerService {
         Learner learner = new Learner();
         learner.setName(request.getName());
         learner.setEmail(request.getEmail());
+        learner.setRole("USER");
         learner.setPassword(passwordEncoder.encode(request.getPassword())); // Hash the password
         learnerRepository.save(learner);
         return null;
