@@ -1,0 +1,26 @@
+.form-outline {
+  position: relative;
+}
+
+.form-outline i {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #6c757d;
+  pointer-events: none;
+}
+
+.form-outline input {
+  padding-left: 2.5rem;
+}
+
+
+.error {
+  color: red;
+  font-size: 0.9em;
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
