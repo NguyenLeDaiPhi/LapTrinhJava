@@ -30,6 +30,6 @@ public class RegistrationController {
             model.addAttribute("error", error);
             return "register";
         }
-        return "redirect:/registration-success";
+        return "redirect:/login"; // Redirect to login page after successful registration
     }
 }

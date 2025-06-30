@@ -133,6 +133,36 @@
     background-color: #e0e0e0; /* Màu nền khi hover */
     color: rgb(197, 57, 57); /* Màu chữ khi hover */
   }
+  .btn-outline-red {
+    background-color: white;            /* nền trắng */
+    color: #e74c3c;                     /* chữ đỏ tươi */
+    border: 2px solid #e74c3c;          /* viền đỏ tươi */
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn-outline-red:hover {
+    background-color: #e74c3c;          /* nền đỏ khi hover */
+    color: white;                       /* chữ trắng khi hover */
+    transform: translateY(-2px);        /* nhấc lên nhẹ */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-outline-red:active {
+    background-color: #c0392b;          /* nền đỏ đậm khi nhấn */
+    border-color: #c0392b;
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outline-red:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.4); /* viền sáng khi focus */
+}
   </style>
 </head>
 <body>
@@ -198,7 +228,11 @@
       </div>
     </div>
   </section>
-
+  <div class="text-center my-4">
+    <a th:href="@{/CourseAll}" class="btn-outline-red">
+      Go to the course that fits this course path
+    </a>
+  </div>
   <!-- jQuery trước Bootstrap JS -->
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">

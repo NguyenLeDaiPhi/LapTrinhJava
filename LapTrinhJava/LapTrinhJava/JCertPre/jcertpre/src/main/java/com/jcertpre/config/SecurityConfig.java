@@ -3,9 +3,6 @@ package com.jcertpre.config;
 import com.jcertpre.model.Learner;
 import com.jcertpre.repository.InstructorRepository;
 import com.jcertpre.repository.LearnerRepository;
-import com.jcertpre.service.InstructorDetailsService;
-import com.jcertpre.service.LearnerDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +28,6 @@ public class SecurityConfig {
     private final LearnerRepository learnerRepository;
     private final InstructorRepository instructorRepository;
 
-    @Autowired
     public SecurityConfig(LearnerRepository learnerRepository, InstructorRepository instructorRepository) {
         this.learnerRepository = learnerRepository;
         this.instructorRepository = instructorRepository;

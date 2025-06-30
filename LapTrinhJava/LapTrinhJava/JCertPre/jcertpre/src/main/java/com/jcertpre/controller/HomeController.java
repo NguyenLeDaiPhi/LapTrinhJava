@@ -40,4 +40,10 @@ public class HomeController {
     public String redirectToLearnerCommunity() {
         return "redirect:/learner/community";
     }
+
+    @GetMapping("/CourseAll")
+    public String showCourseAllPage() {
+        // Trả về tên file HTML trong templates (không cần đuôi .html)
+        return "CourseAll";
+    }
 }

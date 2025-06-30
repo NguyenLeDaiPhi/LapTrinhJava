@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Popular Courses</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+    body { background-color: #f7f8fc; }
+    .course-card {
+      background: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 8px rgb(0 0 0 / 0.05);
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: pointer;
+    }
+    .course-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgb(0 0 0 / 0.12);
+    }
+    .course-image-wrapper {
+      height: 140px;
+      overflow: hidden;
+    }
+    .course-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .course-info-icons svg {
+      width: 16px;
+      height: 16px;
+      fill: #a2a7b2;
+    }
+  </style>
+</head>
+<body>
+<div class="max-w-7xl mx-auto px-6 py-12 text-center">
+<p class="text-sm text-orange-400 font-semibold tracking-widest mb-2 uppercase">Courses</p>
+<h2 class="text-3xl font-bold text-gray-800 mb-10">Our Popular Courses</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+<div class="course-card" onclick="playVideo('GnfM8wQ9PZk')">
+<div class="course-image-wrapper">
+<img alt="Japanese Pronunciation Guide" src="https://cdn.innovativelanguage.com/sns/em/content/lp/kana/hiragana_chart.jpg"/>
+</div>
+<div class="p-4 text-left space-y-2">
+<div class="flex justify-between text-xs text-gray-400 course-info-icons mb-1">
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 14H7v-2h2v2zm0-4H7V6h2v4zm6 2h-4v-1h3v-4h-5v1h1v3H5v5h10v-4z"></path></svg>
+<span>25 Students</span>
+</div>
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 24 24"><path d="M12 7v5l4 2"></path></svg>
+<span>1hr 30m</span>
+</div>
+</div>
+<p class="text-gray-700 font-medium text-base">Japanese Pronunciation Guide</p>
+<hr class="border-gray-200"/>
+<div class="flex justify-between text-sm items-center text-gray-500">
+<div class="flex items-center space-x-1">
+<svg class="text-orange-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27l5.18 3.73-1.64-6.81 5.46-4.73-6.91-.57L12 2 9.91 9.89 3 10.46l5.46 4.73-1.64 6.81L12 17.27z"></path>
+</svg>
+<span>4.2 (120)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="course-card" onclick="playVideo('3n6PeXkZz9A')">
+<div class="course-image-wrapper">
+<img alt="Studying Kanji is a Waste of Time" src="https://www.ejable.com/wp-content/uploads/2024/01/study-learn-gaku-5.webp"/>
+</div>
+<div class="p-4 text-left space-y-2">
+<div class="flex justify-between text-xs text-gray-400 course-info-icons mb-1">
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 14H7v-2h2v2zm0-4H7V6h2v4zm6 2h-4v-1h3v-4h-5v1h1v3H5v5h10v-4z"></path></svg>
+<span>26 Students</span>
+</div>
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 24 24"><path d="M12 7v5l4 2"></path></svg>
+<span>2hr 31m</span>
+</div>
+</div>
+<p class="text-gray-700 font-medium text-base">Studying Kanji is a Waste of Time</p>
+<hr class="border-gray-200"/>
+<div class="flex justify-between text-sm items-center text-gray-500">
+<div class="flex items-center space-x-1">
+<svg class="text-orange-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27l5.18 3.73-1.64-6.81 5.46-4.73-6.91-.57L12 2 9.91 9.89 3 10.46l5.46 4.73-1.64 6.81L12 17.27z"></path>
+</svg>
+<span>4.3 (127)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="course-card" onclick="playVideo('Mz3uCFOStt4')">
+<div class="course-image-wrapper">
+<img alt="Learn Japanese vocabulary" src="https://i.etsystatic.com/34183513/r/il/9b2048/3764897580/il_fullxfull.3764897580_edkc.jpg"/>
+</div>
+<div class="p-4 text-left space-y-2">
+<div class="flex justify-between text-xs text-gray-400 course-info-icons mb-1">
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 14H7v-2h2v2zm0-4H7V6h2v4zm6 2h-4v-1h3v-4h-5v1h1v3H5v5h10v-4z"></path></svg>
+<span>27 Students</span>
+</div>
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 24 24"><path d="M12 7v5l4 2"></path></svg>
+<span>1hr 32m</span>
+</div>
+</div>
+<p class="text-gray-700 font-medium text-base">Learn Japanese vocabulary</p>
+<hr class="border-gray-200"/>
+<div class="flex justify-between text-sm items-center text-gray-500">
+<div class="flex items-center space-x-1">
+<svg class="text-orange-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27l5.18 3.73-1.64-6.81 5.46-4.73-6.91-.57L12 2 9.91 9.89 3 10.46l5.46 4.73-1.64 6.81L12 17.27z"></path>
+</svg>
+<span>4.4 (134)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="course-card" onclick="playVideo('fJ8v9YQ_Ops')">
+<div class="course-image-wrapper">
+<img alt="Basic Sentence Structure in Japanese" src="https://8020japanese.com/wp-content/uploads/jp-sentence-structure/jp-sentence-structure.png"/>
+</div>
+<div class="p-4 text-left space-y-2">
+<div class="flex justify-between text-xs text-gray-400 course-info-icons mb-1">
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 14H7v-2h2v2zm0-4H7V6h2v4zm6 2h-4v-1h3v-4h-5v1h1v3H5v5h10v-4z"></path></svg>
+<span>28 Students</span>
+</div>
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 24 24"><path d="M12 7v5l4 2"></path></svg>
+<span>2hr 33m</span>
+</div>
+</div>
+<p class="text-gray-700 font-medium text-base">Basic Sentence Structure in Japanese</p>
+<hr class="border-gray-200"/>
+<div class="flex justify-between text-sm items-center text-gray-500">
+<div class="flex items-center space-x-1">
+<svg class="text-orange-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27l5.18 3.73-1.64-6.81 5.46-4.73-6.91-.57L12 2 9.91 9.89 3 10.46l5.46 4.73-1.64 6.81L12 17.27z"></path>
+</svg>
+<span>4.5 (141)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="course-card" onclick="playVideo('l90P3scWiFs')">
+<div class="course-image-wrapper">
+<img alt="Japanese postcards" src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/japan-with-love-post-cards-design-template-190bb83d7fb98ab70e010020934683ab_screen.jpg?ts=1635223082"/>
+</div>
+<div class="p-4 text-left space-y-2">
+<div class="flex justify-between text-xs text-gray-400 course-info-icons mb-1">
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 14H7v-2h2v2zm0-4H7V6h2v4zm6 2h-4v-1h3v-4h-5v1h1v3H5v5h10v-4z"></path></svg>
+<span>29 Students</span>
+</div>
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 24 24"><path d="M12 7v5l4 2"></path></svg>
+<span>1hr 34m</span>
+</div>
+</div>
+<p class="text-gray-700 font-medium text-base">Japanese postcards</p>
+<hr class="border-gray-200"/>
+<div class="flex justify-between text-sm items-center text-gray-500">
+<div class="flex items-center space-x-1">
+<svg class="text-orange-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27l5.18 3.73-1.64-6.81 5.46-4.73-6.91-.57L12 2 9.91 9.89 3 10.46l5.46 4.73-1.64 6.81L12 17.27z"></path>
+</svg>
+<span>4.6 (148)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="course-card" onclick="playVideo('LehKoS7-56M')">
+<div class="course-image-wrapper">
+<img alt="Japanese Conversation Practice" src="https://www.linguajunkie.com/wp-content/uploads/simple-japanese-conversation-1.png"/>
+</div>
+<div class="p-4 text-left space-y-2">
+<div class="flex justify-between text-xs text-gray-400 course-info-icons mb-1">
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 14H7v-2h2v2zm0-4H7V6h2v4zm6 2h-4v-1h3v-4h-5v1h1v3H5v5h10v-4z"></path></svg>
+<span>30 Students</span>
+</div>
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 24 24"><path d="M12 7v5l4 2"></path></svg>
+<span>2hr 35m</span>
+</div>
+</div>
+<p class="text-gray-700 font-medium text-base">Japanese Conversation Practice</p>
+<hr class="border-gray-200"/>
+<div class="flex justify-between text-sm items-center text-gray-500">
+<div class="flex items-center space-x-1">
+<svg class="text-orange-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27l5.18 3.73-1.64-6.81 5.46-4.73-6.91-.57L12 2 9.91 9.89 3 10.46l5.46 4.73-1.64 6.81L12 17.27z"></path>
+</svg>
+<span>4.2 (155)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="course-card" onclick="playVideo('uXaC4RHQqxE')">
+<div class="course-image-wrapper">
+<img alt="How to practice reading japanese" src="https://static.wixstatic.com/media/c2fbad_61b49e64ef0f4ce89dcc76f9e2858f9d~mv2.jpeg/v1/fill/w_980,h_513,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/c2fbad_61b49e64ef0f4ce89dcc76f9e2858f9d~mv2.jpeg"/>
+</div>
+<div class="p-4 text-left space-y-2">
+<div class="flex justify-between text-xs text-gray-400 course-info-icons mb-1">
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 14H7v-2h2v2zm0-4H7V6h2v4zm6 2h-4v-1h3v-4h-5v1h1v3H5v5h10v-4z"></path></svg>
+<span>31 Students</span>
+</div>
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 24 24"><path d="M12 7v5l4 2"></path></svg>
+<span>1hr 36m</span>
+</div>
+</div>
+<p class="text-gray-700 font-medium text-base">How to practice reading japanese</p>
+<hr class="border-gray-200"/>
+<div class="flex justify-between text-sm items-center text-gray-500">
+<div class="flex items-center space-x-1">
+<svg class="text-orange-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27l5.18 3.73-1.64-6.81 5.46-4.73-6.91-.57L12 2 9.91 9.89 3 10.46l5.46 4.73-1.64 6.81L12 17.27z"></path>
+</svg>
+<span>4.3 (162)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="course-card" onclick="playVideo('5UzrtHA_dtI')">
+<div class="course-image-wrapper">
+<img alt="How to practice writing japanese" src="https://files.tofugu.com/articles/japanese/2022-07-05-learn-hiragana-book-pdf/hiragana-writing-practice.jpg"/>
+</div>
+<div class="p-4 text-left space-y-2">
+<div class="flex justify-between text-xs text-gray-400 course-info-icons mb-1">
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 14H7v-2h2v2zm0-4H7V6h2v4zm6 2h-4v-1h3v-4h-5v1h1v3H5v5h10v-4z"></path></svg>
+<span>32 Students</span>
+</div>
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 24 24"><path d="M12 7v5l4 2"></path></svg>
+<span>2hr 37m</span>
+</div>
+</div>
+<p class="text-gray-700 font-medium text-base">How to practice writing japanese</p>
+<hr class="border-gray-200"/>
+<div class="flex justify-between text-sm items-center text-gray-500">
+<div class="flex items-center space-x-1">
+<svg class="text-orange-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27l5.18 3.73-1.64-6.81 5.46-4.73-6.91-.57L12 2 9.91 9.89 3 10.46l5.46 4.73-1.64 6.81L12 17.27z"></path>
+</svg>
+<span>4.4 (169)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="course-card" onclick="playVideo('LhDe7Ncvh_8')">
+<div class="course-image-wrapper">
+<img alt="ALL the Japanese Basics You Need" src="https://mochidemy.com/support/wp-content/uploads/2024/08/food-and-drinks-in-Japanese.webp"/>
+</div>
+<div class="p-4 text-left space-y-2">
+<div class="flex justify-between text-xs text-gray-400 course-info-icons mb-1">
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 14H7v-2h2v2zm0-4H7V6h2v4zm6 2h-4v-1h3v-4h-5v1h1v3H5v5h10v-4z"></path></svg>
+<span>33 Students</span>
+</div>
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 24 24"><path d="M12 7v5l4 2"></path></svg>
+<span>1hr 38m</span>
+</div>
+</div>
+<p class="text-gray-700 font-medium text-base">ALL the Japanese Basics You Need</p>
+<hr class="border-gray-200"/>
+<div class="flex justify-between text-sm items-center text-gray-500">
+<div class="flex items-center space-x-1">
+<svg class="text-orange-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27l5.18 3.73-1.64-6.81 5.46-4.73-6.91-.57L12 2 9.91 9.89 3 10.46l5.46 4.73-1.64 6.81L12 17.27z"></path>
+</svg>
+<span>4.5 (176)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="course-card" onclick="playVideo('6p9Il_j0zjc')">
+<div class="course-image-wrapper">
+<img alt="How to Start Learning Japanese from Zero" src="https://www.tofugu.com/images/learn-japanese/beginner-textbook-9ff49857.jpg"/>
+</div>
+<div class="p-4 text-left space-y-2">
+<div class="flex justify-between text-xs text-gray-400 course-info-icons mb-1">
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 14H7v-2h2v2zm0-4H7V6h2v4zm6 2h-4v-1h3v-4h-5v1h1v3H5v5h10v-4z"></path></svg>
+<span>34 Students</span>
+</div>
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 24 24"><path d="M12 7v5l4 2"></path></svg>
+<span>2hr 39m</span>
+</div>
+</div>
+<p class="text-gray-700 font-medium text-base">How to Start Learning Japanese from Zero</p>
+<hr class="border-gray-200"/>
+<div class="flex justify-between text-sm items-center text-gray-500">
+<div class="flex items-center space-x-1">
+<svg class="text-orange-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27l5.18 3.73-1.64-6.81 5.46-4.73-6.91-.57L12 2 9.91 9.89 3 10.46l5.46 4.73-1.64 6.81L12 17.27z"></path>
+</svg>
+<span>4.6 (183)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="course-card" onclick="playVideo('fXmhAR1rIJk')">
+<div class="course-image-wrapper">
+<img alt="Katakana mnemonics" src="https://files.tofugu.com/articles/japanese/2017-07-13-katakana-chart/happy-lilac-1.jpg"/>
+</div>
+<div class="p-4 text-left space-y-2">
+<div class="flex justify-between text-xs text-gray-400 course-info-icons mb-1">
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 14H7v-2h2v2zm0-4H7V6h2v4zm6 2h-4v-1h3v-4h-5v1h1v3H5v5h10v-4z"></path></svg>
+<span>35 Students</span>
+</div>
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 24 24"><path d="M12 7v5l4 2"></path></svg>
+<span>1hr 40m</span>
+</div>
+</div>
+<p class="text-gray-700 font-medium text-base">Katakana mnemonics</p>
+<hr class="border-gray-200"/>
+<div class="flex justify-between text-sm items-center text-gray-500">
+<div class="flex items-center space-x-1">
+<svg class="text-orange-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27l5.18 3.73-1.64-6.81 5.46-4.73-6.91-.57L12 2 9.91 9.89 3 10.46l5.46 4.73-1.64 6.81L12 17.27z"></path>
+</svg>
+<span>4.2 (190)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="course-card" onclick="playVideo('6wA_VFsA4NA')">
+<div class="course-image-wrapper">
+<img alt="JLPT N5 Grammar Test with Answers and Guide" src="https://miro.medium.com/v2/resize:fit:500/1*y9hKf4cZSY14W3wv7SACNw.jpeg"/>
+</div>
+<div class="p-4 text-left space-y-2">
+<div class="flex justify-between text-xs text-gray-400 course-info-icons mb-1">
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 14H7v-2h2v2zm0-4H7V6h2v4zm6 2h-4v-1h3v-4h-5v1h1v3H5v5h10v-4z"></path></svg>
+<span>36 Students</span>
+</div>
+<div class="flex items-center space-x-1">
+<svg viewbox="0 0 24 24"><path d="M12 7v5l4 2"></path></svg>
+<span>2hr 41m</span>
+</div>
+</div>
+<p class="text-gray-700 font-medium text-base">JLPT N5 Grammar Test with Answers and Guide</p>
+<hr class="border-gray-200"/>
+<div class="flex justify-between text-sm items-center text-gray-500">
+<div class="flex items-center space-x-1">
+<svg class="text-orange-400" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 17.27l5.18 3.73-1.64-6.81 5.46-4.73-6.91-.57L12 2 9.91 9.89 3 10.46l5.46 4.73-1.64 6.81L12 17.27z"></path>
+</svg>
+<span>4.3 (197)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal Video Player -->
+<div class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50" id="videoModal">
+<div class="bg-white rounded-lg overflow-hidden max-w-3xl w-full relative">
+<div class="relative" style="padding-top: 56.25%;">
+<iframe allow="autoplay; encrypted-media" allowfullscreen="" class="absolute top-0 left-0 w-full h-full" frameborder="0" id="youtubePlayer" src=""></iframe>
+</div>
+<button class="absolute top-2 right-3 text-black text-2xl font-bold hover:text-red-500" onclick="closeVideo()">×</button>
+</div>
+</div>
+
+<script>
+  function playVideo(videoId) {
+    const iframe = document.getElementById("youtubePlayer");
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    document.getElementById("videoModal").classList.remove("hidden");
+  }
+
+  function closeVideo() {
+    const iframe = document.getElementById("youtubePlayer");
+    iframe.src = "";
+    document.getElementById("videoModal").classList.add("hidden");
+  }
+</script>
+
+</body>
+</html>

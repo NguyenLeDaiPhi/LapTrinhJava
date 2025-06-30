@@ -27,7 +27,6 @@ import com.jcertpre.model.ExamSimulation;
 import com.jcertpre.model.Instructor;
 import com.jcertpre.model.Notification;
 import com.jcertpre.model.Question;
-import com.jcertpre.repository.PostRepository;
 import com.jcertpre.service.CourseService;
 import com.jcertpre.service.InstructorService;
 import com.jcertpre.service.NotificationService;
@@ -42,9 +41,6 @@ public class InstructorController {
     private final InstructorService instructorService;
 
     @Autowired
-    private final PostRepository postRepo;
-
-    @Autowired
     private final CourseService courseService;
 
     @Autowired 
@@ -52,10 +48,9 @@ public class InstructorController {
 
     private static final Logger logger = LoggerFactory.getLogger(InstructorController.class);
 
-    public InstructorController(InstructorService instructorService, CourseService courseService, PostRepository postRepo) {
+    public InstructorController(InstructorService instructorService, CourseService courseService) {
         this.instructorService = instructorService;
         this.courseService = courseService;
-        this.postRepo = postRepo;
     }
 
     @GetMapping("/login")
